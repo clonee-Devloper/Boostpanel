@@ -363,19 +363,12 @@ async function confirmOrder(layanan, tipe, jumlah, link, total) {
     createdAt: new Date()
   };
 
-  // 🔥 SAFE FIREBASE (tidak blok WA)
   try {
-  await db.collection("orders").add(data);
-} catch (err) {
-  console.error("Firebase error:", err);
-}
+    await db.collection("orders").add(data);
+  } catch (err) {
+    console.error("Firebase error:", err);
+  }
 
-// JANGAN DI BLOK FIREBASE
-setTimeout(() => {
-  window.location.href = url;
-}, 300);
-
-  // 🔥 FORMAT PESAN
   const pesan = `
 Halo Admin BoostPanel 👋
 
@@ -393,15 +386,13 @@ Saya ingin order:
 Mohon info pembayaran 🙏
 `;
 
-  // 🔥 NOMOR FIX
   const nomor = "6283142808857";
-
   const url = `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
 
-  console.log("Redirect WA:", url);
-
-  // 🔥 PAKSA REDIRECT
-  window.location.href = url;
+  // 🔥 redirect aman
+  setTimeout(() => {
+    window.location.href = url;
+  }, 300);
 }
 
 /* =========================
@@ -425,10 +416,28 @@ function renderHistory() {
           <td>${d.id}</td>
           <td>${d.layanan}</td>
           <td>${d.jumlah}</td>
-          <td>${d.status}</td>
+
+          <!-- STATUS -->
           <td>
-            ${isAdmin ? `<button onclick="deleteOrder('${doc.id}')">Hapus</button>` : "-"}
+            ${isAdmin ? `
+              <select onchange="updateStatus('${doc.id}', this.value)">
+                <option ${d.status === "Pending" ? "selected" : ""}>Pending</option>
+                <option ${d.status === "Success" ? "selected" : ""}>Success</option>
+                <option ${d.status === "Cancel" ? "selected" : ""}>Cancel</option>
+              </select>
+            ` : d.status}
           </td>
+
+          <!-- AKSI -->
+          <td>
+            ${isAdmin ? `
+              <button onclick="deleteOrder('${doc.id}')"
+                style="background:red;color:white;border:none;padding:5px 10px;border-radius:5px">
+                Hapus
+              </button>
+            ` : "-"}
+          </td>
+
         </tr>`;
       });
 
@@ -440,7 +449,16 @@ function renderHistory() {
 ========================= */
 async function deleteOrder(id) {
   if (!isAdmin) return;
-  await db.collection("orders").doc(id).delete();
+
+  showPopup("Konfirmasi", "Yakin mau hapus order ini?", async () => {
+    try {
+      await db.collection("orders").doc(id).delete();
+      showPopup("Sukses", "Order berhasil dihapus");
+    } catch (err) {
+      console.error(err);
+      showPopup("Error", "Gagal menghapus");
+    }
+  });
 }
 
 /* =========================
@@ -520,3 +538,18 @@ window.addEventListener("click", (e) => {
     isPopupOpen = false;
   }
 });
+
+async function updateStatus(id, status) {
+  if (!isAdmin) return;
+
+  try {
+    await db.collection("orders").doc(id).update({
+      status: status
+    });
+
+    showPopup("Sukses", "Status berhasil diubah");
+  } catch (err) {
+    console.error(err);
+    showPopup("Error", "Gagal update status");
+  }
+}
