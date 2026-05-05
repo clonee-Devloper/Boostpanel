@@ -46,8 +46,10 @@ window.addEventListener("load", () => {
    ADMIN AUTH CHECK (1x saja)
 ========================= */
 auth.onAuthStateChanged(async (user) => {
+
   if (!user) {
     isAdmin = false;
+    renderHistory(); // 🔥 tetap render untuk user biasa
     return;
   }
 
@@ -58,23 +60,26 @@ auth.onAuthStateChanged(async (user) => {
       isAdmin = true;
 
       const loginEl = document.getElementById("adminLogin");
-const contentEl = document.getElementById("adminContent");
+      const contentEl = document.getElementById("adminContent");
 
-if (loginEl && contentEl) {
-  loginEl.style.display = "none";
-  contentEl.style.display = "block";
-}
+      if (loginEl && contentEl) {
+        loginEl.style.display = "none";
+        contentEl.style.display = "block";
+      }
 
       console.log("Admin aktif ✅");
+
     } else {
       isAdmin = false;
     }
 
+    renderHistory(); // 🔥 WAJIB di sini (setelah cek role)
+
   } catch (err) {
     console.error(err);
   }
-});
 
+});
 /* =========================
    ADMIN LOGIN
 ========================= */
