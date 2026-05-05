@@ -87,7 +87,8 @@ async function loginAdmin() {
     showPopup("Sukses", "Login berhasil");
     closeAdmin();
   } catch (err) {
-    showPopup("Error", err.message);
+    closeAdmin(); // 🔥 ini penting
+    showPopup("Error", "Email / Password salah");
   }
 }
 
