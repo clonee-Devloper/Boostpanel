@@ -127,10 +127,29 @@
 
 <div id="waMenu" class="dropdown-menu">
 <div onclick="setOption('wa','Channel', event)">Channel</div>
-<div onclick="setOption('wa','Member', event)">Member</div>
 </div>
 </div>
 </div>
+
+    <!-- Paket hemat -->
+  <div class="option">
+  <input type="radio" name="service" value="99999">
+
+  <img src="paket.png" class="logo">
+
+  <div class="full">
+    <div class="opt-title">Paket Hemat instagram/Tiktok</div>
+    <div class="opt-desc">Lebih murah & hemat</div>
+
+    <div onclick="toggleDropdown('paketMenu', event)">
+      <span id="paketText">Paket</span> ▼
+    </div>
+
+    <div id="paketMenu" class="dropdown-menu">
+      <div onclick="setOption('paket','Paket',event)">Paket Hemat instagram<br>500 views + 250 likes</div>
+    </div>
+  </div>
+  </div>
 
 <div class="mini">Minimal 10 - Max 50.000</div>
 
