@@ -92,7 +92,6 @@ async function loginAdmin() {
     showPopup("Sukses", "Login berhasil");
     closeAdmin();
   } catch (err) {
-    closeAdmin(); // 🔥 ini penting
     showPopup("Error", "Email / Password salah");
   }
 }
@@ -234,7 +233,12 @@ function hitungTotal() {
   const jumlah = parseInt(document.getElementById("jumlah").value) || 0;
   const service = document.querySelector('input[name="service"]:checked');
   if (!service) return;
-
+   
+if (jumlah < 100) {
+  document.getElementById("total").innerText = "0";
+  return;
+}
+   
   const type =
     service.value === "25144" ? selectedType.ig :
     service.value === "3890" ? selectedType.tt :
@@ -250,10 +254,7 @@ function hitungTotal() {
     total.toLocaleString("id-ID");
 }
 
-if (jumlah < 100) {
-  document.getElementById("total").innerText = "0";
-  return;
-}
+
 /* =========================
    INVOICE
 ========================= */
@@ -270,13 +271,16 @@ function showInvoice() {
   const service = document.querySelector('input[name="service"]:checked');
 
   const layanan =
-    service.value === "25144" ? "Instagram" :
-    service.value === "3890" ? "Tiktok" : "WhatsApp";
+  service.value === "25144" ? "Instagram" :
+  service.value === "3890" ? "Tiktok" :
+  service.value === "80954" ? "WhatsApp" :
+  "Paket Hemat";
 
-  const tipe =
-    service.value === "25144" ? selectedType.ig :
-    service.value === "3890" ? selectedType.tt :
-    selectedType.wa;
+const tipe =
+  service.value === "25144" ? selectedType.ig :
+  service.value === "3890" ? selectedType.tt :
+  service.value === "80954" ? selectedType.wa :
+  selectedType.paket;
 
   const html = `
   <div style="display:flex;flex-direction:column;gap:12px">
@@ -519,7 +523,6 @@ function toggleRules() {
    INIT
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  renderHistory();
   initOptionClick(); // 🔥 WAJIB
 });
 
