@@ -392,6 +392,11 @@ const tipe =
 ========================= */
 async function confirmOrder(layanan, tipe, jumlah, link, total) {
 
+   if (parseInt(jumlah) < 10) {
+  showPopup("Error", "Order tidak valid");
+  return;
+   }
+
   const id = "ORD" + Date.now();
 
   const data = {
