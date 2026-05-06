@@ -65,7 +65,7 @@
 <input class="input" id="link" placeholder="🔗 Link target">
 
 <!-- INSTAGRAM -->
-<div class="option active" onclick="selectOption(this)">
+<div class="option active">
 <input type="radio" name="service" value="25144" checked>
 
 <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
@@ -88,7 +88,7 @@
 </div>
 
 <!-- TIKTOK -->
-<div class="option" onclick="selectOption(this)">
+<div class="option">
 <input type="radio" name="service" value="3890">
 
 <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg">
@@ -111,7 +111,7 @@
 </div>
 
 <!-- WHATSAPP -->
-<div class="option" onclick="selectOption(this)">
+<div class="option">
 <input type="radio" name="service" value="80954">
 
 <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
@@ -141,7 +141,7 @@
     <div class="opt-title">Paket Hemat instagram/Tiktok</div>
     <div class="opt-desc">Lebih murah & hemat</div>
 
-    <div onclick="toggleDropdown('paketMenu', event)">
+    <div class="input" onclick="toggleDropdown('paketMenu', event)">
       <span id="paketText">Paket</span> ▼
     </div>
 
@@ -236,5 +236,12 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <script src="script.js"></script>
+  <script>
+  // 🔥 fallback paksa hilangin loader
+  setTimeout(() => {
+    const loader = document.getElementById("loader");
+    if (loader) loader.style.display = "none";
+  }, 3000);
+  </script>
 </body>
 </html>
