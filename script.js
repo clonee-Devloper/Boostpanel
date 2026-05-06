@@ -172,16 +172,31 @@ function showPopup(title, message, callback = null) {
    DATA
 ========================= */
 const hargaLayanan = {
-  "25144": { Followers: 60, Likes: 17, Komentar: 8 },
-  "3890": { Likes: 8, Followers: 25, Views: 5 },
-  "80954": { Channel: 75, Member: 25 }
+  "25144": { // Instagram
+    Followers: 20000,
+    Likes: 15000,
+    Komentar: 50000
+  },
+  "3890": { // TikTok
+    Followers: 18000,
+    Likes: 12000,
+    Views: 5000
+  },
+  "80954": { // WhatsApp
+    Channel: 25000
+  },
+  "99999": { // Paket Hemat
+    Paket: 10000
+  }
 };
 
 let selectedType = {
   ig: "Followers",
   tt: "Likes",
-  wa: "Channel"
+  wa: "Channel",
+  paket: "Paket" // 🔥 baru
 };
+
 
 /* =========================
    DROPDOWN + OPTION
@@ -194,7 +209,12 @@ function setOption(type, value, e) {
   document.getElementById(type + "Text").innerText = value;
   document.getElementById(type + "Menu").style.display = "none";
 
-  const map = { ig: "25144", tt: "3890", wa: "80954" };
+  const map = { 
+  ig: "25144", 
+  tt: "3890", 
+  wa: "80954",
+  paket: "99999" // 🔥 baru
+};
   const radio = document.querySelector(`input[value="${map[type]}"]`);
 
   document.querySelectorAll(".option").forEach(o => o.classList.remove("active"));
@@ -218,15 +238,22 @@ function hitungTotal() {
   const type =
     service.value === "25144" ? selectedType.ig :
     service.value === "3890" ? selectedType.tt :
-    selectedType.wa;
+    service.value === "80954" ? selectedType.wa :
+    selectedType.paket;
 
   const harga = hargaLayanan[service.value]?.[type] || 0;
-  const total = (jumlah / 1000) * harga;
+
+  // 🔥 FIX PERHITUNGAN
+  const total = Math.ceil((jumlah / 1000) * harga);
 
   document.getElementById("total").innerText =
-    Math.floor(total).toLocaleString("id-ID");
+    total.toLocaleString("id-ID");
 }
 
+if (jumlah < 100) {
+  document.getElementById("total").innerText = "0";
+  return;
+}
 /* =========================
    INVOICE
 ========================= */
