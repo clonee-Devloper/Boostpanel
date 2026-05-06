@@ -172,20 +172,20 @@ function showPopup(title, message, callback = null) {
 ========================= */
 const hargaLayanan = {
   "25144": { // Instagram
-    Followers: 20000,
-    Likes: 15000,
-    Komentar: 50000
+    Followers: 20,
+    Likes: 15,
+    Komentar: 50
   },
   "3890": { // TikTok
-    Followers: 18000,
-    Likes: 12000,
-    Views: 5000
+    Followers: 18,
+    Likes: 12,
+    Views: 5
   },
   "80954": { // WhatsApp
-    Channel: 25000
+    Channel: 25
   },
   "99999": { // Paket Hemat
-    Paket: 10000
+    Paket: 10
   }
 };
 
@@ -234,7 +234,7 @@ function hitungTotal() {
   const service = document.querySelector('input[name="service"]:checked');
   if (!service) return;
    
-if (jumlah < 100) {
+if (jumlah < 10) {
   document.getElementById("total").innerText = "0";
   return;
 }
@@ -248,7 +248,7 @@ if (jumlah < 100) {
   const harga = hargaLayanan[service.value]?.[type] || 0;
 
   // 🔥 FIX PERHITUNGAN
-  const total = Math.ceil((jumlah / 1000) * harga);
+  const total = jumlah * harga;
 
   document.getElementById("total").innerText =
     total.toLocaleString("id-ID");
@@ -264,9 +264,14 @@ function showInvoice() {
   const total = document.getElementById("total").innerText;
 
   if (!link || !jumlah) {
-    showPopup("Error", "Isi semua data!");
-    return;
-  }
+  showPopup("Error", "Isi semua data!");
+  return;
+}
+
+if (parseInt(jumlah) < 10) {
+  showPopup("Peringatan", "Minimal order adalah 10!");
+  return;
+}
 
   const service = document.querySelector('input[name="service"]:checked');
 
