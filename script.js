@@ -514,36 +514,38 @@ function showInvoice() {
         Saya menyetujui rules
       </label>
 
-      <hr style="opacity:.2">
+   <hr style="opacity:.15">
 
 <div style="
   background:#020617;
+  border:1px solid #334155;
   padding:12px;
   border-radius:12px;
-  font-size:12px;
+  font-size:11px;
   line-height:1.7;
   color:#cbd5e1;
 ">
 
-  <b style="color:white">
+  <div style="
+    font-size:13px;
+    font-weight:bold;
+    margin-bottom:8px;
+    color:white;
+  ">
     📌 Rules Wajib
-  </b>
+  </div>
 
-  <br><br>
+  • Pastikan link target benar dan valid<br>
 
-  • Pastikan link yang dimasukkan benar dan valid<br>
-
-  • Jangan menggunakan 2 layanan pada target yang sama secara bersamaan<br>
+  • Jangan menggunakan 2 layanan sekaligus pada target yang sama<br>
 
   • Target private tidak mendapatkan refund<br>
 
-  • Estimasi proses tergantung server (tidak instan)<br>
+  • Estimasi proses tergantung server dan tidak instan<br>
 
-  • Tidak menerima komplain jika melanggar rules<br>
+  • Order dianggap valid setelah pembayaran dilakukan<br>
 
-  • Dengan melakukan order, Anda dianggap menyetujui semua aturan<br>
-
-  • Suntik followers/likes dapat menyebabkan penurunan interaksi alami akun
+  • Dengan melakukan order, Anda menyetujui seluruh rules BoostPanel
 
 </div>
 
