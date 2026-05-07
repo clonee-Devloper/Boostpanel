@@ -184,8 +184,8 @@ const hargaLayanan = {
   "80954": { // WhatsApp
     Channel: 25
   },
-  "99999": { // Paket Hemat
-    Paket: 10
+  "8848": { // Paket Hemat
+    Paket: 42
   }
 };
 
@@ -212,7 +212,7 @@ function setOption(type, value, e) {
   ig: "25144", 
   tt: "3890", 
   wa: "80954",
-  paket: "99999" // 🔥 baru
+  paket: "8848" // 🔥 baru
 };
   const radio = document.querySelector(`input[value="${map[type]}"]`);
 
@@ -234,7 +234,7 @@ function hitungTotal() {
   const service = document.querySelector('input[name="service"]:checked');
   if (!service) return;
    
-if (jumlah < 10) {
+if (jumlah < 0) {
   document.getElementById("total").innerText = "0";
   return;
 }
@@ -243,7 +243,7 @@ if (jumlah < 10) {
     service.value === "25144" ? selectedType.ig :
     service.value === "3890" ? selectedType.tt :
     service.value === "80954" ? selectedType.wa :
-    selectedType.paket;
+    service.value === "8848" ? selectedType.paket;
 
   const harga = hargaLayanan[service.value]?.[type] || 0;
 
@@ -279,13 +279,13 @@ if (parseInt(jumlah) < 10) {
   service.value === "25144" ? "Instagram" :
   service.value === "3890" ? "Tiktok" :
   service.value === "80954" ? "WhatsApp" :
-  "Paket Hemat";
+  service.value === "8848" ? "Paket Hemat";
 
 const tipe =
   service.value === "25144" ? selectedType.ig :
   service.value === "3890" ? selectedType.tt :
   service.value === "80954" ? selectedType.wa :
-  selectedType.paket;
+  service.value === "8848" ?selectedType.paket;
 
   const html = `
   <div style="display:flex;flex-direction:column;gap:12px">
