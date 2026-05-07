@@ -514,6 +514,39 @@ function showInvoice() {
         Saya menyetujui rules
       </label>
 
+      <hr style="opacity:.2">
+
+<div style="
+  background:#020617;
+  padding:12px;
+  border-radius:12px;
+  font-size:12px;
+  line-height:1.7;
+  color:#cbd5e1;
+">
+
+  <b style="color:white">
+    📌 Rules Wajib
+  </b>
+
+  <br><br>
+
+  • Pastikan link yang dimasukkan benar dan valid<br>
+
+  • Jangan menggunakan 2 layanan pada target yang sama secara bersamaan<br>
+
+  • Target private tidak mendapatkan refund<br>
+
+  • Estimasi proses tergantung server (tidak instan)<br>
+
+  • Tidak menerima komplain jika melanggar rules<br>
+
+  • Dengan melakukan order, Anda dianggap menyetujui semua aturan<br>
+
+  • Suntik followers/likes dapat menyebabkan penurunan interaksi alami akun
+
+</div>
+
     </div>
   `;
 
