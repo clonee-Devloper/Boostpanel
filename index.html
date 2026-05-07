@@ -164,6 +164,25 @@
 
   </div>
 </div>
+
+<div class="mini">Minimal 10 - Max 50.000</div>
+
+<input class="input"
+       id="jumlah"
+       type="number"
+       min="10"
+       placeholder="Masukan jumlah"
+       oninput="hitungTotal()">
+
+<div class="totalbox">
+  Total: Rp <span id="total">0</span>
+</div>
+
+<button class="btn" onclick="showInvoice()">
+  Submit Order
+</button>
+
+</div> <!-- 🔥 PENUTUP CARD ORDER -->
   
 
 <!-- HISTORY -->
@@ -198,7 +217,9 @@
 </div>
 
 </div>
-
+</div>
+</div>
+  
 <!-- POPUP -->
 <div id="globalPopup" class="popup">
   <div class="popup-box">
