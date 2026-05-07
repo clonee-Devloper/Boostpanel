@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f172a">
 <title>BoostPanel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
@@ -55,8 +56,7 @@
     3. Jika target private tidak ada refund.<br>
     4. Dengan order Anda setuju aturan.<br>
     5. Suntik followers ini bisa melanggar ketentuan<br>
-    media sosial anda, contoh: hilang nya followers,<br>
-    terindentifikasi prilaku spam
+    media sosial anda, contoh: hilangnya followers atau teridentifikasi perilaku spam
   </div>
 </div>
 
@@ -134,35 +134,37 @@
 </div>
 </div>
 
-    <!-- Paket hemat -->
-  <div class="option">
-  <input type="radio" name="service" value="99999">
+<!-- Paket Hemat -->
+<div class="option">
+  <input type="radio" name="service" value="8848">
 
   <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="logo">
 
   <div class="full">
-    <div class="opt-title">Paket Hemat instagram/Tiktok</div>
-    <div class="opt-desc">Lebih murah & hemat</div>
+
+    <div class="opt-title">
+      Paket Hemat Instagram/Tiktok
+    </div>
+
+    <div class="opt-desc">
+      Lebih murah & hemat
+    </div>
 
     <div class="input" onclick="toggleDropdown('paketMenu', event)">
-      <span id="paketText">Paket</span> ▼
+      <span id="paketText">Paket</span>
+      <span style="float:right">▼</span>
     </div>
 
     <div id="paketMenu" class="dropdown-menu">
-      <div onclick="setOption('paket','Paket',event)">Paket Hemat instagram<br>500 views + 250 likes</div>
+      <div onclick="setOption('paket','Paket',event)">
+        Paket Hemat Instagram<br>
+        500 Views + 250 Likes
+      </div>
     </div>
+
   </div>
-  </div>
-
-<div class="mini">Minimal 10 - Max 50.000</div>
-
-<input class="input" id="jumlah" type="number" min="10" placeholder="Masukan jumlah" oninput="hitungTotal()">
-
-<div class="totalbox">Total: Rp <span id="total">0</span></div>
-
-<button class="btn" onclick="showInvoice()">Submit Order</button>
-
 </div>
+  
 
 <!-- HISTORY -->
 <div class="card" id="history">
@@ -187,11 +189,14 @@
 <!-- CONTACT -->
 <div class="card" id="contact">
 <h2>Contact</h2>
-<div class="muted">WhatsApp: 6283142808857</div>
-<div class="muted"><a href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40">Mau liat bukti transaksi? Klick disini!!</a></div>
+<div class="muted">
+  <a href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40"
+     target="_blank"
+     style="word-break:break-word;">
+     Mau liat bukti transaksi? Klik disini!!
+  </a>
 </div>
 
-</div>
 </div>
 
 <!-- POPUP -->
@@ -226,7 +231,6 @@
     <div id="adminContent" style="display:none">
       <div class="popup-title">Admin Panel</div>
 
-      <button class="btn" onclick="clearHistory()">Hapus Semua History</button>
       <button class="btn-secondary" onclick="logoutAdmin()">Logout</button>
     </div>
 
