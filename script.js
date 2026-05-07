@@ -234,7 +234,7 @@ function hitungTotal() {
   const service = document.querySelector('input[name="service"]:checked');
   if (!service) return;
    
-if (jumlah < 0) {
+if (jumlah < 10) {
   document.getElementById("total").innerText = "0";
   return;
 }
@@ -279,13 +279,15 @@ if (parseInt(jumlah) < 10) {
   service.value === "25144" ? "Instagram" :
   service.value === "3890" ? "Tiktok" :
   service.value === "80954" ? "WhatsApp" :
-  service.value === "8848" ? "Paket Hemat";
+  service.value === "8848" ? "Paket Hemat" :
+  "Tidak diketahui";
 
 const tipe =
   service.value === "25144" ? selectedType.ig :
   service.value === "3890" ? selectedType.tt :
   service.value === "80954" ? selectedType.wa :
-  service.value === "8848" ?selectedType.paket;
+  service.value === "8848" ? selectedType.paket :
+  "Unknown";
 
   const html = `
   <div style="display:flex;flex-direction:column;gap:12px">
@@ -392,10 +394,12 @@ const tipe =
 ========================= */
 async function confirmOrder(layanan, tipe, jumlah, link, total) {
 
-   if (parseInt(jumlah) < 10) {
-  showPopup("Error", "Order tidak valid");
-  return;
-   }
+  jumlah = parseInt(jumlah);
+
+  if (jumlah < 10) {
+    showPopup("Error", "Order tidak valid");
+    return;
+  }
 
   const id = "ORD" + Date.now();
 
