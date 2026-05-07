@@ -1,7 +1,7 @@
 /* =========================
-   DEBUG (optional)
+   DEBUG
 ========================= */
-window.onerror = function(message, source, lineno) {
+window.onerror = function (message, source, lineno) {
   console.error("ERROR:", message, "File:", source, "Line:", lineno);
 };
 
@@ -9,14 +9,14 @@ window.onerror = function(message, source, lineno) {
    FIREBASE INIT
 ========================= */
 const firebaseConfig = {
-    apiKey: "AIzaSyD0ADo1TMD5ASjJ_l4062EEJtqZ2irmuIw",
-    authDomain: "boostpanel-myown.firebaseapp.com",
-    projectId: "boostpanel-myown",
-    storageBucket: "boostpanel-myown.firebasestorage.app",
-    messagingSenderId: "1003583759714",
-    appId: "1:1003583759714:web:1b9b88c96825ec5d56783b",
-    measurementId: "G-689H4KX1S6"
-  };
+  apiKey: "AIzaSyD0ADo1TMD5ASjJ_l4062EEJtqZ2irmuIw",
+  authDomain: "boostpanel-myown.firebaseapp.com",
+  projectId: "boostpanel-myown",
+  storageBucket: "boostpanel-myown.firebasestorage.app",
+  messagingSenderId: "1003583759714",
+  appId: "1:1003583759714:web:1b9b88c96825ec5d56783b",
+  measurementId: "G-689H4KX1S6"
+};
 
 firebase.initializeApp(firebaseConfig);
 
@@ -28,100 +28,166 @@ const auth = firebase.auth();
 ========================= */
 let isAdmin = false;
 let clickCount = 0;
+let isPopupOpen = false;
+let unsubscribeHistory = null;
+
+/* =========================
+   DATA HARGA
+========================= */
+const hargaLayanan = {
+  "25144": {
+    Followers: 20,
+    Likes: 15,
+    Komentar: 50
+  },
+
+  "3890": {
+    Followers: 18,
+    Likes: 12,
+    Views: 5
+  },
+
+  "80954": {
+    Channel: 25
+  },
+
+  "8848": {
+    Paket: 42
+  }
+};
+
+const selectedType = {
+  ig: "Followers",
+  tt: "Likes",
+  wa: "Channel",
+  paket: "Paket"
+};
 
 /* =========================
    LOADER
 ========================= */
 window.addEventListener("load", () => {
   const loader = document.getElementById("loader");
+
   if (!loader) return;
 
   setTimeout(() => {
     loader.style.opacity = "0";
-    setTimeout(() => loader.style.display = "none", 500);
-  }, 1200);
+
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 500);
+
+  }, 1000);
 });
 
 /* =========================
-   ADMIN AUTH CHECK (1x saja)
+   AUTH CHECK
 ========================= */
 auth.onAuthStateChanged(async (user) => {
 
-  if (!user) {
-    isAdmin = false;
-    renderHistory(); // 🔥 tetap render untuk user biasa
-    return;
-  }
-
   try {
-    const doc = await db.collection("users").doc(user.uid).get();
 
-    if (doc.exists && doc.data().role === "admin") {
-      isAdmin = true;
+    isAdmin = false;
 
-      const loginEl = document.getElementById("adminLogin");
-      const contentEl = document.getElementById("adminContent");
+    if (user) {
+      const doc = await db.collection("users").doc(user.uid).get();
 
-      if (loginEl && contentEl) {
-        loginEl.style.display = "none";
-        contentEl.style.display = "block";
+      if (doc.exists && doc.data().role === "admin") {
+        isAdmin = true;
+
+        const loginEl = document.getElementById("adminLogin");
+        const contentEl = document.getElementById("adminContent");
+
+        if (loginEl && contentEl) {
+          loginEl.style.display = "none";
+          contentEl.style.display = "block";
+        }
+
+        console.log("Admin aktif ✅");
       }
-
-      console.log("Admin aktif ✅");
-
-    } else {
-      isAdmin = false;
     }
 
-    renderHistory(); // 🔥 WAJIB di sini (setelah cek role)
+    renderHistory();
 
   } catch (err) {
     console.error(err);
   }
 
 });
+
 /* =========================
    ADMIN LOGIN
 ========================= */
 async function loginAdmin() {
-  const email = document.getElementById("adminEmail").value;
-  const pass = document.getElementById("adminPass").value;
+
+  const email = document.getElementById("adminEmail").value.trim();
+  const pass = document.getElementById("adminPass").value.trim();
+
+  if (!email || !pass) {
+    showPopup("Error", "Isi email dan password");
+    return;
+  }
 
   try {
+
     await auth.signInWithEmailAndPassword(email, pass);
+
     showPopup("Sukses", "Login berhasil");
+
     closeAdmin();
+
   } catch (err) {
-    showPopup("Error", "Email / Password salah");
+
+    console.error(err);
+
+    showPopup("Error", "Email atau password salah");
   }
 }
 
-function logoutAdmin() {
-  auth.signOut().then(() => {
+/* =========================
+   LOGOUT
+========================= */
+async function logoutAdmin() {
+
+  try {
+
+    await auth.signOut();
+
     isAdmin = false;
 
     document.getElementById("adminContent").style.display = "none";
     document.getElementById("adminLogin").style.display = "block";
 
+    showPopup("Logout", "Berhasil logout");
+
     renderHistory();
 
-    setTimeout(() => {
-      showPopup("Logout", "Berhasil logout");
-    }, 200);
-  });
+  } catch (err) {
+
+    console.error(err);
+
+    showPopup("Error", "Logout gagal");
+  }
 }
+
 /* =========================
    SECRET ADMIN
 ========================= */
 function openSecretAdmin() {
+
   clickCount++;
 
   if (clickCount >= 5) {
+
     document.getElementById("adminPanel").style.display = "flex";
+
     clickCount = 0;
   }
 
-  setTimeout(() => clickCount = 0, 2000);
+  setTimeout(() => {
+    clickCount = 0;
+  }, 2000);
 }
 
 function closeAdmin() {
@@ -131,14 +197,12 @@ function closeAdmin() {
 /* =========================
    POPUP
 ========================= */
-let isPopupOpen = false;
-
 function showPopup(title, message, callback = null) {
+
   const popup = document.getElementById("globalPopup");
+
   if (!popup) return;
 
-  // 🔥 cegah popup dobel
-  if (isPopupOpen) return;
   isPopupOpen = true;
 
   document.getElementById("popupTitle").innerText = title;
@@ -146,159 +210,257 @@ function showPopup(title, message, callback = null) {
 
   popup.style.display = "flex";
 
-  const btnConfirm = document.getElementById("popupConfirm");
-  const btnCancel = document.getElementById("popupCancel");
+  const confirmBtn = document.getElementById("popupConfirm");
+  const cancelBtn = document.getElementById("popupCancel");
 
-  // 🔥 reset tombol
-  btnConfirm.onclick = null;
-  btnCancel.onclick = null;
+  confirmBtn.onclick = null;
+  cancelBtn.onclick = null;
 
-  btnConfirm.onclick = () => {
+  confirmBtn.onclick = () => {
+
     popup.style.display = "none";
     isPopupOpen = false;
+
     if (callback) callback();
   };
 
-  btnCancel.onclick = () => {
+  cancelBtn.onclick = () => {
+
     popup.style.display = "none";
     isPopupOpen = false;
   };
 
-  btnCancel.style.display = callback ? "inline-block" : "none";
+  cancelBtn.style.display = callback ? "block" : "none";
 }
 
 /* =========================
-   DATA
+   DROPDOWN
 ========================= */
-const hargaLayanan = {
-  "25144": { // Instagram
-    Followers: 20,
-    Likes: 15,
-    Komentar: 50
-  },
-  "3890": { // TikTok
-    Followers: 18,
-    Likes: 12,
-    Views: 5
-  },
-  "80954": { // WhatsApp
-    Channel: 25
-  },
-  "8848": { // Paket Hemat
-    Paket: 42
-  }
-};
+function toggleDropdown(id, event) {
 
-let selectedType = {
-  ig: "Followers",
-  tt: "Likes",
-  wa: "Channel",
-  paket: "Paket" // 🔥 baru
-};
+  event.stopPropagation();
 
+  const menu = document.getElementById(id);
+
+  if (!menu) return;
+
+  document.querySelectorAll(".dropdown-menu").forEach(el => {
+
+    if (el !== menu) {
+      el.style.display = "none";
+    }
+
+  });
+
+  menu.style.display =
+    menu.style.display === "block"
+      ? "none"
+      : "block";
+}
 
 /* =========================
-   DROPDOWN + OPTION
+   OPTION SELECT
 ========================= */
-function setOption(type, value, e) {
-  e.stopPropagation();
+function setOption(type, value, event) {
+
+  event.stopPropagation();
 
   selectedType[type] = value;
 
-  document.getElementById(type + "Text").innerText = value;
-  document.getElementById(type + "Menu").style.display = "none";
+  const textEl = document.getElementById(type + "Text");
 
-  const map = { 
-  ig: "25144", 
-  tt: "3890", 
-  wa: "80954",
-  paket: "8848" // 🔥 baru
-};
-  const radio = document.querySelector(`input[value="${map[type]}"]`);
+  if (textEl) {
+    textEl.innerText = value;
+  }
 
-  document.querySelectorAll(".option").forEach(o => o.classList.remove("active"));
+  const menu = document.getElementById(type + "Menu");
+
+  if (menu) {
+    menu.style.display = "none";
+  }
+
+  const map = {
+    ig: "25144",
+    tt: "3890",
+    wa: "80954",
+    paket: "8848"
+  };
+
+  const serviceValue = map[type];
+
+  document.querySelectorAll(".option").forEach(opt => {
+    opt.classList.remove("active");
+  });
+
+  const radio = document.querySelector(
+    `input[name="service"][value="${serviceValue}"]`
+  );
 
   if (radio) {
+
     radio.checked = true;
-    radio.closest(".option").classList.add("active");
+
+    const parent = radio.closest(".option");
+
+    if (parent) {
+      parent.classList.add("active");
+    }
   }
 
   hitungTotal();
 }
 
 /* =========================
+   OPTION CLICK INIT
+========================= */
+function initOptionClick() {
+
+  const options = document.querySelectorAll(".option");
+
+  options.forEach(option => {
+
+    option.addEventListener("click", function (e) {
+
+      if (e.target.closest(".dropdown-menu")) return;
+
+      document.querySelectorAll(".option").forEach(opt => {
+        opt.classList.remove("active");
+      });
+
+      this.classList.add("active");
+
+      const radio = this.querySelector(
+        'input[name="service"]'
+      );
+
+      if (radio) {
+        radio.checked = true;
+      }
+
+      hitungTotal();
+    });
+
+  });
+}
+
+/* =========================
    TOTAL
 ========================= */
 function hitungTotal() {
-  const jumlah = parseInt(document.getElementById("jumlah").value) || 0;
-  const service = document.querySelector('input[name="service"]:checked');
-  if (!service) return;
-   
-if (jumlah < 10) {
-  document.getElementById("total").innerText = "0";
-  return;
-}
-   
-  const type =
-    service.value === "25144" ? selectedType.ig :
-    service.value === "3890" ? selectedType.tt :
-    service.value === "80954" ? selectedType.wa :
-    service.value === "8848" ? selectedType.paket;
 
-  const harga = hargaLayanan[service.value]?.[type] || 0;
+  const jumlah =
+    parseInt(document.getElementById("jumlah").value) || 0;
 
-  // 🔥 FIX PERHITUNGAN
+  const totalEl = document.getElementById("total");
+
+  const service = document.querySelector(
+    'input[name="service"]:checked'
+  );
+
+  if (!service || !totalEl) return;
+
+  if (jumlah < 10) {
+    totalEl.innerText = "0";
+    return;
+  }
+
+  let type = "";
+
+  switch (service.value) {
+
+    case "25144":
+      type = selectedType.ig;
+      break;
+
+    case "3890":
+      type = selectedType.tt;
+      break;
+
+    case "80954":
+      type = selectedType.wa;
+      break;
+
+    case "8848":
+      type = selectedType.paket;
+      break;
+  }
+
+  const harga =
+    hargaLayanan[service.value]?.[type] || 0;
+
   const total = jumlah * harga;
 
-  document.getElementById("total").innerText =
+  totalEl.innerText =
     total.toLocaleString("id-ID");
 }
 
-
 /* =========================
-   INVOICE
+   SHOW INVOICE
 ========================= */
 function showInvoice() {
-  const link = document.getElementById("link").value.trim();
-  const jumlah = document.getElementById("jumlah").value;
-  const total = document.getElementById("total").innerText;
 
-  if (!link || !jumlah) {
-  showPopup("Error", "Isi semua data!");
-  return;
-}
+  const link =
+    document.getElementById("link").value.trim();
 
-if (parseInt(jumlah) < 10) {
-  showPopup("Peringatan", "Minimal order adalah 10!");
-  return;
-}
+  const jumlah =
+    parseInt(document.getElementById("jumlah").value);
 
-  const service = document.querySelector('input[name="service"]:checked');
+  const service = document.querySelector(
+    'input[name="service"]:checked'
+  );
 
-  const layanan =
-  service.value === "25144" ? "Instagram" :
-  service.value === "3890" ? "Tiktok" :
-  service.value === "80954" ? "WhatsApp" :
-  service.value === "8848" ? "Paket Hemat" :
-  "Tidak diketahui";
+  if (!link || !jumlah || !service) {
+    showPopup("Error", "Isi semua data");
+    return;
+  }
 
-const tipe =
-  service.value === "25144" ? selectedType.ig :
-  service.value === "3890" ? selectedType.tt :
-  service.value === "80954" ? selectedType.wa :
-  service.value === "8848" ? selectedType.paket :
-  "Unknown";
+  if (jumlah < 10) {
+    showPopup(
+      "Peringatan",
+      "Minimal order adalah 10"
+    );
+    return;
+  }
+
+  const total =
+    document.getElementById("total").innerText;
+
+  let layanan = "";
+  let tipe = "";
+
+  switch (service.value) {
+
+    case "25144":
+      layanan = "Instagram";
+      tipe = selectedType.ig;
+      break;
+
+    case "3890":
+      layanan = "Tiktok";
+      tipe = selectedType.tt;
+      break;
+
+    case "80954":
+      layanan = "WhatsApp";
+      tipe = selectedType.wa;
+      break;
+
+    case "8848":
+      layanan = "Paket Hemat";
+      tipe = selectedType.paket;
+      break;
+
+    default:
+      layanan = "Unknown";
+      tipe = "Unknown";
+  }
 
   const html = `
-  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:12px">
 
-    <!-- TITLE -->
-    <div style="font-size:18px;font-weight:bold">
-      📄 Invoice Pesanan
-    </div>
-
-    <!-- DETAIL -->
-    <div style="display:flex;flex-direction:column;gap:8px;font-size:14px">
+      <div style="font-size:18px;font-weight:bold">
+        📄 Invoice Pesanan
+      </div>
 
       <div style="display:flex;justify-content:space-between">
         <span>Layanan</span>
@@ -317,8 +479,9 @@ const tipe =
 
       <div style="display:flex;justify-content:space-between;gap:10px">
         <span>Link</span>
+
         <b style="
-          max-width:140px;
+          max-width:150px;
           overflow:hidden;
           text-overflow:ellipsis;
           white-space:nowrap;
@@ -327,74 +490,69 @@ const tipe =
         </b>
       </div>
 
+      <hr style="opacity:.2">
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        font-size:18px;
+        font-weight:bold;
+      ">
+        <span>Total</span>
+        <span style="color:#7c3aed">
+          Rp ${total}
+        </span>
+      </div>
+
+      <label style="
+        display:flex;
+        gap:10px;
+        align-items:center;
+        font-size:13px;
+      ">
+        <input type="checkbox" id="agreeRules">
+        Saya menyetujui rules
+      </label>
+
     </div>
-
-    <hr style="opacity:.2">
-
-    <!-- TOTAL -->
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      font-size:18px;
-      font-weight:bold;
-    ">
-      <span>Total</span>
-      <span style="color:#7c3aed">Rp ${total}</span>
-    </div>
-
-    <hr style="opacity:.2">
-
-    <!-- RULES FULL -->
-    <div style="
-      background:#020617;
-      padding:12px;
-      border-radius:10px;
-      font-size:12px;
-      line-height:1.6;
-      opacity:.9;
-    ">
-      <b>📌 Rules Wajib:</b><br>
-      • Pastikan link yang dimasukkan benar dan valid<br>
-      • Jangan menggunakan 2 layanan pada target yang sama secara bersamaan<br>
-      • Akun/private target tidak mendapatkan refund<br>
-      • Estimasi proses tergantung server (tidak instan)<br>
-      • Tidak menerima komplain jika melanggar rules<br>
-      • Dengan melakukan order, Anda dianggap setuju semua aturan
-    </div>
-
-    <!-- CHECKBOX -->
-    <label style="
-      display:flex;
-      align-items:center;
-      gap:8px;
-      font-size:13px;
-      margin-top:5px;
-    ">
-      <input type="checkbox" id="agreeRules">
-      Saya telah membaca dan menyetujui rules
-    </label>
-
-  </div>
   `;
 
   showPopup("Konfirmasi Pesanan", html, () => {
-    const agree = document.getElementById("agreeRules");
+
+    const agree =
+      document.getElementById("agreeRules");
 
     if (!agree || !agree.checked) {
-      showPopup("Peringatan", "Kamu harus menyetujui rules terlebih dahulu!");
+
+      showPopup(
+        "Peringatan",
+        "Setujui rules terlebih dahulu"
+      );
+
       return;
     }
 
-    confirmOrder(layanan, tipe, jumlah, link, total);
+    confirmOrder(
+      layanan,
+      tipe,
+      jumlah,
+      link,
+      total
+    );
+
   });
 }
 
 /* =========================
-   ORDER (NO LOGIN REQUIRED)
+   CONFIRM ORDER
 ========================= */
-async function confirmOrder(layanan, tipe, jumlah, link, total) {
-
-  jumlah = parseInt(jumlah);
+async function confirmOrder(
+  layanan,
+  tipe,
+  jumlah,
+  link,
+  total
+) {
 
   if (jumlah < 10) {
     showPopup("Error", "Order tidak valid");
@@ -411,13 +569,20 @@ async function confirmOrder(layanan, tipe, jumlah, link, total) {
     link,
     total,
     status: "Pending",
-    createdAt: new Date()
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
   try {
+
     await db.collection("orders").add(data);
+
   } catch (err) {
-    console.error("Firebase error:", err);
+
+    console.error(err);
+
+    showPopup("Error", "Gagal menyimpan order");
+
+    return;
   }
 
   const pesan = `
@@ -432,15 +597,15 @@ Saya ingin order:
 🔗 Link: ${link}
 
 💰 Total: Rp ${total}
-💳 Metode pembayaran: Transfer / E-Wallet
 
 Mohon info pembayaran 🙏
 `;
 
   const nomor = "6283142808857";
-  const url = `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
 
-  // 🔥 redirect aman
+  const url =
+    `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
+
   setTimeout(() => {
     window.location.href = url;
   }, 300);
@@ -450,156 +615,231 @@ Mohon info pembayaran 🙏
    HISTORY
 ========================= */
 function renderHistory() {
-  const tbody = document.querySelector("#historyTable tbody");
+
+  const tbody =
+    document.querySelector("#historyTable tbody");
+
   if (!tbody) return;
 
-  db.collection("orders")
+  if (unsubscribeHistory) {
+    unsubscribeHistory();
+  }
+
+  unsubscribeHistory = db.collection("orders")
     .orderBy("createdAt", "desc")
     .onSnapshot(snapshot => {
 
       tbody.innerHTML = "";
 
       snapshot.forEach(doc => {
+
         const d = doc.data();
 
         tbody.innerHTML += `
-        <tr>
-          <td>${d.id}</td>
-          <td>${d.layanan}</td>
-          <td>${d.jumlah}</td>
+          <tr>
 
-          <!-- STATUS -->
-          <td>
-            ${isAdmin ? `
-              <select onchange="updateStatus('${doc.id}', this.value)">
-                <option ${d.status === "Pending" ? "selected" : ""}>Pending</option>
-                <option ${d.status === "Success" ? "selected" : ""}>Success</option>
-                <option ${d.status === "Cancel" ? "selected" : ""}>Cancel</option>
-              </select>
-            ` : d.status}
-          </td>
+            <td>${d.id || "-"}</td>
 
-          <!-- AKSI -->
-          <td>
-            ${isAdmin ? `
-              <button onclick="deleteOrder('${doc.id}')"
-                style="background:red;color:white;border:none;padding:5px 10px;border-radius:5px">
-                Hapus
-              </button>
-            ` : "-"}
-          </td>
+            <td>${d.layanan || "-"}</td>
 
-        </tr>`;
+            <td>${d.jumlah || "-"}</td>
+
+            <td>
+              ${
+                isAdmin
+                ? `
+                  <select
+                    onchange="updateStatus('${doc.id}', this.value)"
+                  >
+                    <option value="Pending"
+                      ${d.status === "Pending" ? "selected" : ""}
+                    >
+                      Pending
+                    </option>
+
+                    <option value="Success"
+                      ${d.status === "Success" ? "selected" : ""}
+                    >
+                      Success
+                    </option>
+
+                    <option value="Cancel"
+                      ${d.status === "Cancel" ? "selected" : ""}
+                    >
+                      Cancel
+                    </option>
+                  </select>
+                `
+                : d.status
+              }
+            </td>
+
+            <td>
+              ${
+                isAdmin
+                ? `
+                  <button
+                    onclick="deleteOrder('${doc.id}')"
+                    style="
+                      background:red;
+                      color:white;
+                      border:none;
+                      padding:6px 10px;
+                      border-radius:8px;
+                      cursor:pointer;
+                    "
+                  >
+                    Hapus
+                  </button>
+                `
+                : "-"
+              }
+            </td>
+
+          </tr>
+        `;
+
       });
 
     });
 }
 
 /* =========================
-   ADMIN ACTION
+   UPDATE STATUS
 ========================= */
-async function deleteOrder(id) {
+async function updateStatus(id, status) {
+
   if (!isAdmin) return;
 
-  showPopup("Konfirmasi", "Yakin mau hapus order ini?", async () => {
-    try {
-      await db.collection("orders").doc(id).delete();
-      showPopup("Sukses", "Order berhasil dihapus");
-    } catch (err) {
-      console.error(err);
-      showPopup("Error", "Gagal menghapus");
+  try {
+
+    await db.collection("orders")
+      .doc(id)
+      .update({
+        status: status
+      });
+
+    showPopup(
+      "Sukses",
+      "Status berhasil diperbarui"
+    );
+
+  } catch (err) {
+
+    console.error(err);
+
+    showPopup(
+      "Error",
+      "Gagal update status"
+    );
+  }
+}
+
+/* =========================
+   DELETE ORDER
+========================= */
+async function deleteOrder(id) {
+
+  if (!isAdmin) return;
+
+  showPopup(
+    "Konfirmasi",
+    "Yakin ingin menghapus order?",
+    async () => {
+
+      try {
+
+        await db.collection("orders")
+          .doc(id)
+          .delete();
+
+        showPopup(
+          "Sukses",
+          "Order berhasil dihapus"
+        );
+
+      } catch (err) {
+
+        console.error(err);
+
+        showPopup(
+          "Error",
+          "Gagal menghapus order"
+        );
+      }
+
     }
-  });
+  );
 }
 
 /* =========================
    SCROLL
 ========================= */
 function scrollToOrder() {
-  document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("order")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
 }
 
 function scrollToHistory() {
-  document.getElementById("history")?.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("history")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
 }
 
 function scrollToContact() {
-  document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+  document.getElementById("contact")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
 }
 
+/* =========================
+   RULES
+========================= */
 function toggleRules() {
-  const r = document.getElementById("rules");
-  if (!r) return;
-  r.style.display = r.style.display === "block" ? "none" : "block";
+
+  const rules =
+    document.getElementById("rules");
+
+  if (!rules) return;
+
+  rules.style.display =
+    rules.style.display === "block"
+      ? "none"
+      : "block";
 }
+
+/* =========================
+   GLOBAL CLICK
+========================= */
+window.addEventListener("click", (e) => {
+
+  document.querySelectorAll(".dropdown-menu")
+    .forEach(menu => {
+      menu.style.display = "none";
+    });
+
+  const popup =
+    document.getElementById("globalPopup");
+
+  if (e.target === popup) {
+
+    popup.style.display = "none";
+
+    isPopupOpen = false;
+  }
+});
 
 /* =========================
    INIT
 ========================= */
 document.addEventListener("DOMContentLoaded", () => {
-  initOptionClick(); // 🔥 WAJIB
+
+  initOptionClick();
+
+  hitungTotal();
+
 });
-
-function toggleDropdown(id, event) {
-  event.stopPropagation();
-
-  const menu = document.getElementById(id);
-  if (!menu) return;
-
-  // tutup semua dropdown lain
-  document.querySelectorAll(".dropdown-menu").forEach(m => {
-    if (m !== menu) m.style.display = "none";
-  });
-
-  // toggle
-  menu.style.display =
-    menu.style.display === "block" ? "none" : "block";
-}
-
-function initOptionClick() {
-  document.querySelectorAll(".option").forEach(opt => {
-    opt.addEventListener("click", function(e) {
-
-      // jangan ganggu dropdown
-      if (e.target.closest(".dropdown-menu")) return;
-
-      document.querySelectorAll(".option")
-        .forEach(o => o.classList.remove("active"));
-
-      this.classList.add("active");
-
-      const radio = this.querySelector("input");
-      if (radio) radio.checked = true;
-
-      hitungTotal();
-    });
-  });
-}
-
-window.addEventListener("click", () => {
-  document.querySelectorAll(".dropdown-menu")
-    .forEach(m => m.style.display = "none");
-});
-
-window.addEventListener("click", (e) => {
-  const popup = document.getElementById("globalPopup");
-  if (e.target === popup) {
-    popup.style.display = "none";
-    isPopupOpen = false;
-  }
-});
-
-async function updateStatus(id, status) {
-  if (!isAdmin) return;
-
-  try {
-    await db.collection("orders").doc(id).update({
-      status: status
-    });
-
-    showPopup("Sukses", "Status berhasil diubah");
-  } catch (err) {
-    console.error(err);
-    showPopup("Error", "Gagal update status");
-  }
-}
