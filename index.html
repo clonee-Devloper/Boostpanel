@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#0f172a">
+<meta name="theme-color" content="#0f172a">
+
 <title>BoostPanel</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
@@ -15,15 +16,16 @@
 <!-- LOADER -->
 <div id="loader">
   <div class="loader-box">
-    <img src="rocket.png" class="rocket">
+    <img src="rocket.png" class="rocket" alt="Rocket">
     <div class="loading-text">Loading BoostPanel...</div>
   </div>
 </div>
 
 <!-- NAVBAR -->
 <div class="navbar" id="navbar">
+
   <div class="brand" onclick="openSecretAdmin()">
-    <img src="logo.jpeg">
+    <img src="logo.jpeg" alt="Logo">
     <span>BoostPanel</span>
   </div>
 
@@ -32,244 +34,410 @@
     <div class="nav-item" onclick="scrollToHistory()">History</div>
     <div class="nav-item" onclick="scrollToContact()">Contact</div>
   </div>
+
 </div>
 
+<!-- WRAP -->
 <div class="wrap">
-<div class="grid">
 
-<!-- HERO -->
-<div class="card">
-  <h1>Bangun audiens sosialmu<br>Cepat, Stabil, Terpercaya</h1>
-  <div class="muted">Tingkatkan interaksi media sosial Anda</div>
-  <button class="btn" onclick="scrollToOrder()">Order Sekarang</button>
-</div>
+  <div class="grid">
 
-<!-- RULES -->
-<div class="card">
-  <h2>Peraturan Wajib di Baca!!!</h2>
-  <div class="muted">Tim kami tidak bertanggung jawab atas kelalaian anda</div>
-  <button class="btn" onclick="toggleRules()">Lihat Rules</button>
+    <!-- HERO -->
+    <div class="card">
 
-  <div id="rules">
-    1. Pastikan link benar.<br>
-    2. Jangan gunakan dua layanan sekaligus.<br>
-    3. Jika target private tidak ada refund.<br>
-    4. Dengan order Anda setuju aturan.<br>
-    5. Suntik followers ini bisa melanggar ketentuan<br>
-    media sosial anda, contoh: hilangnya followers atau teridentifikasi perilaku spam
-  </div>
-</div>
+      <h1>
+        Bangun audiens sosialmu<br>
+        Cepat, Stabil, Terpercaya
+      </h1>
 
-<!-- ORDER -->
-<div class="card" id="order">
-
-<div class="section-title">Buat Pesanan</div>
-
-<input class="input" id="link" placeholder="🔗 Link target">
-
-<!-- INSTAGRAM -->
-<div class="option active">
-<input type="radio" name="service" value="25144" checked>
-
-<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png">
-
-<div class="full">
-<div class="opt-title">Instagram</div>
-<div class="opt-desc">Followers berkualitas tinggi & stabil</div>
-
-<div class="input" onclick="toggleDropdown('igMenu', event)">
-<span id="igText">Followers</span>
-<span style="float:right">▼</span>
-</div>
-
-<div id="igMenu" class="dropdown-menu">
-<div onclick="setOption('ig','Followers', event)">Followers</div>
-<div onclick="setOption('ig','Likes', event)">Likes</div>
-<div onclick="setOption('ig','Komentar', event)">Komentar</div>
-</div>
-</div>
-</div>
-
-<!-- TIKTOK -->
-<div class="option">
-<input type="radio" name="service" value="3890">
-
-<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg">
-
-<div class="full">
-<div class="opt-title">Tiktok</div>
-<div class="opt-desc">Boost interaksi cepat & aman</div>
-
-<div class="input" onclick="toggleDropdown('ttMenu', event)">
-<span id="ttText">Likes</span>
-<span style="float:right">▼</span>
-</div>
-
-<div id="ttMenu" class="dropdown-menu">
-<div onclick="setOption('tt','Likes', event)">Likes</div>
-<div onclick="setOption('tt','Followers', event)">Followers</div>
-<div onclick="setOption('tt','Views', event)">Views</div>
-</div>
-</div>
-</div>
-
-<!-- WHATSAPP -->
-<div class="option">
-<input type="radio" name="service" value="80954">
-
-<img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-
-<div class="full">
-<div class="opt-title">WhatsApp</div>
-<div class="opt-desc">Tambah member aktif</div>
-
-<div class="input" onclick="toggleDropdown('waMenu', event)">
-<span id="waText">Channel</span>
-<span style="float:right">▼</span>
-</div>
-
-<div id="waMenu" class="dropdown-menu">
-<div onclick="setOption('wa','Channel', event)">Channel</div>
-</div>
-</div>
-</div>
-
-<!-- Paket Hemat -->
-<div class="option">
-  <input type="radio" name="service" value="8848">
-
-  <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="logo">
-
-  <div class="full">
-
-    <div class="opt-title">
-      Paket Hemat Instagram/Tiktok
-    </div>
-
-    <div class="opt-desc">
-      Lebih murah & hemat
-    </div>
-
-    <div class="input" onclick="toggleDropdown('paketMenu', event)">
-      <span id="paketText">Paket</span>
-      <span style="float:right">▼</span>
-    </div>
-
-    <div id="paketMenu" class="dropdown-menu">
-      <div onclick="setOption('paket','Paket',event)">
-        Paket Hemat Instagram<br>
-        500 Views + 250 Likes
+      <div class="muted">
+        Tingkatkan interaksi media sosial Anda
       </div>
+
+      <button class="btn" onclick="scrollToOrder()">
+        Order Sekarang
+      </button>
+
+    </div>
+
+    <!-- RULES -->
+    <div class="card">
+
+      <h2>Peraturan Wajib di Baca!!!</h2>
+
+      <div class="muted">
+        Tim kami tidak bertanggung jawab atas kelalaian anda
+      </div>
+
+      <button class="btn" onclick="toggleRules()">
+        Lihat Rules
+      </button>
+
+      <div id="rules">
+        1. Pastikan link benar.<br>
+        2. Jangan gunakan dua layanan sekaligus.<br>
+        3. Jika target private tidak ada refund.<br>
+        4. Dengan order Anda setuju aturan.<br>
+        5. Suntik followers dapat melanggar ketentuan media sosial.<br>
+        6. Resiko kehilangan followers / spam ditanggung user.
+      </div>
+
+    </div>
+
+    <!-- ORDER -->
+    <div class="card" id="order">
+
+      <div class="section-title">
+        Buat Pesanan
+      </div>
+
+      <input
+        class="input"
+        id="link"
+        placeholder="🔗 Link target"
+      >
+
+      <!-- INSTAGRAM -->
+      <div class="option active">
+
+        <input
+          type="radio"
+          name="service"
+          value="25144"
+          checked
+        >
+
+        <img
+          class="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+          alt="Instagram"
+        >
+
+        <div class="full">
+
+          <div class="opt-title">
+            Instagram
+          </div>
+
+          <div class="opt-desc">
+            Followers berkualitas tinggi & stabil
+          </div>
+
+          <div class="input" onclick="toggleDropdown('igMenu', event)">
+            <span id="igText">Followers</span>
+            <span style="float:right">▼</span>
+          </div>
+
+          <div id="igMenu" class="dropdown-menu">
+            <div onclick="setOption('ig','Followers', event)">Followers</div>
+            <div onclick="setOption('ig','Likes', event)">Likes</div>
+            <div onclick="setOption('ig','Komentar', event)">Komentar</div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TIKTOK -->
+      <div class="option">
+
+        <input
+          type="radio"
+          name="service"
+          value="3890"
+        >
+
+        <img
+          class="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg"
+          alt="Tiktok"
+        >
+
+        <div class="full">
+
+          <div class="opt-title">
+            Tiktok
+          </div>
+
+          <div class="opt-desc">
+            Boost interaksi cepat & aman
+          </div>
+
+          <div class="input" onclick="toggleDropdown('ttMenu', event)">
+            <span id="ttText">Likes</span>
+            <span style="float:right">▼</span>
+          </div>
+
+          <div id="ttMenu" class="dropdown-menu">
+            <div onclick="setOption('tt','Likes', event)">Likes</div>
+            <div onclick="setOption('tt','Followers', event)">Followers</div>
+            <div onclick="setOption('tt','Views', event)">Views</div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- WHATSAPP -->
+      <div class="option">
+
+        <input
+          type="radio"
+          name="service"
+          value="80954"
+        >
+
+        <img
+          class="logo"
+          src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+          alt="WhatsApp"
+        >
+
+        <div class="full">
+
+          <div class="opt-title">
+            WhatsApp
+          </div>
+
+          <div class="opt-desc">
+            Tambah member aktif
+          </div>
+
+          <div class="input" onclick="toggleDropdown('waMenu', event)">
+            <span id="waText">Channel</span>
+            <span style="float:right">▼</span>
+          </div>
+
+          <div id="waMenu" class="dropdown-menu">
+            <div onclick="setOption('wa','Channel', event)">
+              Channel
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- PAKET HEMAT -->
+      <div class="option">
+
+        <input
+          type="radio"
+          name="service"
+          value="8848"
+        >
+
+        <img
+          src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
+          class="logo"
+          alt="Paket Hemat"
+        >
+
+        <div class="full">
+
+          <div class="opt-title">
+            Paket Hemat Instagram/Tiktok
+          </div>
+
+          <div class="opt-desc">
+            Lebih murah & hemat
+          </div>
+
+          <div class="input" onclick="toggleDropdown('paketMenu', event)">
+            <span id="paketText">Paket</span>
+            <span style="float:right">▼</span>
+          </div>
+
+          <div id="paketMenu" class="dropdown-menu">
+
+            <div onclick="setOption('paket','Paket',event)">
+              Paket Hemat Instagram<br>
+              500 Views + 250 Likes
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- INPUT JUMLAH -->
+      <div class="mini">
+        Minimal 10 - Max 50.000
+      </div>
+
+      <input
+        class="input"
+        id="jumlah"
+        type="number"
+        min="10"
+        placeholder="Masukan jumlah"
+        oninput="hitungTotal()"
+      >
+
+      <!-- TOTAL -->
+      <div class="totalbox">
+        Total: Rp <span id="total">0</span>
+      </div>
+
+      <!-- BUTTON -->
+      <button class="btn" onclick="showInvoice()">
+        Submit Order
+      </button>
+
+    </div>
+
+    <!-- HISTORY -->
+    <div class="card" id="history">
+
+      <h2>History Transaksi</h2>
+
+      <div class="table-wrap">
+
+        <table id="historyTable">
+
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Layanan</th>
+              <th>Jumlah</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody></tbody>
+
+        </table>
+
+      </div>
+
+    </div>
+
+    <!-- CONTACT -->
+    <div class="card" id="contact">
+
+      <h2>Contact</h2>
+
+      <div class="muted">
+        WhatsApp: 6283142808857
+      </div>
+
+      <div class="muted">
+
+        <a
+          href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40"
+          target="_blank"
+          style="word-break:break-word;"
+        >
+          Mau lihat bukti transaksi? Klik disini!!
+        </a>
+
+      </div>
+
     </div>
 
   </div>
-</div>
-
-<div class="mini">Minimal 10 - Max 50.000</div>
-
-<input class="input"
-       id="jumlah"
-       type="number"
-       min="10"
-       placeholder="Masukan jumlah"
-       oninput="hitungTotal()">
-
-<div class="totalbox">
-  Total: Rp <span id="total">0</span>
-</div>
-
-<button class="btn" onclick="showInvoice()">
-  Submit Order
-</button>
-
-</div> <!-- 🔥 PENUTUP CARD ORDER -->
-  
-
-<!-- HISTORY -->
-<div class="card" id="history">
-<h2>History Transaksi</h2>
-
-<div class="table-wrap">
-<table id="historyTable">
-<thead>
-<tr>
-<th>ID</th>
-<th>Layanan</th>
-<th>Jumlah</th>
-<th>Status</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody></tbody>
-</table>
-</div>
-</div>
-
-<!-- CONTACT -->
-<div class="card" id="contact">
-<h2>Contact</h2>
-<div class="muted">
-  <a href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40"
-     target="_blank"
-     style="word-break:break-word;">
-     Mau liat bukti transaksi? Klik disini!!
-  </a>
-</div>
 
 </div>
-</div>
-</div>
-  
+
 <!-- POPUP -->
 <div id="globalPopup" class="popup">
+
   <div class="popup-box">
 
     <div id="popupTitle" class="popup-title"></div>
+
     <div id="popupMessage" class="popup-content"></div>
 
-    <div class="popup-actions" style="display:flex; gap:10px; justify-content:flex-end;">
-      <button id="popupCancel" class="btn-secondary">Batal</button>
-      <button id="popupConfirm" class="btn">Konfirmasi</button>
+    <div
+      class="popup-actions"
+      style="display:flex;gap:10px;justify-content:flex-end;"
+    >
+      <button id="popupCancel" class="btn-secondary">
+        Batal
+      </button>
+
+      <button id="popupConfirm" class="btn">
+        Konfirmasi
+      </button>
     </div>
 
   </div>
+
 </div>
 
 <!-- ADMIN PANEL -->
 <div id="adminPanel" class="popup">
+
   <div class="popup-box">
 
     <!-- LOGIN -->
     <div id="adminLogin">
-      <div class="popup-title">Login Admin</div>
-      <input id="adminEmail" class="input" type="email" placeholder="Email admin">
-      <input id="adminPass" class="input" type="password" placeholder="Password">
-      <button class="btn" onclick="loginAdmin()">Login</button>
-      <button class="btn-secondary" onclick="closeAdmin()">Tutup</button>
+
+      <div class="popup-title">
+        Login Admin
+      </div>
+
+      <input
+        id="adminEmail"
+        class="input"
+        type="email"
+        placeholder="Email admin"
+      >
+
+      <input
+        id="adminPass"
+        class="input"
+        type="password"
+        placeholder="Password"
+      >
+
+      <button class="btn" onclick="loginAdmin()">
+        Login
+      </button>
+
+      <button class="btn-secondary" onclick="closeAdmin()">
+        Tutup
+      </button>
+
     </div>
 
-    <!-- CONTENT -->
+    <!-- ADMIN CONTENT -->
     <div id="adminContent" style="display:none">
-      <div class="popup-title">Admin Panel</div>
 
-      <button class="btn-secondary" onclick="logoutAdmin()">Logout</button>
+      <div class="popup-title">
+        Admin Panel
+      </div>
+
+      <button class="btn-secondary" onclick="logoutAdmin()">
+        Logout
+      </button>
+
     </div>
 
   </div>
+
 </div>
 
-<!-- 🔥 FIREBASE CDN COMPAT -->
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
+<!-- SCRIPT -->
 <script src="script.js"></script>
-  <script>
-  // 🔥 fallback paksa hilangin loader
-  setTimeout(() => {
-    const loader = document.getElementById("loader");
-    if (loader) loader.style.display = "none";
-  }, 3000);
-  </script>
+
+<!-- FALLBACK LOADER -->
+<script>
+setTimeout(() => {
+  const loader = document.getElementById("loader");
+
+  if (loader) {
+    loader.style.display = "none";
+  }
+}, 3000);
+</script>
+
 </body>
 </html>
