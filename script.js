@@ -1037,31 +1037,8 @@ function updateJumlahInput(serviceValue) {
 
   const input = document.getElementById("jumlah");
 
-  if (!input) return;
-
-  // Paket hemat
-  if (serviceValue === "8848") {
-
-    input.min = "1";
-    input.max = "10";
-    input.placeholder = "Jumlah paket";
-
-  } else {
-
-    input.min = "10";
-    input.max = "50000";
-    input.placeholder = "Masukkan jumlah";
-  }
-
-  input.value = "";
-
-  hitungTotal();
-}
-
-
-function updateJumlahInput(serviceValue) {
-
-  const input = document.getElementById("jumlah");
+  const estimasi =
+    document.getElementById("estimasiText");
 
   if (!input) return;
 
@@ -1069,9 +1046,15 @@ function updateJumlahInput(serviceValue) {
   if (serviceValue === "8848") {
 
     input.min = "1";
-    input.max = "10";
+    input.max = "100";
 
-    input.placeholder = "Jumlah paket";
+    input.placeholder =
+      "Jumlah paket (min 1 - max 100)";
+
+    if (estimasi) {
+      estimasi.innerHTML =
+        "⏱️ Estimasi pengerjaan: 1 - 30 Menit";
+    }
 
   }
 
@@ -1081,7 +1064,13 @@ function updateJumlahInput(serviceValue) {
     input.min = "10";
     input.max = "50000";
 
-    input.placeholder = "Masukkan jumlah";
+    input.placeholder =
+      "Masukkan jumlah (min 10 - max 50.000)";
+
+    if (estimasi) {
+      estimasi.innerHTML =
+        "⏱️ Estimasi pengerjaan: 1 Menit - 24 Jam";
+    }
   }
 
   input.value = "";
