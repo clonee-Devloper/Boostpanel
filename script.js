@@ -35,25 +35,45 @@ let unsubscribeHistory = null;
    DATA HARGA
 ========================= */
 const hargaLayanan = {
+
+  /* =========================
+     INSTAGRAM
+  ========================= */
   "25144": {
-    Followers: 20,
-    Likes: 15,
-    Komentar: 50
+
+    Followers: 84.731,
+    Likes: 2.143,
+    Views: 1.376,
+    Komentar: 28.547
   },
 
+  /* =========================
+     TIKTOK
+  ========================= */
   "3890": {
-    Followers: 18,
-    Likes: 12,
-    Views: 5
+
+    Likes: 3.824,
+    Views: 4.918,
+    Followers: 12.764,
+    Komentar: 24.638
   },
 
+  /* =========================
+     WHATSAPP
+  ========================= */
   "80954": {
-    Channel: 25
+
+    Channel: 109.347
   },
 
+  /* =========================
+     PAKET HEMAT
+  ========================= */
   "8848": {
-    Paket: 42
+
+    Paket: 9.743
   }
+
 };
 
 const selectedType = {
@@ -388,7 +408,7 @@ function hitungTotal() {
   const harga =
     hargaLayanan[service.value]?.[type] || 0;
 
-  const total = jumlah * harga;
+  const total = Math.ceil(jumlah * harga);
 
   totalEl.innerText =
     total.toLocaleString("id-ID");
