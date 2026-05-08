@@ -37,60 +37,44 @@ let unsubscribeHistory = null;
 const hargaLayanan = {
 
   /* =========================
-     INSTAGRAM
+     INSTAGRAM (PER 10)
   ========================= */
   "25144": {
 
-    // per 10
     Followers: 843,
-
-    // per 10
     Likes: 23,
-
-    // per 10
     Views: 14,
-
-    // per 10
     Komentar: 114
   },
 
   /* =========================
-     TIKTOK
+     TIKTOK (PER 10)
   ========================= */
   "3890": {
 
-    // per 10
     Followers: 214,
-
-    // per 10
     Likes: 29,
-
-    // per 10
     Views: 39,
-
-    // per 10
     Komentar: 214
   },
 
   /* =========================
-     WHATSAPP
+     WHATSAPP (PER 10)
   ========================= */
   "80954": {
 
-    // per 10
     Channel: 987
   },
 
   /* =========================
-     PAKET HEMAT
+     PAKET HEMAT (PER 1)
   ========================= */
   "8848": {
 
-    // per 1 paket
-    Paket: 1499
+    Paket: 2143
   }
-
 };
+
 const selectedType = {
   ig: "Followers",
   tt: "Likes",
@@ -427,7 +411,9 @@ function hitungTotal() {
 
   let total = 0;
 
-  // 🔥 Paket hemat
+  /* =========================
+     PAKET HEMAT
+  ========================= */
   if (service.value === "8848") {
 
     if (jumlah < 1) {
@@ -438,7 +424,9 @@ function hitungTotal() {
     total = jumlah * harga;
   }
 
-  // 🔥 layanan biasa
+  /* =========================
+     LAYANAN NORMAL
+  ========================= */
   else {
 
     if (jumlah < 10) {
@@ -663,11 +651,22 @@ async function confirmOrder(
   total
 ) {
 
-  if (jumlah < 10) {
-    showPopup("Error", "Order tidak valid");
-    return;
-  }
+  if (
+  layanan !== "Paket Hemat" &&
+  jumlah < 10
+) {
+  showPopup("Error", "Order tidak valid");
+  return;
+}
 
+if (
+  layanan === "Paket Hemat" &&
+  jumlah < 1
+) {
+  showPopup("Error", "Jumlah paket tidak valid");
+  return;
+}
+   
   const id = "ORD" + Date.now();
 
   const data = {
@@ -904,34 +903,6 @@ async function deleteOrder(id) {
   );
 }
 
-/* =========================
-   OPEN RECEIPT
-========================= */
-function openReceipt(
-  id,
-  layanan,
-  jumlah,
-  link,
-  total,
-  status
-) {
-
-  const tanggal = new Date()
-    .toLocaleString("id-ID");
-
-  const url =
-    `receipt.html?` +
-
-    `id=${encodeURIComponent(id)}` +
-    `&layanan=${encodeURIComponent(layanan)}` +
-    `&jumlah=${encodeURIComponent(jumlah)}` +
-    `&link=${encodeURIComponent(link)}` +
-    `&total=${encodeURIComponent(total)}` +
-    `&status=${encodeURIComponent(status)}` +
-    `&tanggal=${encodeURIComponent(tanggal)}`;
-
-  window.open(url, "_blank");
-}
 
 /* =========================
    SCROLL
@@ -1001,48 +972,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initOptionClick();
 
+  const checked =
+    document.querySelector(
+      'input[name="service"]:checked'
+    );
+
+  if (checked) {
+    updateJumlahInput(checked.value);
+  }
+
   hitungTotal();
-
 });
-
-/* =========================
-   OPEN RECEIPT
-========================= */
-function openReceipt(
-  id,
-  layanan,
-  jumlah,
-  total,
-  status,
-  link
-) {
-
-  const tanggal =
-    new Date().toLocaleString("id-ID");
-
-  const url =
-    `receipt.html
-    ?id=${encodeURIComponent(id)}
-    &layanan=${encodeURIComponent(layanan)}
-    &jumlah=${encodeURIComponent(jumlah)}
-    &total=${encodeURIComponent(total)}
-    &status=${encodeURIComponent(status)}
-    &link=${encodeURIComponent(link)}
-    &tanggal=${encodeURIComponent(tanggal)}`;
-
-  window.open(url, "_blank");
-}
 
 function updateJumlahInput(serviceValue) {
 
-  const input = document.getElementById("jumlah");
+  const input =
+    document.getElementById("jumlah");
 
   const estimasi =
     document.getElementById("estimasiText");
 
   if (!input) return;
 
-  // 🔥 Paket hemat
+  /* =========================
+     PAKET HEMAT
+  ========================= */
   if (serviceValue === "8848") {
 
     input.min = "1";
@@ -1052,13 +1006,15 @@ function updateJumlahInput(serviceValue) {
       "Jumlah paket (min 1 - max 100)";
 
     if (estimasi) {
+
       estimasi.innerHTML =
         "⏱️ Estimasi pengerjaan: 1 - 30 Menit";
     }
-
   }
 
-  // 🔥 Layanan normal
+  /* =========================
+     LAYANAN NORMAL
+  ========================= */
   else {
 
     input.min = "10";
@@ -1068,6 +1024,7 @@ function updateJumlahInput(serviceValue) {
       "Masukkan jumlah (min 10 - max 50.000)";
 
     if (estimasi) {
+
       estimasi.innerHTML =
         "⏱️ Estimasi pengerjaan: 1 Menit - 24 Jam";
     }
