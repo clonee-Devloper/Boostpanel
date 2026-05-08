@@ -325,11 +325,13 @@ function setOption(type, value, event) {
     if (parent) {
       parent.classList.add("active");
     }
+
+    // 🔥 UPDATE INPUT JUMLAH
+    updateJumlahInput(serviceValue);
   }
 
   hitungTotal();
 }
-
 /* =========================
    OPTION CLICK INIT
 ========================= */
@@ -354,7 +356,11 @@ function initOptionClick() {
       );
 
       if (radio) {
+
         radio.checked = true;
+
+        // 🔥 UPDATE INPUT
+        updateJumlahInput(radio.value);
       }
 
       hitungTotal();
@@ -379,7 +385,20 @@ function hitungTotal() {
 
   if (!service || !totalEl) return;
 
-  if (jumlah < 10) {
+  // 🔥 validasi minimum
+  if (
+    service.value !== "8848" &&
+    jumlah < 10
+  ) {
+    totalEl.innerText = "0";
+    return;
+  }
+
+  // 🔥 paket hemat minimal 1
+  if (
+    service.value === "8848" &&
+    jumlah < 1
+  ) {
     totalEl.innerText = "0";
     return;
   }
@@ -408,7 +427,7 @@ function hitungTotal() {
   const harga =
     hargaLayanan[service.value]?.[type] || 0;
 
-  const total = Math.ceil(jumlah * harga);
+  const total = jumlah * harga;
 
   totalEl.innerText =
     total.toLocaleString("id-ID");
@@ -434,13 +453,28 @@ function showInvoice() {
     return;
   }
 
-  if (jumlah < 10) {
+  if (
+  service.value !== "8848" &&
+  jumlah < 10
+) {
     showPopup(
       "Peringatan",
       "Minimal order adalah 10"
     );
     return;
   }
+
+   if (
+  service.value === "8848" &&
+  jumlah < 1
+) {
+  showPopup(
+    "Peringatan",
+    "Minimal paket adalah 1"
+  );
+
+  return;
+   }
 
   const total =
     document.getElementById("total").innerText;
@@ -977,4 +1011,60 @@ function openReceipt(
     &tanggal=${encodeURIComponent(tanggal)}`;
 
   window.open(url, "_blank");
+}
+
+function updateJumlahInput(serviceValue) {
+
+  const input = document.getElementById("jumlah");
+
+  if (!input) return;
+
+  // Paket hemat
+  if (serviceValue === "8848") {
+
+    input.min = "1";
+    input.max = "10";
+    input.placeholder = "Jumlah paket";
+
+  } else {
+
+    input.min = "10";
+    input.max = "50000";
+    input.placeholder = "Masukkan jumlah";
+  }
+
+  input.value = "";
+
+  hitungTotal();
+}
+
+
+function updateJumlahInput(serviceValue) {
+
+  const input = document.getElementById("jumlah");
+
+  if (!input) return;
+
+  // 🔥 Paket hemat
+  if (serviceValue === "8848") {
+
+    input.min = "1";
+    input.max = "10";
+
+    input.placeholder = "Jumlah paket";
+
+  }
+
+  // 🔥 Layanan normal
+  else {
+
+    input.min = "10";
+    input.max = "50000";
+
+    input.placeholder = "Masukkan jumlah";
+  }
+
+  input.value = "";
+
+  hitungTotal();
 }
