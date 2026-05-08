@@ -1,38 +1,67 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#0f172a">
 
 <title>BoostPanel</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
+<link
+href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap"
+rel="stylesheet"
+/>
 
+<link rel="stylesheet" href="style.css">
+
+</head>
 <body>
 
 <!-- LOADER -->
 <div id="loader">
+
   <div class="loader-box">
-    <img src="rocket.png" class="rocket" alt="Rocket">
-    <div class="loading-text">Loading BoostPanel...</div>
+
+    <img
+      src="rocket.png"
+      class="rocket"
+      alt="Rocket"
+    >
+
+    <div class="loading-text">
+      Loading BoostPanel...
+    </div>
+
   </div>
+
 </div>
 
 <!-- NAVBAR -->
-<div class="navbar" id="navbar">
+<div class="navbar">
 
   <div class="brand" onclick="openSecretAdmin()">
+
     <img src="logo.jpeg" alt="Logo">
+
     <span>BoostPanel</span>
+
   </div>
 
   <div class="nav-links">
-    <div class="nav-item" onclick="scrollToOrder()">Order</div>
-    <div class="nav-item" onclick="scrollToHistory()">History</div>
-    <div class="nav-item" onclick="scrollToContact()">Contact</div>
+
+    <div class="nav-item" onclick="scrollToOrder()">
+      Order
+    </div>
+
+    <div class="nav-item" onclick="scrollToHistory()">
+      History
+    </div>
+
+    <div class="nav-item" onclick="scrollToContact()">
+      Contact
+    </div>
+
   </div>
 
 </div>
@@ -43,18 +72,21 @@
   <div class="grid">
 
     <!-- HERO -->
-    <div class="card">
+    <div class="card hero-card">
 
       <h1>
-        Bangun audiens sosialmu<br>
-        Cepat, Stabil, Terpercaya
+        Bangun Audiens Sosialmu
       </h1>
 
-      <div class="muted">
-        Tingkatkan interaksi media sosial Anda
-      </div>
+      <p class="muted">
+        Layanan boosting media sosial cepat,
+        stabil, aman, dan terpercaya.
+      </p>
 
-      <button class="btn" onclick="scrollToOrder()">
+      <button
+        class="btn"
+        onclick="scrollToOrder()"
+      >
         Order Sekarang
       </button>
 
@@ -63,23 +95,30 @@
     <!-- RULES -->
     <div class="card">
 
-      <h2>Peraturan Wajib di Baca!!!</h2>
-
-      <div class="muted">
-        Tim kami tidak bertanggung jawab atas kelalaian anda
+      <div class="section-title">
+        Rules BoostPanel
       </div>
 
-      <button class="btn" onclick="toggleRules()">
+      <button
+        class="btn-secondary"
+        onclick="toggleRules()"
+      >
         Lihat Rules
       </button>
 
-      <div id="rules">
-        1. Pastikan link benar.<br>
-        2. Jangan gunakan dua layanan sekaligus.<br>
-        3. Jika target private tidak ada refund.<br>
-        4. Dengan order Anda setuju aturan.<br>
-        5. Suntik followers dapat melanggar ketentuan media sosial.<br>
-        6. Resiko kehilangan followers / spam ditanggung user.
+      <div id="rules" style="display:none">
+
+        <div class="rules-box">
+
+          • Pastikan link target valid<br>
+          • Jangan menggunakan 2 layanan bersamaan<br>
+          • Target private tidak mendapatkan refund<br>
+          • Estimasi proses tergantung server<br>
+          • Dilarang spam order berlebihan<br>
+          • Order = setuju rules BoostPanel
+
+        </div>
+
       </div>
 
     </div>
@@ -91,10 +130,11 @@
         Buat Pesanan
       </div>
 
+      <!-- LINK -->
       <input
         class="input"
         id="link"
-        placeholder="🔗 Link target"
+        placeholder="🔗 Masukkan link target"
       >
 
       <!-- INSTAGRAM -->
@@ -110,7 +150,6 @@
         <img
           class="logo"
           src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-          alt="Instagram"
         >
 
         <div class="full">
@@ -120,18 +159,39 @@
           </div>
 
           <div class="opt-desc">
-            Followers berkualitas tinggi & stabil
+            Followers, likes & komentar
           </div>
 
-          <div class="input" onclick="toggleDropdown('igMenu', event)">
-            <span id="igText">Followers</span>
-            <span style="float:right">▼</span>
+          <div
+            class="input"
+            onclick="toggleDropdown('igMenu', event)"
+          >
+            <span id="igText">
+              Followers
+            </span>
+
+            <span style="float:right">
+              ▼
+            </span>
           </div>
 
-          <div id="igMenu" class="dropdown-menu">
-            <div onclick="setOption('ig','Followers', event)">Followers</div>
-            <div onclick="setOption('ig','Likes', event)">Likes</div>
-            <div onclick="setOption('ig','Komentar', event)">Komentar</div>
+          <div
+            id="igMenu"
+            class="dropdown-menu"
+          >
+
+            <div onclick="setOption('ig','Followers',event)">
+              Followers
+            </div>
+
+            <div onclick="setOption('ig','Likes',event)">
+              Likes
+            </div>
+
+            <div onclick="setOption('ig','Komentar',event)">
+              Komentar
+            </div>
+
           </div>
 
         </div>
@@ -150,41 +210,51 @@
         <img
           class="logo"
           src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Tiktok_icon.svg"
-          alt="Tiktok"
         >
 
         <div class="full">
 
           <div class="opt-title">
-            Tiktok
+            TikTok
           </div>
 
           <div class="opt-desc">
-            Boost interaksi cepat & aman
+            Views, likes & followers
           </div>
 
-          <div class="input" onclick="toggleDropdown('ttMenu', event)">
-            <span id="ttText">Likes</span>
-            <span style="float:right">▼</span>
+          <div
+            class="input"
+            onclick="toggleDropdown('ttMenu', event)"
+          >
+            <span id="ttText">
+              Likes
+            </span>
+
+            <span style="float:right">
+              ▼
+            </span>
           </div>
 
-          <div id="ttMenu" class="dropdown-menu">
+          <div
+            id="ttMenu"
+            class="dropdown-menu"
+          >
 
-<div onclick="setOption('tt','Likes', event)">
-Likes
-</div>
+            <div onclick="setOption('tt','Likes',event)">
+              Likes
+            </div>
 
-<div onclick="setOption('tt','Followers', event)">
-Followers
-</div>
+            <div onclick="setOption('tt','Followers',event)">
+              Followers
+            </div>
 
-<div onclick="setOption('tt','Views', event)">
-Views
-</div>
+            <div onclick="setOption('tt','Views',event)">
+              Views
+            </div>
 
-<div onclick="setOption('tt','Komentar', event)">
-Komentar
-</div>
+            <div onclick="setOption('tt','Komentar',event)">
+              Komentar
+            </div>
 
           </div>
 
@@ -204,7 +274,6 @@ Komentar
         <img
           class="logo"
           src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
-          alt="WhatsApp"
         >
 
         <div class="full">
@@ -214,25 +283,38 @@ Komentar
           </div>
 
           <div class="opt-desc">
-            Tambah member aktif
+            Tambah member channel
           </div>
 
-          <div class="input" onclick="toggleDropdown('waMenu', event)">
-            <span id="waText">Channel</span>
-            <span style="float:right">▼</span>
+          <div
+            class="input"
+            onclick="toggleDropdown('waMenu', event)"
+          >
+            <span id="waText">
+              Channel
+            </span>
+
+            <span style="float:right">
+              ▼
+            </span>
           </div>
 
-          <div id="waMenu" class="dropdown-menu">
-            <div onclick="setOption('wa','Channel', event)">
+          <div
+            id="waMenu"
+            class="dropdown-menu"
+          >
+
+            <div onclick="setOption('wa','Channel',event)">
               Channel
             </div>
+
           </div>
 
         </div>
 
       </div>
 
-      <!-- PAKET HEMAT -->
+      <!-- PAKET -->
       <div class="option">
 
         <input
@@ -242,30 +324,43 @@ Komentar
         >
 
         <img
-          src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
           class="logo"
-          alt="Paket Hemat"
+          src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png"
         >
 
         <div class="full">
 
           <div class="opt-title">
-            Paket Hemat Instagram/Tiktok
+            Paket Hemat
           </div>
 
           <div class="opt-desc">
-            Lebih murah & hemat
+            Paket murah & hemat
           </div>
 
-          <div class="input" onclick="toggleDropdown('paketMenu', event)">
-            <span id="paketText">Paket</span>
-            <span style="float:right">▼</span>
+          <div
+            class="input"
+            onclick="toggleDropdown('paketMenu', event)"
+          >
+
+            <span id="paketText">
+              Paket Instagram
+            </span>
+
+            <span style="float:right">
+              ▼
+            </span>
+
           </div>
 
-          <div id="paketMenu" class="dropdown-menu">
+          <div
+            id="paketMenu"
+            class="dropdown-menu"
+          >
 
             <div onclick="setOption('paket','Paket',event)">
-              Paket Hemat Instagram<br>
+              Paket Instagram
+              <br>
               500 Views + 250 Likes
             </div>
 
@@ -275,31 +370,47 @@ Komentar
 
       </div>
 
-      <!-- INPUT JUMLAH -->
-      <div class="mini">
+      <!-- INFO -->
+      <div
+        class="mini"
+        id="limitText"
+      >
         Minimal 10 - Max 50.000
       </div>
 
+      <!-- JUMLAH -->
       <input
-  class="input"
-  id="jumlah"
-  type="number"
-  min="10"
-  max="50000"
-  placeholder="Masukkan jumlah"
-  oninput="hitungTotal()"
->
-      <div class="mini" id="estimasiText">
-  ⏱️ Estimasi pengerjaan: 1 Menit - 24 Jam
+        class="input"
+        id="jumlah"
+        type="number"
+        min="10"
+        max="50000"
+        placeholder="Masukkan jumlah"
+        oninput="hitungTotal()"
+      >
+
+      <!-- ESTIMASI -->
+      <div
+        class="mini"
+        id="estimasiText"
+      >
+        ⏱️ Estimasi pengerjaan:
+        1 Menit - 24 Jam
       </div>
-      
+
       <!-- TOTAL -->
       <div class="totalbox">
-        Total: Rp <span id="total">0</span>
+
+        Total:
+        Rp <span id="total">0</span>
+
       </div>
 
       <!-- BUTTON -->
-      <button class="btn" onclick="showInvoice()">
+      <button
+        class="btn"
+        onclick="showInvoice()"
+      >
         Submit Order
       </button>
 
@@ -308,13 +419,16 @@ Komentar
     <!-- HISTORY -->
     <div class="card" id="history">
 
-      <h2>History Transaksi</h2>
+      <div class="section-title">
+        History Pesanan
+      </div>
 
       <div class="table-wrap">
 
         <table id="historyTable">
 
           <thead>
+
             <tr>
               <th>ID</th>
               <th>Layanan</th>
@@ -322,6 +436,7 @@ Komentar
               <th>Status</th>
               <th>Aksi</th>
             </tr>
+
           </thead>
 
           <tbody></tbody>
@@ -335,23 +450,24 @@ Komentar
     <!-- CONTACT -->
     <div class="card" id="contact">
 
-      <h2>Contact</h2>
-
-      <div class="muted">
-        WhatsApp: 6283142808857
+      <div class="section-title">
+        Contact
       </div>
 
       <div class="muted">
-
-        <a
-          href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40"
-          target="_blank"
-          style="word-break:break-word;"
-        >
-          Mau lihat bukti transaksi? Klik disini!!
-        </a>
-
+        WhatsApp:
+        6283142808857
       </div>
+
+      <br>
+
+      <a
+        href="https://whatsapp.com/channel/0029Vb7Plaz7j6gDA0QN3r40"
+        target="_blank"
+        class="channel-link"
+      >
+        Lihat bukti transaksi disini
+      </a>
 
     </div>
 
@@ -364,21 +480,32 @@ Komentar
 
   <div class="popup-box">
 
-    <div id="popupTitle" class="popup-title"></div>
-
-    <div id="popupMessage" class="popup-content"></div>
+    <div
+      id="popupTitle"
+      class="popup-title"
+    ></div>
 
     <div
-      class="popup-actions"
-      style="display:flex;gap:10px;justify-content:flex-end;"
-    >
-      <button id="popupCancel" class="btn-secondary">
+      id="popupMessage"
+      class="popup-content"
+    ></div>
+
+    <div class="popup-actions">
+
+      <button
+        id="popupCancel"
+        class="btn-secondary"
+      >
         Batal
       </button>
 
-      <button id="popupConfirm" class="btn">
+      <button
+        id="popupConfirm"
+        class="btn"
+      >
         Konfirmasi
       </button>
+
     </div>
 
   </div>
@@ -411,24 +538,36 @@ Komentar
         placeholder="Password"
       >
 
-      <button class="btn" onclick="loginAdmin()">
+      <button
+        class="btn"
+        onclick="loginAdmin()"
+      >
         Login
       </button>
 
-      <button class="btn-secondary" onclick="closeAdmin()">
+      <button
+        class="btn-secondary"
+        onclick="closeAdmin()"
+      >
         Tutup
       </button>
 
     </div>
 
-    <!-- ADMIN CONTENT -->
-    <div id="adminContent" style="display:none">
+    <!-- CONTENT -->
+    <div
+      id="adminContent"
+      style="display:none"
+    >
 
       <div class="popup-title">
         Admin Panel
       </div>
 
-      <button class="btn-secondary" onclick="logoutAdmin()">
+      <button
+        class="btn-secondary"
+        onclick="logoutAdmin()"
+      >
         Logout
       </button>
 
@@ -440,22 +579,13 @@ Komentar
 
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
 <!-- SCRIPT -->
 <script src="script.js"></script>
-
-<!-- FALLBACK LOADER -->
-<script>
-setTimeout(() => {
-  const loader = document.getElementById("loader");
-
-  if (loader) {
-    loader.style.display = "none";
-  }
-}, 3000);
-</script>
 
 </body>
 </html>
