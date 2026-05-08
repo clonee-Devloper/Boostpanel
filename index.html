@@ -281,14 +281,18 @@ Komentar
       </div>
 
       <input
-class="input"
-id="jumlah"
-type="number"
-min="1"
-placeholder="Masukkan jumlah"
-oninput="hitungTotal()"
+  class="input"
+  id="jumlah"
+  type="number"
+  min="10"
+  max="50000"
+  placeholder="Masukkan jumlah"
+  oninput="hitungTotal()"
 >
-
+      <div class="mini" id="estimasiText">
+  ⏱️ Estimasi pengerjaan: 1 Menit - 24 Jam
+      </div>
+      
       <!-- TOTAL -->
       <div class="totalbox">
         Total: Rp <span id="total">0</span>
