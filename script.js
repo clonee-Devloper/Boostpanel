@@ -904,3 +904,31 @@ document.addEventListener("DOMContentLoaded", () => {
   hitungTotal();
 
 });
+
+/* =========================
+   OPEN RECEIPT
+========================= */
+function openReceipt(
+  id,
+  layanan,
+  jumlah,
+  total,
+  status,
+  link
+) {
+
+  const tanggal =
+    new Date().toLocaleString("id-ID");
+
+  const url =
+    `receipt.html
+    ?id=${encodeURIComponent(id)}
+    &layanan=${encodeURIComponent(layanan)}
+    &jumlah=${encodeURIComponent(jumlah)}
+    &total=${encodeURIComponent(total)}
+    &status=${encodeURIComponent(status)}
+    &link=${encodeURIComponent(link)}
+    &tanggal=${encodeURIComponent(tanggal)}`;
+
+  window.open(url, "_blank");
+}
