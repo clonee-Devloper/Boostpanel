@@ -707,22 +707,28 @@ function renderHistory() {
                     onchange="updateStatus('${doc.id}', this.value)"
                   >
                     <option value="Pending"
-                      ${d.status === "Pending" ? "selected" : ""}
-                    >
-                      Pending
-                    </option>
+  ${d.status === "Pending" ? "selected" : ""}
+>
+  Pending
+</option>
 
-                    <option value="Success"
-                      ${d.status === "Success" ? "selected" : ""}
-                    >
-                      Success
-                    </option>
+<option value="Proses"
+  ${d.status === "Proses" ? "selected" : ""}
+>
+  Proses
+</option>
 
-                    <option value="Cancel"
-                      ${d.status === "Cancel" ? "selected" : ""}
-                    >
-                      Cancel
-                    </option>
+<option value="Success"
+  ${d.status === "Success" ? "selected" : ""}
+>
+  Success
+</option>
+
+<option value="Cancel"
+  ${d.status === "Cancel" ? "selected" : ""}
+>
+  Cancel
+</option>
                   </select>
                 `
                 : d.status
