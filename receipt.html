@@ -149,29 +149,83 @@ Cetak Struk
 </div>
 
 <script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyD0ADo1TMD5ASjJ_l4062EEJtqZ2irmuIw",
+  authDomain: "boostpanel-myown.firebaseapp.com",
+  projectId: "boostpanel-myown",
+  storageBucket: "boostpanel-myown.firebasestorage.app",
+  messagingSenderId: "1003583759714",
+  appId: "1:1003583759714:web:1b9b88c96825ec5d56783b"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const db = firebase.firestore();
 
 const params = new URLSearchParams(window.location.search);
 
-document.getElementById("id").innerText =
-params.get("id");
+const orderId = params.get("id");
 
-document.getElementById("layanan").innerText =
-params.get("layanan");
+async function loadReceipt() {
 
-document.getElementById("jumlah").innerText =
-params.get("jumlah");
+  if (!orderId) return;
 
-document.getElementById("total").innerText =
-"Rp " + params.get("total");
+  try {
 
-document.getElementById("status").innerText =
-params.get("status");
+    const snapshot = await db
+      .collection("orders")
+      .where("id", "==", orderId)
+      .get();
 
-document.getElementById("tanggal").innerText =
-params.get("tanggal");
+    if (snapshot.empty) {
+      alert("Order tidak ditemukan");
+      return;
+    }
 
-document.getElementById("link").innerText =
-params.get("link");
+    const data = snapshot.docs[0].data();
+
+    document.getElementById("r-id").innerText =
+      data.id || "-";
+
+    document.getElementById("r-layanan").innerText =
+      data.layanan || "-";
+
+    document.getElementById("r-jumlah").innerText =
+      data.jumlah || "-";
+
+    document.getElementById("r-total").innerText =
+      "Rp " + (data.total || "0");
+
+    document.getElementById("r-status").innerText =
+      data.status || "-";
+
+    document.getElementById("r-link").innerText =
+      data.link || "-";
+
+    let tanggal = "-";
+
+    if (data.createdAt?.toDate) {
+      tanggal = data.createdAt
+        .toDate()
+        .toLocaleString("id-ID");
+    }
+
+    document.getElementById("r-tanggal").innerText =
+      tanggal;
+
+  } catch (err) {
+
+    console.error(err);
+
+    alert("Gagal mengambil data struk");
+  }
+}
+
+loadReceipt();
 
 </script>
 
