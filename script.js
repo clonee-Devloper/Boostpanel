@@ -41,10 +41,17 @@ const hargaLayanan = {
   ========================= */
   "25144": {
 
-    Followers: 84.731,
-    Likes: 2.143,
-    Views: 1.376,
-    Komentar: 28.547
+    // per 10
+    Followers: 843,
+
+    // per 10
+    Likes: 23,
+
+    // per 10
+    Views: 14,
+
+    // per 10
+    Komentar: 114
   },
 
   /* =========================
@@ -52,10 +59,17 @@ const hargaLayanan = {
   ========================= */
   "3890": {
 
-    Likes: 3.824,
-    Views: 4.918,
-    Followers: 12.764,
-    Komentar: 24.638
+    // per 10
+    Followers: 214,
+
+    // per 10
+    Likes: 29,
+
+    // per 10
+    Views: 39,
+
+    // per 10
+    Komentar: 214
   },
 
   /* =========================
@@ -63,7 +77,8 @@ const hargaLayanan = {
   ========================= */
   "80954": {
 
-    Channel: 109.347
+    // per 10
+    Channel: 987
   },
 
   /* =========================
@@ -71,11 +86,11 @@ const hargaLayanan = {
   ========================= */
   "8848": {
 
-    Paket: 9.743
+    // per 1 paket
+    Paket: 1499
   }
 
 };
-
 const selectedType = {
   ig: "Followers",
   tt: "Likes",
@@ -377,31 +392,14 @@ function hitungTotal() {
   const jumlah =
     parseInt(document.getElementById("jumlah").value) || 0;
 
-  const totalEl = document.getElementById("total");
+  const totalEl =
+    document.getElementById("total");
 
   const service = document.querySelector(
     'input[name="service"]:checked'
   );
 
   if (!service || !totalEl) return;
-
-  // 🔥 validasi minimum
-  if (
-    service.value !== "8848" &&
-    jumlah < 10
-  ) {
-    totalEl.innerText = "0";
-    return;
-  }
-
-  // 🔥 paket hemat minimal 1
-  if (
-    service.value === "8848" &&
-    jumlah < 1
-  ) {
-    totalEl.innerText = "0";
-    return;
-  }
 
   let type = "";
 
@@ -427,10 +425,32 @@ function hitungTotal() {
   const harga =
     hargaLayanan[service.value]?.[type] || 0;
 
-  const total = jumlah * harga;
+  let total = 0;
+
+  // 🔥 Paket hemat
+  if (service.value === "8848") {
+
+    if (jumlah < 1) {
+      totalEl.innerText = "0";
+      return;
+    }
+
+    total = jumlah * harga;
+  }
+
+  // 🔥 layanan biasa
+  else {
+
+    if (jumlah < 10) {
+      totalEl.innerText = "0";
+      return;
+    }
+
+    total = (jumlah / 10) * harga;
+  }
 
   totalEl.innerText =
-    total.toLocaleString("id-ID");
+    Math.ceil(total).toLocaleString("id-ID");
 }
 
 /* =========================
