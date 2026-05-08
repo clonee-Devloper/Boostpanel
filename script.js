@@ -728,54 +728,57 @@ function renderHistory() {
                 : d.status
               }
             </td>
-
-            <td>
+<td>
   ${
     isAdmin
     ? `
+      <div style="
+        display:flex;
+        gap:6px;
+        flex-wrap:wrap;
+      ">
 
-      <button
-        onclick="openReceipt(
-          '${d.id}',
-          '${d.layanan}',
-          '${d.jumlah}',
-          '${d.total}',
-          '${d.status}',
-          '${d.link}'
-        )"
-        style="
-          background:#7c3aed;
-          color:white;
-          border:none;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-          margin-bottom:6px;
-        "
-      >
-        Struk
-      </button>
+        <button
+          onclick="openReceipt(
+            '${d.id}',
+            '${d.layanan}',
+            '${d.jumlah}',
+            '${d.link}',
+            '${d.total}',
+            '${d.status}'
+          )"
+          style="
+            background:#7c3aed;
+            color:white;
+            border:none;
+            padding:6px 10px;
+            border-radius:8px;
+            cursor:pointer;
+          "
+        >
+          Struk
+        </button>
 
-      <br>
+        <button
+          onclick="deleteOrder('${doc.id}')"
+          style="
+            background:red;
+            color:white;
+            border:none;
+            padding:6px 10px;
+            border-radius:8px;
+            cursor:pointer;
+          "
+        >
+          Hapus
+        </button>
 
-      <button
-        onclick="deleteOrder('${doc.id}')"
-        style="
-          background:red;
-          color:white;
-          border:none;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Hapus
-      </button>
-
+      </div>
     `
     : "-"
   }
 </td>
+            
 
           </tr>
         `;
@@ -851,6 +854,35 @@ async function deleteOrder(id) {
 
     }
   );
+}
+
+/* =========================
+   OPEN RECEIPT
+========================= */
+function openReceipt(
+  id,
+  layanan,
+  jumlah,
+  link,
+  total,
+  status
+) {
+
+  const tanggal = new Date()
+    .toLocaleString("id-ID");
+
+  const url =
+    `receipt.html?` +
+
+    `id=${encodeURIComponent(id)}` +
+    `&layanan=${encodeURIComponent(layanan)}` +
+    `&jumlah=${encodeURIComponent(jumlah)}` +
+    `&link=${encodeURIComponent(link)}` +
+    `&total=${encodeURIComponent(total)}` +
+    `&status=${encodeURIComponent(status)}` +
+    `&tanggal=${encodeURIComponent(tanggal)}`;
+
+  window.open(url, "_blank");
 }
 
 /* =========================
