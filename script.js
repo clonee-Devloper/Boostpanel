@@ -1007,8 +1007,8 @@ function updateJumlahInput(serviceValue) {
 
     if (estimasi) {
 
-      estimasi.innerHTML =
-        "⏱️ Estimasi pengerjaan: 1 - 30 Menit";
+  estimasi.value =
+    "⏱️ Estimasi pengerjaan: 1 - 30 Menit";
     }
   }
 
@@ -1025,9 +1025,9 @@ function updateJumlahInput(serviceValue) {
 
     if (estimasi) {
 
-      estimasi.innerHTML =
-        "⏱️ Estimasi pengerjaan: 1 Menit - 24 Jam";
-    }
+  estimasi.value =
+    "⏱️ Estimasi pengerjaan: 1 - 30 Menit";
+}
   }
 
   input.value = "";
