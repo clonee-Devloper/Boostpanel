@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Receipt BoostPanel</title>
+
+<style>
+
+body{
+  background:#0f172a;
+  font-family:Arial;
+  color:white;
+  display:flex;
+  justify-content:center;
+  padding:20px;
+}
+
+.receipt{
+  background:#1e293b;
+  width:100%;
+  max-width:420px;
+  border-radius:20px;
+  padding:25px;
+  box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
+
+.logo{
+  text-align:center;
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.title{
+  text-align:center;
+  font-size:22px;
+  margin-bottom:20px;
+}
+
+.line{
+  height:1px;
+  background:#334155;
+  margin:15px 0;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:12px;
+  gap:10px;
+}
+
+.label{
+  opacity:.7;
+}
+
+.value{
+  text-align:right;
+  word-break:break-word;
+}
+
+.status{
+  color:#22c55e;
+  font-weight:bold;
+}
+
+.print-btn{
+  width:100%;
+  margin-top:20px;
+  padding:14px;
+  border:none;
+  border-radius:12px;
+  background:#7c3aed;
+  color:white;
+  font-size:16px;
+  cursor:pointer;
+}
+
+@media print{
+  .print-btn{
+    display:none;
+  }
+
+  body{
+    background:white;
+  }
+
+  .receipt{
+    box-shadow:none;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<div class="receipt">
+
+<div class="logo">🚀</div>
+
+<div class="title">
+  BoostPanel Receipt
+</div>
+
+<div class="line"></div>
+
+<div class="item">
+  <div class="label">ID</div>
+  <div class="value" id="id"></div>
+</div>
+
+<div class="item">
+  <div class="label">Layanan</div>
+  <div class="value" id="layanan"></div>
+</div>
+
+<div class="item">
+  <div class="label">Jumlah</div>
+  <div class="value" id="jumlah"></div>
+</div>
+
+<div class="item">
+  <div class="label">Total</div>
+  <div class="value" id="total"></div>
+</div>
+
+<div class="item">
+  <div class="label">Status</div>
+  <div class="value status" id="status"></div>
+</div>
+
+<div class="item">
+  <div class="label">Tanggal</div>
+  <div class="value" id="tanggal"></div>
+</div>
+
+<div class="item">
+  <div class="label">Link</div>
+  <div class="value" id="link"></div>
+</div>
+
+<div class="line"></div>
+
+<button class="print-btn" onclick="window.print()">
+Cetak Struk
+</button>
+
+</div>
+
+<script>
+
+const params = new URLSearchParams(window.location.search);
+
+document.getElementById("id").innerText =
+params.get("id");
+
+document.getElementById("layanan").innerText =
+params.get("layanan");
+
+document.getElementById("jumlah").innerText =
+params.get("jumlah");
+
+document.getElementById("total").innerText =
+"Rp " + params.get("total");
+
+document.getElementById("status").innerText =
+params.get("status");
+
+document.getElementById("tanggal").innerText =
+params.get("tanggal");
+
+document.getElementById("link").innerText =
+params.get("link");
+
+</script>
+
+</body>
+</html>
