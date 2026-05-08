@@ -732,48 +732,36 @@ function renderHistory() {
   ${
     isAdmin
     ? `
-      <div style="
-        display:flex;
-        gap:6px;
-        flex-wrap:wrap;
-      ">
 
-        <button
-          onclick="openReceipt(
-            '${d.id}',
-            '${d.layanan}',
-            '${d.jumlah}',
-            '${d.link}',
-            '${d.total}',
-            '${d.status}'
-          )"
-          style="
-            background:#7c3aed;
-            color:white;
-            border:none;
-            padding:6px 10px;
-            border-radius:8px;
-            cursor:pointer;
-          "
-        >
-          Struk
-        </button>
+      <button
+        onclick="window.location.href='receipt.html?id=${d.id}'"
+        style="
+          background:#7c3aed;
+          color:white;
+          border:none;
+          padding:6px 12px;
+          border-radius:8px;
+          cursor:pointer;
+          margin-right:6px;
+        "
+      >
+        Struk
+      </button>
 
-        <button
-          onclick="deleteOrder('${doc.id}')"
-          style="
-            background:red;
-            color:white;
-            border:none;
-            padding:6px 10px;
-            border-radius:8px;
-            cursor:pointer;
-          "
-        >
-          Hapus
-        </button>
+      <button
+        onclick="deleteOrder('${doc.id}')"
+        style="
+          background:red;
+          color:white;
+          border:none;
+          padding:6px 12px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Hapus
+      </button>
 
-      </div>
     `
     : "-"
   }
