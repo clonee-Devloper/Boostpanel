@@ -33,7 +33,9 @@ const firebaseConfig = {
     appId: "1:1003583759714:web:1b9b88c96825ec5d56783b"
   };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const db = firebase.firestore();
 
@@ -657,10 +659,6 @@ function renderHistory(){
 
   unsubscribeHistory =
     db.collection("orders")
-      .orderBy(
-        "createdAt",
-        "desc"
-      )
       .onSnapshot(snapshot => {
 
         tbody.innerHTML = "";
