@@ -856,89 +856,208 @@ function renderHistory(){
                       Cancel
                     </option>
 
-                  </select>
+/* =========================================================
+   HISTORY
+========================================================= */
 
-                  <!-- DELETE -->
+function renderHistory(){
 
-                  <button
-                    onclick="
-                      deleteOrder(
-                        '${doc.id}'
-                      )
-                    "
+  const tbody =
+    document.querySelector(
+      "#historyTable tbody"
+    );
 
-                    style="
-                      background:#ef4444;
-                      color:white;
-                      border:none;
-                      padding:7px;
-                      border-radius:8px;
-                      cursor:pointer;
-                    "
-                  >
-                    Delete
-                  </button>
+  if(!tbody) return;
 
-                </td>
+  if(unsubscribeHistory){
 
-              </tr>
+    unsubscribeHistory();
+
+  }
+
+  unsubscribeHistory =
+    db.collection("orders")
+      .orderBy("createdAt", "desc")
+      .onSnapshot(snapshot => {
+
+        tbody.innerHTML = "";
+
+        snapshot.forEach(doc => {
+
+          const d = doc.data();
+
+          /* =========================
+             FORMAT TANGGAL
+          ========================= */
+
+          let tanggal = "-";
+
+          if(d.createdAt){
+
+            try {
+
+              tanggal =
+                d.createdAt
+                  .toDate()
+                  .toLocaleString("id-ID");
+
+            } catch(err){
+
+              tanggal = "-";
+
+            }
+
+          }
+
+          /* =========================
+             BUTTON ADMIN
+          ========================= */
+
+          let adminButtons = "";
+
+          if(isAdmin){
+
+            adminButtons = `
+
+              <td>${d.link || "-"}</td>
+
+              <td style="display:flex;gap:6px;flex-wrap:wrap;">
+
+                <button
+                  onclick="updateStatus('${doc.id}','Pending')"
+                  style="
+                    background:#f59e0b;
+                    border:none;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Pending
+                </button>
+
+                <button
+                  onclick="updateStatus('${doc.id}','Proses')"
+                  style="
+                    background:#3b82f6;
+                    border:none;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Proses
+                </button>
+
+                <button
+                  onclick="updateStatus('${doc.id}','Success')"
+                  style="
+                    background:#10b981;
+                    border:none;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Success
+                </button>
+
+                <button
+                  onclick="updateStatus('${doc.id}','Cancel')"
+                  style="
+                    background:#ef4444;
+                    border:none;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onclick="deleteOrder('${doc.id}')"
+                  style="
+                    background:#991b1b;
+                    border:none;
+                    color:white;
+                    padding:6px 10px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Delete
+                </button>
+
+              </td>
 
             `;
 
           }
 
-          /* =========================================
-             USER MODE
-          ========================================= */
+          /* =========================
+             RENDER TABLE
+          ========================= */
 
-          else {
+          tbody.innerHTML += `
 
-            tbody.innerHTML += `
+            <tr>
 
-              <tr>
+              <td>${d.id || "-"}</td>
 
-                <td>
-                  ${d.id || doc.id}
-                </td>
+              <td>${d.layanan || "-"}</td>
 
-                <td>
-                  ${d.layanan || "-"}
-                </td>
+              <td>${d.jumlah || "-"}</td>
 
-                <td>
-                  ${d.jumlah || "-"}
-                </td>
+              <td>${d.status || "-"}</td>
 
-                <td>
+              <td>${tanggal}</td>
 
-                  <span style="
-                    color:${statusColor};
-                    font-weight:bold;
-                  ">
-                    ${d.status || "Pending"}
-                  </span>
+              ${isAdmin ? `
+                <td>${d.link || "-"}</td>
+              ` : ""}
 
-                </td>
+              <td>
 
-                <td style="
-                  font-size:11px;
-                  color:#94a3b8;
-                ">
-                  ${tanggal}
-                </td>
+                <button
+                  onclick="window.location.href='receipt.html?id=${d.id}'"
+                  style="
+                    background:#7c3aed;
+                    color:white;
+                    border:none;
+                    padding:6px 12px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Struk
+                </button>
 
-              </tr>
+              </td>
 
-            `;
+              ${isAdmin ? adminButtons : ""}
 
-          }
+            </tr>
+
+          `;
 
         });
 
+      }, err => {
+
+        console.error(
+          "History Error:",
+          err
+        );
+
       });
 
-          }
-
+        }
+        
                       
 /* =========================================================
    SHOW INVOICE
