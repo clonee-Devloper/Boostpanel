@@ -737,11 +737,13 @@ function toggleChatBot(){
 function sendKeyword(keyword){
 
   const body =
-    document.getElementById(
-      "chatBody"
-    );
+    document.getElementById("chatBody");
 
   if(!body) return;
+
+  /* =========================
+     USER MESSAGE
+  ========================= */
 
   const user =
     document.createElement("div");
@@ -753,18 +755,32 @@ function sendKeyword(keyword){
 
   body.appendChild(user);
 
+  body.scrollTop =
+    body.scrollHeight;
+
+  /* =========================
+     TYPING
+  ========================= */
+
   const typing =
     document.createElement("div");
 
   typing.className = "typing";
 
-  typing.innerHTML =
-    "<span></span><span></span><span></span>";
+  typing.innerHTML = `
+    <span></span>
+    <span></span>
+    <span></span>
+  `;
 
   body.appendChild(typing);
 
   body.scrollTop =
     body.scrollHeight;
+
+  /* =========================
+     AUTO REPLY
+  ========================= */
 
   let reply = "";
 
@@ -772,37 +788,67 @@ function sendKeyword(keyword){
 
     case "harga":
 
-      reply =
-`💰 INFORMASI HARGA
+      reply = `
+💰 <b>Informasi Harga</b><br><br>
 
-• Instagram Followers mulai Rp 843 / 10 pcs
-• Instagram Likes mulai Rp 23 / 10 pcs
-• TikTok Views mulai Rp 39 / 10 pcs
-• WhatsApp Channel mulai Rp 987 / 10 pcs
+• Instagram Followers mulai Rp 843 / 10 pcs<br>
+• Instagram Likes mulai Rp 23 / 10 pcs<br>
+• TikTok Views mulai Rp 39 / 10 pcs<br>
+• WhatsApp Channel mulai Rp 987 / 10 pcs<br><br>
 
-📦 Paket hemat mulai Rp 2.143`;
+📦 Paket Hemat mulai Rp 2.143
+      `;
 
     break;
 
     case "order":
 
-      reply =
-`🛒 CARA ORDER
+      reply = `
+🛒 <b>Cara Melakukan Order</b><br><br>
 
-1. Pilih layanan
-2. Masukkan link target
-3. Isi jumlah pesanan
-4. Klik submit order
-5. Hubungi admin pembayaran`;
+1. Pilih layanan yang diinginkan<br>
+2. Masukkan link target dengan benar<br>
+3. Isi jumlah pesanan<br>
+4. Klik tombol order<br>
+5. Hubungi admin untuk pembayaran
+      `;
+
+    break;
+
+    case "proses":
+
+      reply = `
+⚡ <b>Estimasi Proses</b><br><br>
+
+• Paket Hemat: 1 - 30 menit<br>
+• Layanan normal: 1 menit - 24 jam<br><br>
+
+Estimasi tergantung server dan antrian.
+      `;
+
+    break;
+
+    case "pembayaran":
+
+      reply = `
+💳 <b>Metode Pembayaran</b><br><br>
+
+Pembayaran dilakukan langsung melalui admin setelah invoice dibuat.
+      `;
 
     break;
 
     default:
 
-      reply =
-        "Silakan pilih menu bantuan.";
+      reply = `
+Silakan pilih menu bantuan yang tersedia.
+      `;
 
   }
+
+  /* =========================
+     BOT REPLY
+  ========================= */
 
   setTimeout(() => {
 
@@ -814,7 +860,7 @@ function sendKeyword(keyword){
     bot.className =
       "bot-message";
 
-    bot.innerText = reply;
+    bot.innerHTML = reply;
 
     body.appendChild(bot);
 
@@ -824,7 +870,6 @@ function sendKeyword(keyword){
   }, 1000);
 
 }
-
 /* =========================================================
    INIT
 ========================================================= */
