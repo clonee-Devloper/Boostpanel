@@ -1106,56 +1106,78 @@ function sendKeyword(keyword) {
 
   let reply = "";
 
-  switch(keyword){
+switch(keyword){
 
-    case "harga":
-      reply =
-        "💰 Harga layanan dimulai dari Rp 23 / 10 pcs dan paket hemat mulai Rp 1.499";
-      break;
+  case "harga":
+    reply =
+`💰 INFORMASI HARGA
 
-    case "order":
-      reply =
-        "🛒 Cara order:\n1. Pilih layanan\n2. Masukkan link\n3. Isi jumlah\n4. Submit order";
-      break;
+• Instagram Followers mulai Rp 843 / 10 pcs
+• Instagram Likes mulai Rp 23 / 10 pcs
+• TikTok Views mulai Rp 39 / 10 pcs
+• WhatsApp Channel mulai Rp 987 / 10 pcs
 
-    case "proses":
-      reply =
-        "⚡ Estimasi proses 1 menit - 24 jam tergantung server";
-      break;
+📦 Paket Hemat tersedia mulai Rp 1.499 / paket
 
-    case "refund":
-      reply =
-        "🔄 Refund hanya berlaku jika order gagal total";
-      break;
+Harga dapat berubah mengikuti server dan kualitas layanan.`;
+  break;
 
-    case "admin":
-      reply =
-        "👨‍💻 Hubungi admin:\nWhatsApp 0831-4280-8857";
-      break;
+  case "order":
+    reply =
+`🛒 CARA MELAKUKAN ORDER
 
-    default:
-      reply =
-        "Pesan tidak ditemukan";
-  }
+1. Pilih layanan yang ingin digunakan
+2. Masukkan link target dengan benar
+3. Isi jumlah pesanan
+4. Klik tombol Submit Order
+5. Lakukan konfirmasi pembayaran kepada admin
 
-  setTimeout(() => {
+Setelah pembayaran dikonfirmasi, pesanan akan segera diproses otomatis.`;
+  break;
 
-    typing.remove();
+  case "proses":
+    reply =
+`⚡ INFORMASI PROSES PESANAN
 
-    const botMsg =
-      document.createElement("div");
+• Estimasi pengerjaan: 1 menit — 24 jam
+• Kecepatan proses tergantung server
+• Beberapa layanan dapat diproses bertahap
+• Status pesanan dapat dipantau pada menu History
 
-    botMsg.className =
-      "bot-message";
+Mohon tidak melakukan spam order pada target yang sama.`;
+  break;
 
-    botMsg.innerText =
-      reply;
+  case "refund":
+    reply =
+`🔄 KEBIJAKAN REFUND
 
-    body.appendChild(botMsg);
+Refund hanya berlaku apabila:
 
-    body.scrollTop =
-      body.scrollHeight;
+• Pesanan gagal total
+• Pesanan tidak masuk ke server
+• Terjadi kendala sistem dari pihak server
 
-  }, 1200);
+Refund tidak berlaku untuk:
+• Akun private
+• Link salah
+• Kesalahan input user`;
+  break;
 
+  case "admin":
+    reply =
+`👨‍💻 HUBUNGI ADMIN BOOSTPANEL
+
+Jika membutuhkan bantuan lebih lanjut, silakan hubungi admin melalui WhatsApp:
+
+📱 0831-4280-8857
+
+Jam operasional:
+🕘 09:00 — 22:00 WIB`;
+  break;
+
+  default:
+    reply =
+`❌ Pesan tidak ditemukan
+
+Silakan pilih menu pertanyaan yang tersedia di bawah chat.`;
 }
