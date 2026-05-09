@@ -901,6 +901,35 @@ Kami menyarankan pengguna untuk tetap menggunakan layanan secara bijak agar perf
 break;
 
   /* =========================
+     ADMIN
+  ========================= */
+
+  case "admin":
+
+    reply = `
+👨‍💻 <b>Informasi Admin BoostPanel</b><br><br>
+
+Admin BoostPanel siap membantu Anda terkait order, pembayaran, maupun kendala layanan.<br><br>
+
+🕘 Jam operasional admin:<br>
+09.00 WIB - 22.00 WIB setiap hari.<br><br>
+
+📱 WhatsApp Admin:<br>
+<a href="https://wa.me/6283142808857"
+style="
+color:#a78bfa;
+text-decoration:none;
+font-weight:bold;
+">
++62 831-4280-8857
+</a><br><br>
+
+Mohon tunggu respon admin apabila sedang terdapat antrean chat.
+    `;
+
+  break;
+
+  /* =========================
      DEFAULT
   ========================= */
 
