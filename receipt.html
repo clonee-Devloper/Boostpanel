@@ -192,157 +192,18 @@ body{
 </div>
 
 <!-- FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-<script>
+<!-- APP -->
+<script src="app.js"></script>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyD0ADo1TMD5ASjJ_l4062EEJtqZ2irmuIw",
-  authDomain: "boostpanel-myown.firebaseapp.com",
-  projectId: "boostpanel-myown",
-  storageBucket: "boostpanel-myown.firebasestorage.app",
-  messagingSenderId: "1003583759714",
-  appId: "1:1003583759714:web:1b9b88c96825ec5d56783b"
-};
+<!-- RECEIPT -->
+<script src="receipt.js"></script>
 
-firebase.initializeApp(firebaseConfig);
-
-const db = firebase.firestore();
-
-const params =
-  new URLSearchParams(window.location.search);
-
-const orderId = params.get("id");
-
-async function loadReceipt() {
-
-  const container =
-    document.getElementById("receiptContent");
-
-  if (!orderId) {
-
-    container.innerHTML = `
-      <div class="loading">
-        ID pesanan tidak ditemukan
-      </div>
-    `;
-
-    return;
-  }
-
-  try {
-
-    const snapshot = await db
-      .collection("orders")
-      .where("id", "==", orderId)
-      .get();
-
-    if (snapshot.empty) {
-
-      container.innerHTML = `
-        <div class="loading">
-          Order tidak ditemukan
-        </div>
-      `;
-
-      return;
-    }
-
-    const data = snapshot.docs[0].data();
-
-    let tanggal = "-";
-
-    if (data.createdAt?.toDate) {
-
-      tanggal = data.createdAt
-        .toDate()
-        .toLocaleString("id-ID");
-    }
-
-    container.innerHTML = `
-
-      <div class="item">
-        <div class="label">ID</div>
-        <div class="value">
-          ${data.id || "-"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Layanan</div>
-        <div class="value">
-          ${data.layanan || "-"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Tipe</div>
-        <div class="value">
-          ${data.tipe || "-"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Jumlah</div>
-        <div class="value">
-          ${data.jumlah || "-"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Total</div>
-        <div class="value total">
-          Rp ${data.total || "0"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Status</div>
-        <div class="value status">
-          ${data.status || "-"}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Tanggal</div>
-        <div class="value">
-          ${tanggal}
-        </div>
-      </div>
-
-      <div class="item">
-        <div class="label">Link</div>
-        <div class="value">
-          ${data.link || "-"}
-        </div>
-      </div>
-
-      <div class="line"></div>
-
-      <div class="footer">
-        Terima kasih telah menggunakan
-        layanan BoostPanel 🚀
-      </div>
-
-    `;
-
-  } catch (err) {
-
-    console.error(err);
-
-    container.innerHTML = `
-      <div class="loading">
-        Gagal mengambil data struk
-      </div>
-    `;
-  }
-}
-
-loadReceipt();
-
-</script>
-
+</body>
+</html>
+  
 </body>
 </html>
