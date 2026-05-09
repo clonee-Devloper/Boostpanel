@@ -4,97 +4,96 @@
 
 const hargaLayanan = {
 
-  "25144": {
-    Followers: 843,
-    Likes: 23,
-    Views: 14,
-    Komentar: 114
+  "25144":{
+    Followers:843,
+    Likes:23,
+    Views:14,
+    Komentar:114
   },
 
-  "3890": {
-    Followers: 214,
-    Likes: 29,
-    Views: 39,
-    Komentar: 214
+  "3890":{
+    Followers:214,
+    Likes:29,
+    Views:39,
+    Komentar:214
   },
 
-  "80954": {
-    Channel: 987
+  "80954":{
+    Channel:987
   },
 
-  "8848": {
-    Paket: 2143
+  "8848":{
+    Paket:2143
   }
+
 };
 
 const selectedType = {
-  ig: "Followers",
-  tt: "Likes",
-  wa: "Channel",
-  paket: "Paket"
+  ig:"Followers",
+  tt:"Likes",
+  wa:"Channel",
+  paket:"Paket"
 };
 
 /* =========================
-   DROPDOWN
+   OPTION
 ========================= */
 
-function toggleDropdown(id, event) {
-
-  event.stopPropagation();
-
-  const menu =
-    document.getElementById(id);
-
-  if (!menu) return;
-
-  document.querySelectorAll(".dropdown-menu")
-    .forEach(el => {
-
-      if (el !== menu) {
-        el.style.display = "none";
-      }
-
-    });
-
-  menu.style.display =
-    menu.style.display === "block"
-      ? "none"
-      : "block";
-}
-
-/* =========================
-   SELECT OPTION
-========================= */
-
-function setOption(type, value, event) {
+function setOption(
+  type,
+  value,
+  event
+){
 
   event.stopPropagation();
 
   selectedType[type] = value;
 
-  const text =
-    document.getElementById(type + "Text");
+  const textEl =
+    document.getElementById(
+      type + "Text"
+    );
 
-  if (text) {
-    text.innerText = value;
+  if(textEl){
+    textEl.innerText = value;
+  }
+
+  const menu =
+    document.getElementById(
+      type + "Menu"
+    );
+
+  if(menu){
+    menu.style.display = "none";
   }
 
   const map = {
-    ig: "25144",
-    tt: "3890",
-    wa: "80954",
-    paket: "8848"
+    ig:"25144",
+    tt:"3890",
+    wa:"80954",
+    paket:"8848"
   };
 
-  const serviceValue = map[type];
+  const serviceValue =
+    map[type];
 
-  const radio = document.querySelector(
-    `input[value="${serviceValue}"]`
-  );
+  document
+    .querySelectorAll(".option")
+    .forEach(opt => {
+      opt.classList.remove("active");
+    });
 
-  if (radio) {
+  const radio =
+    document.querySelector(
+      `input[name="service"][value="${serviceValue}"]`
+    );
+
+  if(radio){
 
     radio.checked = true;
+
+    radio.closest(".option")
+      ?.classList.add("active");
 
     updateJumlahInput(serviceValue);
   }
@@ -103,10 +102,61 @@ function setOption(type, value, event) {
 }
 
 /* =========================
+   OPTION INIT
+========================= */
+
+function initOptionClick(){
+
+  const options =
+    document.querySelectorAll(".option");
+
+  options.forEach(option => {
+
+    option.addEventListener(
+      "click",
+      function(e){
+
+        if(
+          e.target.closest(".dropdown-menu")
+        ) return;
+
+        document
+          .querySelectorAll(".option")
+          .forEach(opt => {
+            opt.classList.remove("active");
+          });
+
+        this.classList.add("active");
+
+        const radio =
+          this.querySelector(
+            'input[name="service"]'
+          );
+
+        if(radio){
+
+          radio.checked = true;
+
+          updateJumlahInput(
+            radio.value
+          );
+        }
+
+        hitungTotal();
+      }
+    );
+
+  });
+
+}
+
+/* =========================
    UPDATE INPUT
 ========================= */
 
-function updateJumlahInput(serviceValue) {
+function updateJumlahInput(
+  serviceValue
+){
 
   const input =
     document.getElementById("jumlah");
@@ -114,20 +164,19 @@ function updateJumlahInput(serviceValue) {
   const estimasi =
     document.getElementById("estimasiText");
 
-  if (!input) return;
+  if(!input) return;
 
-  if (serviceValue === "8848") {
+  if(serviceValue === "8848"){
 
     input.min = "1";
     input.max = "100";
 
     input.placeholder =
-      "Jumlah paket (min 1 - max 100)";
+      "Jumlah paket (1 - 100)";
 
-    if (estimasi) {
-
-      estimasi.innerHTML =
-        "⏱️ Estimasi pengerjaan: 1 - 30 menit";
+    if(estimasi){
+      estimasi.value =
+        "⏱️ 1 - 30 Menit";
     }
 
   } else {
@@ -136,12 +185,11 @@ function updateJumlahInput(serviceValue) {
     input.max = "50000";
 
     input.placeholder =
-      "Masukkan jumlah (min 10 - max 50.000)";
+      "Jumlah order (10 - 50.000)";
 
-    if (estimasi) {
-
-      estimasi.innerHTML =
-        "⏱️ Estimasi pengerjaan: 1 menit - 24 jam";
+    if(estimasi){
+      estimasi.value =
+        "⏱️ 1 Menit - 24 Jam";
     }
   }
 
@@ -154,11 +202,13 @@ function updateJumlahInput(serviceValue) {
    TOTAL
 ========================= */
 
-function hitungTotal() {
+function hitungTotal(){
 
   const jumlah =
     parseInt(
-      document.getElementById("jumlah").value
+      document.getElementById(
+        "jumlah"
+      ).value
     ) || 0;
 
   const totalEl =
@@ -169,7 +219,7 @@ function hitungTotal() {
       'input[name="service"]:checked'
     );
 
-  if (!service || !totalEl) return;
+  if(!service || !totalEl) return;
 
   let type = "";
 
@@ -193,7 +243,7 @@ function hitungTotal() {
   }
 
   const harga =
-    hargaLayanan[service.value]?.[type] || 0;
+    hargaLayanan[service.value][type];
 
   let total = 0;
 
@@ -203,10 +253,36 @@ function hitungTotal() {
 
   } else {
 
-    total = (jumlah / 10) * harga;
+    total =
+      (jumlah / 10) * harga;
   }
 
   totalEl.innerText =
     Math.ceil(total)
       .toLocaleString("id-ID");
+}
+
+/* =========================
+   INIT
+========================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    initOptionClick();
+
+    const checked =
+      document.querySelector(
+        'input[name="service"]:checked'
+      );
+
+    if(checked){
+      updateJumlahInput(
+        checked.value
+      );
     }
+
+    hitungTotal();
+  }
+);
