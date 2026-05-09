@@ -659,6 +659,7 @@ function renderHistory(){
 
   unsubscribeHistory =
     db.collection("orders")
+      .orderBy("createdAt", "desc")
       .onSnapshot(snapshot => {
 
         tbody.innerHTML = "";
@@ -674,7 +675,9 @@ function renderHistory(){
 
             <tr>
 
-              <td>${orderId}</td>
+              <td>
+                ${orderId}
+              </td>
 
               <td>
                 ${d.layanan || "-"}
@@ -690,26 +693,34 @@ function renderHistory(){
 
               <td>
 
-                <button
-                  onclick="
-                    window.location.href=
-                    'receipt.html?id=${orderId}'
-                  "
-                  style="
-                    background:#7c3aed;
-                    color:white;
-                    border:none;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Struk
-                </button>
-
                 ${
                   isAdmin
                   ? `
+
+                  <!-- CETAK STRUK -->
+
+                  <button
+                    onclick="
+                      window.location.href=
+                      'receipt.html?id=${orderId}'
+                    "
+
+                    style="
+                      background:#7c3aed;
+                      color:white;
+                      border:none;
+                      padding:6px 10px;
+                      border-radius:8px;
+                      cursor:pointer;
+                      margin-bottom:6px;
+                    "
+                  >
+                    Struk
+                  </button>
+
+                  <br>
+
+                  <!-- UPDATE STATUS -->
 
                   <select
                     onchange="
@@ -720,9 +731,10 @@ function renderHistory(){
                     "
 
                     style="
-                      margin-top:6px;
-                      padding:5px;
-                      border-radius:6px;
+                      padding:6px;
+                      border-radius:8px;
+                      margin-bottom:6px;
+                      width:100%;
                     "
                   >
 
@@ -748,6 +760,8 @@ function renderHistory(){
 
                   </select>
 
+                  <!-- DELETE -->
+
                   <button
                     onclick="
                       deleteOrder(
@@ -756,20 +770,30 @@ function renderHistory(){
                     "
 
                     style="
-                      margin-top:6px;
                       background:#dc2626;
                       color:white;
                       border:none;
                       padding:6px 10px;
                       border-radius:8px;
                       cursor:pointer;
+                      width:100%;
                     "
                   >
                     Delete
                   </button>
 
                   `
-                  : ""
+
+                  : `
+
+                  <span style="
+                    color:#94a3b8;
+                    font-size:12px;
+                  ">
+                    User Mode
+                  </span>
+
+                  `
                 }
 
               </td>
@@ -784,6 +808,7 @@ function renderHistory(){
 
 }
 
+                      
 /* =========================================================
    SHOW INVOICE
 ========================================================= */
