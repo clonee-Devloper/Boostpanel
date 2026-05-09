@@ -44,23 +44,35 @@ let unsubscribeHistory = null;
 ========================= */
 
 window.addEventListener("load", () => {
+window.addEventListener("load", () => {
 
   const loader =
     document.getElementById("loader");
 
-  if(!loader) return;
+  if (!loader) return;
+
+  loader.style.opacity = "0";
 
   setTimeout(() => {
 
-    loader.style.opacity = "0";
+    loader.style.display = "none";
 
-    setTimeout(() => {
-      loader.style.display = "none";
-    }, 500);
-
-  }, 1000);
+  }, 500);
 
 });
+
+/* FALLBACK */
+setTimeout(() => {
+
+  const loader =
+    document.getElementById("loader");
+
+  if(loader){
+
+    loader.style.display = "none";
+  }
+
+}, 4000);
 
 /* =========================
    POPUP
