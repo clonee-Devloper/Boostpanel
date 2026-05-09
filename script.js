@@ -574,7 +574,31 @@ auth.onAuthStateChanged(
 
       }
 
-      renderHistory();
+      const adminLinkHead =
+  document.getElementById(
+    "adminLinkHead"
+  );
+
+const adminActionHead =
+  document.getElementById(
+    "adminActionHead"
+  );
+
+if(adminLinkHead){
+
+  adminLinkHead.style.display =
+    isAdmin ? "table-cell" : "none";
+
+}
+
+if(adminActionHead){
+
+  adminActionHead.style.display =
+    isAdmin ? "table-cell" : "none";
+
+}
+
+renderHistory();
 
     } catch(err){
 
