@@ -934,94 +934,94 @@ function renderHistory(){
           }
 
           /* =========================
-             BUTTON ADMIN
-          ========================= */
+   BUTTON ADMIN
+========================= */
 
-          let adminButtons = "";
+let adminButtons = "";
 
-          if(isAdmin){
+if(isAdmin){
 
-            adminButtons = `
+  adminButtons = `
 
-              <td>${d.link || "-"}</td>
+    <td>${d.link || "-"}</td>
 
-              <td style="display:flex;gap:6px;flex-wrap:wrap;">
+    <td style="display:flex;gap:6px;flex-wrap:wrap;">
 
-                <button
-                  onclick="updateStatus('${doc.id}','Pending')"
-                  style="
-                    background:#f59e0b;
-                    border:none;
-                    color:white;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Pending
-                </button>
+      <button
+        onclick="updateStatus('${doc.id}','Pending')"
+        style="
+          background:#f59e0b;
+          border:none;
+          color:white;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Pending
+      </button>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Proses')"
-                  style="
-                    background:#3b82f6;
-                    border:none;
-                    color:white;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Proses
-                </button>
+      <button
+        onclick="updateStatus('${doc.id}','Proses')"
+        style="
+          background:#3b82f6;
+          border:none;
+          color:white;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Proses
+      </button>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Success')"
-                  style="
-                    background:#10b981;
-                    border:none;
-                    color:white;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Success
-                </button>
+      <button
+        onclick="updateStatus('${doc.id}','Success')"
+        style="
+          background:#10b981;
+          border:none;
+          color:white;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Success
+      </button>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Cancel')"
-                  style="
-                    background:#ef4444;
-                    border:none;
-                    color:white;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Cancel
-                </button>
+      <button
+        onclick="updateStatus('${doc.id}','Cancel')"
+        style="
+          background:#ef4444;
+          border:none;
+          color:white;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Cancel
+      </button>
 
-                <button
-                  onclick="deleteOrder('${doc.id}')"
-                  style="
-                    background:#991b1b;
-                    border:none;
-                    color:white;
-                    padding:6px 10px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Delete
-                </button>
+      <button
+        onclick="deleteOrder('${doc.id}')"
+        style="
+          background:#991b1b;
+          border:none;
+          color:white;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Delete
+      </button>
 
-              </td>
+    </td>
 
-            `;
+  `;
 
-          }
+}
 
           /* =========================
              RENDER TABLE
