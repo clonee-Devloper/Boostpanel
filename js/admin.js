@@ -5,30 +5,29 @@
 async function loginAdmin(){
 
   const email =
-    document.getElementById("adminEmail").value;
+    document.getElementById(
+      "adminEmail"
+    ).value.trim();
 
   const pass =
-    document.getElementById("adminPass").value;
+    document.getElementById(
+      "adminPass"
+    ).value.trim();
 
   try{
 
-    await auth.signInWithEmailAndPassword(
-      email,
-      pass
-    );
-
-    isAdmin = true;
+    await auth
+      .signInWithEmailAndPassword(
+        email,
+        pass
+      );
 
     showPopup(
       "Sukses",
-      "Login admin berhasil"
+      "Login berhasil"
     );
 
-    closeAdmin();
-
-    renderHistory();
-
-  }catch(err){
+  } catch(err){
 
     showPopup(
       "Error",
@@ -38,25 +37,7 @@ async function loginAdmin(){
 }
 
 /* =========================
-   LOGOUT
-========================= */
-
-async function logoutAdmin(){
-
-  await auth.signOut();
-
-  isAdmin = false;
-
-  renderHistory();
-
-  showPopup(
-    "Logout",
-    "Berhasil logout"
-  );
-}
-
-/* =========================
-   SECRET PANEL
+   ADMIN PANEL
 ========================= */
 
 function openSecretAdmin(){
@@ -74,8 +55,36 @@ function openSecretAdmin(){
 }
 
 function closeAdmin(){
-
   document.getElementById(
     "adminPanel"
   ).style.display = "none";
 }
+
+/* =========================
+   AUTH CHECK
+========================= */
+
+auth.onAuthStateChanged(
+  async user => {
+
+    isAdmin = false;
+
+    if(user){
+
+      const doc =
+        await db
+          .collection("users")
+          .doc(user.uid)
+          .get();
+
+      if(
+        doc.exists &&
+        doc.data().role === "admin"
+      ){
+        isAdmin = true;
+      }
+    }
+
+    renderHistory();
+  }
+);
