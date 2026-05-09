@@ -577,6 +577,54 @@ rel="stylesheet"
 
 </div>
 
+<!-- =========================
+CHAT BOT
+========================= -->
+<div class="chat-toggle" onclick="toggleChatBot()">
+  💬
+</div>
+
+<div class="chatbot" id="chatbot">
+
+  <div class="chat-header">
+    BoostPanel Assistant
+  </div>
+
+  <div class="chat-body" id="chatBody">
+
+    <div class="bot-message">
+      Halo 👋<br>
+      Pilih pertanyaan dibawah ini
+    </div>
+
+  </div>
+
+  <div class="chat-keywords">
+
+    <button onclick="sendKeyword('harga')">
+      💰 Harga
+    </button>
+
+    <button onclick="sendKeyword('order')">
+      🛒 Cara Order
+    </button>
+
+    <button onclick="sendKeyword('proses')">
+      ⚡ Proses
+    </button>
+
+    <button onclick="sendKeyword('refund')">
+      🔄 Refund
+    </button>
+
+    <button onclick="sendKeyword('admin')">
+      👨‍💻 Admin
+    </button>
+
+  </div>
+
+</div>
+
 <!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 
