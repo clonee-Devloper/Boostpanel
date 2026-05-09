@@ -3,7 +3,7 @@
 ========================= */
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
+  apiKey: "AIzaSyD0ADo1TMD5ASjJ_l4062EEJtqZ2irmuIw",
   authDomain: "boostpanel-myown.firebaseapp.com",
   projectId: "boostpanel-myown",
   storageBucket: "boostpanel-myown.firebasestorage.app",
