@@ -708,6 +708,477 @@ function renderHistory(){
 }
 
 /* =========================================================
+   SHOW INVOICE
+========================================================= */
+
+function showInvoice(){
+
+  const link =
+    document.getElementById("link").value.trim();
+
+  const jumlah =
+    parseInt(
+      document.getElementById("jumlah").value
+    );
+
+  const service =
+    document.querySelector(
+      'input[name="service"]:checked'
+    );
+
+  if(!link || !jumlah || !service){
+
+    showPopup(
+      "Error",
+      "Isi semua data terlebih dahulu"
+    );
+
+    return;
+
+  }
+
+  /* VALIDASI */
+
+  if(
+    service.value !== "8848" &&
+    jumlah < 10
+  ){
+
+    showPopup(
+      "Peringatan",
+      "Minimal order adalah 10"
+    );
+
+    return;
+
+  }
+
+  if(
+    service.value === "8848" &&
+    jumlah < 1
+  ){
+
+    showPopup(
+      "Peringatan",
+      "Minimal paket adalah 1"
+    );
+
+    return;
+
+  }
+
+  const total =
+    document.getElementById("total")
+    .innerText;
+
+  let layanan = "";
+  let tipe = "";
+
+  switch(service.value){
+
+    case "25144":
+      layanan = "Instagram";
+      tipe = selectedType.ig;
+    break;
+
+    case "3890":
+      layanan = "TikTok";
+      tipe = selectedType.tt;
+    break;
+
+    case "80954":
+      layanan = "WhatsApp";
+      tipe = selectedType.wa;
+    break;
+
+    case "8848":
+      layanan = "Paket Hemat";
+      tipe = selectedType.paket;
+    break;
+
+  }
+
+  const html = `
+  
+  <div style="
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  ">
+
+    <div style="
+      font-size:18px;
+      font-weight:bold;
+    ">
+      📄 Invoice Pesanan
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+    ">
+      <span>Layanan</span>
+      <b>${layanan}</b>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+    ">
+      <span>Tipe</span>
+      <b>${tipe}</b>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+    ">
+      <span>Jumlah</span>
+      <b>${jumlah}</b>
+    </div>
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+    ">
+      <span>Link</span>
+
+      <b style="
+        max-width:150px;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+      ">
+        ${link}
+      </b>
+    </div>
+
+    <hr style="opacity:.15">
+
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      font-size:18px;
+      font-weight:bold;
+    ">
+      <span>Total</span>
+
+      <span style="
+        color:#7c3aed;
+      ">
+        Rp ${total}
+      </span>
+    </div>
+
+    <label style="
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-size:13px;
+    ">
+
+      <input type="checkbox" id="agreeRules">
+
+      Saya menyetujui rules BoostPanel
+
+    </label>
+
+  </div>
+  
+  `;
+
+  showPopup(
+    "Konfirmasi Pesanan",
+    html,
+    () => {
+
+      const agree =
+        document.getElementById("agreeRules");
+
+      if(!agree || !agree.checked){
+
+        showPopup(
+          "Peringatan",
+          "Setujui rules terlebih dahulu"
+        );
+
+        return;
+
+      }
+
+      confirmOrder(
+        layanan,
+        tipe,
+        jumlah,
+        link,
+        total
+      );
+
+    }
+  );
+
+}
+
+/* =========================================================
+   CONFIRM ORDER
+========================================================= */
+
+async function confirmOrder(
+  layanan,
+  tipe,
+  jumlah,
+  link,
+  total
+){
+
+  const id =
+    "ORD" + Date.now();
+
+  const data = {
+
+    id,
+    layanan,
+    tipe,
+    jumlah,
+    link,
+    total,
+
+    status: "Pending",
+
+    createdAt:
+      firebase.firestore.FieldValue.serverTimestamp()
+
+  };
+
+  try {
+
+    await db
+      .collection("orders")
+      .add(data);
+
+  } catch(err){
+
+    console.error(err);
+
+    showPopup(
+      "Error",
+      "Gagal menyimpan order"
+    );
+
+    return;
+
+  }
+
+  const pesan = `
+Halo Admin BoostPanel 👋
+
+Saya ingin melakukan order:
+
+🆔 ID: ${id}
+📱 Layanan: ${layanan}
+⚙️ Tipe: ${tipe}
+🔢 Jumlah: ${jumlah}
+🔗 Link: ${link}
+
+💰 Total: Rp ${total}
+
+Mohon info pembayaran 🙏
+`;
+
+  const nomor =
+    "6283142808857";
+
+  const url =
+    `https://wa.me/${nomor}?text=${encodeURIComponent(pesan)}`;
+
+  window.location.href = url;
+
+}
+
+/* =========================================================
+   UPDATE STATUS
+========================================================= */
+
+async function updateStatus(id, status){
+
+  if(!isAdmin) return;
+
+  try {
+
+    await db
+      .collection("orders")
+      .doc(id)
+      .update({
+        status: status
+      });
+
+    showPopup(
+      "Sukses",
+      "Status berhasil diperbarui"
+    );
+
+  } catch(err){
+
+    console.error(err);
+
+    showPopup(
+      "Error",
+      "Gagal update status"
+    );
+
+  }
+
+}
+
+/* =========================================================
+   DELETE ORDER
+========================================================= */
+
+async function deleteOrder(id){
+
+  if(!isAdmin) return;
+
+  showPopup(
+    "Konfirmasi",
+    "Yakin ingin menghapus order?",
+    async () => {
+
+      try {
+
+        await db
+          .collection("orders")
+          .doc(id)
+          .delete();
+
+        showPopup(
+          "Sukses",
+          "Order berhasil dihapus"
+        );
+
+      } catch(err){
+
+        console.error(err);
+
+        showPopup(
+          "Error",
+          "Gagal menghapus order"
+        );
+
+      }
+
+    }
+  );
+
+}
+
+/* =========================================================
+   LOGOUT ADMIN
+========================================================= */
+
+async function logoutAdmin(){
+
+  try {
+
+    await auth.signOut();
+
+    isAdmin = false;
+
+    showPopup(
+      "Logout",
+      "Berhasil logout"
+    );
+
+    renderHistory();
+
+  } catch(err){
+
+    console.error(err);
+
+    showPopup(
+      "Error",
+      "Logout gagal"
+    );
+
+  }
+
+}
+
+/* =========================================================
+   SCROLL SECTION
+========================================================= */
+
+function scrollToOrder(){
+
+  document.getElementById("order")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+function scrollToHistory(){
+
+  document.getElementById("history")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+function scrollToContact(){
+
+  document.getElementById("contact")
+    ?.scrollIntoView({
+      behavior: "smooth"
+    });
+
+}
+
+/* =========================================================
+   RULES
+========================================================= */
+
+function toggleRules(){
+
+  const rules =
+    document.getElementById("rules");
+
+  if(!rules) return;
+
+  rules.style.display =
+    rules.style.display === "block"
+      ? "none"
+      : "block";
+
+}
+
+/* =========================================================
+   GLOBAL CLICK
+========================================================= */
+
+window.addEventListener("click", e => {
+
+  document
+    .querySelectorAll(".dropdown-menu")
+    .forEach(menu => {
+
+      menu.style.display = "none";
+
+    });
+
+  const popup =
+    document.getElementById("globalPopup");
+
+  if(e.target === popup){
+
+    popup.style.display = "none";
+
+  }
+
+});
+
+/* =========================================================
    CHATBOT
 ========================================================= */
 
