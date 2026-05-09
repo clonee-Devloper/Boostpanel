@@ -1,11 +1,9 @@
-/* =========================
-   CHATBOT
-========================= */
-
 function toggleChatBot(){
 
   const bot =
-    document.getElementById("chatbot");
+    document.getElementById(
+      "chatbot"
+    );
 
   if(!bot) return;
 
@@ -15,14 +13,12 @@ function toggleChatBot(){
       : "flex";
 }
 
-/* =========================
-   SEND KEYWORD
-========================= */
-
 function sendKeyword(keyword){
 
   const body =
-    document.getElementById("chatBody");
+    document.getElementById(
+      "chatBody"
+    );
 
   if(!body) return;
 
@@ -32,19 +28,17 @@ function sendKeyword(keyword){
   user.className =
     "user-message";
 
-  user.innerText =
-    keyword;
+  user.innerText = keyword;
 
   body.appendChild(user);
 
   const typing =
     document.createElement("div");
 
-  typing.className =
-    "typing";
+  typing.className = "typing";
 
   typing.innerHTML =
-    `<span></span><span></span><span></span>`;
+    "<span></span><span></span><span></span>";
 
   body.appendChild(typing);
 
@@ -57,26 +51,17 @@ function sendKeyword(keyword){
 
     case "harga":
       reply =
-`💰 Harga layanan mulai dari Rp 23 hingga Rp 2.143 tergantung layanan yang dipilih.`;
+        "Harga layanan mulai dari Rp 23 / 10 pcs.";
     break;
 
     case "order":
       reply =
-`🛒 Cara order:
-1. Pilih layanan
-2. Masukkan link
-3. Isi jumlah
-4. Submit order`;
-    break;
-
-    case "rules":
-      reply =
-`📌 Pastikan target tidak private dan tidak menggunakan 2 layanan bersamaan.`;
+        "Pilih layanan → isi link → isi jumlah → submit.";
     break;
 
     default:
       reply =
-`Halo 👋 Ada yang bisa kami bantu?`;
+        "Silakan pilih menu bantuan.";
   }
 
   setTimeout(() => {
@@ -89,8 +74,7 @@ function sendKeyword(keyword){
     bot.className =
       "bot-message";
 
-    bot.innerText =
-      reply;
+    bot.innerText = reply;
 
     body.appendChild(bot);
 
@@ -98,4 +82,5 @@ function sendKeyword(keyword){
       body.scrollHeight;
 
   }, 1200);
+
 }
