@@ -879,20 +879,26 @@ Admin akan memberikan metode pembayaran yang tersedia beserta detail transaksi s
   break;
 
   /* =========================
-     REFUND
+     AMAN
   ========================= */
 
-  case "refund":
+  case "aman":
 
-    reply = `
-📌 <b>Kebijakan Refund</b><br><br>
+  reply = `
+🔒 <b>Apakah Suntik Media Sosial Aman?</b><br><br>
 
-Refund hanya berlaku apabila pesanan benar-benar gagal diproses oleh server.<br><br>
+BoostPanel menggunakan layanan yang dirancang untuk membantu meningkatkan aktivitas dan engagement media sosial secara lebih cepat.<br><br>
 
-Pesanan dengan target private, link salah, atau pelanggaran rules tidak dapat dilakukan refund.
-    `;
+Selama penggunaan dilakukan secara wajar dan tidak berlebihan, layanan umumnya aman digunakan untuk kebutuhan branding, promosi, maupun pengembangan akun.<br><br>
 
-  break;
+✅ Menggunakan server berkualitas<br>
+✅ Proses bertahap dan stabil<br>
+✅ Cocok untuk kebutuhan personal maupun bisnis<br><br>
+
+Kami menyarankan pengguna untuk tetap menggunakan layanan secara bijak agar performa akun tetap optimal.
+  `;
+
+break;
 
   /* =========================
      DEFAULT
