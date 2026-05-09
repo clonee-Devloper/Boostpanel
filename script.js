@@ -755,6 +755,221 @@ function renderHistory(){
                     </option>
 
                     <option value="Cancel">
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function renderHistory(){
+
+  const tbody =
+    document.querySelector(
+      "#historyTable tbody"
+    );
+
+  if(!tbody) return;
+
+  /* HAPUS LISTENER LAMA */
+
+  if(unsubscribeHistory){
+
+    unsubscribeHistory();
+
+  }
+
+  /* REALTIME FIRESTORE */
+
+  unsubscribeHistory =
+    db.collection("orders")
+      .orderBy("createdAt", "desc")
+      .onSnapshot(snapshot => {
+
+        tbody.innerHTML = "";
+
+        /* JIKA TIDAK ADA DATA */
+
+        if(snapshot.empty){
+
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" style="
+                text-align:center;
+                padding:20px;
+                color:#94a3b8;
+              ">
+                Belum ada pesanan
+              </td>
+            </tr>
+          `;
+
+          return;
+        }
+
+        /* LOOP DATA */
+
+        snapshot.forEach(doc => {
+
+          const d = doc.data();
+
+          /* FORMAT TANGGAL */
+
+          let tanggal = "-";
+
+          if(d.createdAt){
+
+            try {
+
+              tanggal =
+                d.createdAt
+                  .toDate()
+                  .toLocaleString(
+                    "id-ID",
+                    {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit"
+                    }
+                  );
+
+            } catch(err){
+
+              console.error(err);
+
+            }
+
+          }
+
+          /* STATUS COLOR */
+
+          let statusColor = "#facc15";
+
+          switch(d.status){
+
+            case "Success":
+              statusColor = "#22c55e";
+            break;
+
+            case "Process":
+              statusColor = "#3b82f6";
+            break;
+
+            case "Cancel":
+              statusColor = "#ef4444";
+            break;
+
+          }
+
+          /* =========================================
+             ADMIN MODE
+          ========================================= */
+
+          if(isAdmin){
+
+            tbody.innerHTML += `
+
+              <tr>
+
+                <td>
+                  ${d.id || doc.id}
+                </td>
+
+                <td>
+                  ${d.layanan || "-"}
+                </td>
+
+                <td>
+                  ${d.jumlah || "-"}
+                </td>
+
+                <td>
+
+                  <span style="
+                    color:${statusColor};
+                    font-weight:bold;
+                  ">
+                    ${d.status || "Pending"}
+                  </span>
+
+                </td>
+
+                <td style="
+                  max-width:120px;
+                  word-break:break-word;
+                ">
+                  ${d.link || "-"}
+                </td>
+
+                <td style="
+                  font-size:11px;
+                  color:#94a3b8;
+                ">
+                  ${tanggal}
+                </td>
+
+                <td style="
+                  display:flex;
+                  flex-direction:column;
+                  gap:6px;
+                ">
+
+                  <!-- STRUK -->
+
+                  <button
+                    onclick="
+                      window.location.href=
+                      'receipt.html?id=${d.id}'
+                    "
+
+                    style="
+                      background:#7c3aed;
+                      color:white;
+                      border:none;
+                      padding:7px;
+                      border-radius:8px;
+                      cursor:pointer;
+                    "
+                  >
+                    Struk
+                  </button>
+
+                  <!-- STATUS -->
+
+                  <select
+                    onchange="
+                      updateStatus(
+                        '${doc.id}',
+                        this.value
+                      )
+                    "
+
+                    style="
+                      padding:7px;
+                      border:none;
+                      border-radius:8px;
+                      background:#0f172a;
+                      color:white;
+                      cursor:pointer;
+                    "
+                  >
+
+                    <option>
+                      Update
+                    </option>
+
+                    <option value="Pending">
+                      Pending
+                    </option>
+
+                    <option value="Process">
+                      Process
+                    </option>
+
+                    <option value="Success">
+                      Success
+                    </option>
+
+                    <option value="Cancel">
                       Cancel
                     </option>
 
@@ -770,43 +985,76 @@ function renderHistory(){
                     "
 
                     style="
-                      background:#dc2626;
+                      background:#ef4444;
                       color:white;
                       border:none;
-                      padding:6px 10px;
+                      padding:7px;
                       border-radius:8px;
                       cursor:pointer;
-                      width:100%;
                     "
                   >
                     Delete
                   </button>
 
-                  `
+                </td>
 
-                  : `
+              </tr>
+
+            `;
+
+          }
+
+          /* =========================================
+             USER MODE
+          ========================================= */
+
+          else {
+
+            tbody.innerHTML += `
+
+              <tr>
+
+                <td>
+                  ${d.id || doc.id}
+                </td>
+
+                <td>
+                  ${d.layanan || "-"}
+                </td>
+
+                <td>
+                  ${d.jumlah || "-"}
+                </td>
+
+                <td>
 
                   <span style="
-                    color:#94a3b8;
-                    font-size:12px;
+                    color:${statusColor};
+                    font-weight:bold;
                   ">
-                    User Mode
+                    ${d.status || "Pending"}
                   </span>
 
-                  `
-                }
+                </td>
 
-              </td>
+                <td style="
+                  font-size:11px;
+                  color:#94a3b8;
+                ">
+                  ${tanggal}
+                </td>
 
-            </tr>
+              </tr>
 
-          `;
+            `;
+
+          }
 
         });
 
       });
 
-}
+          }
 
                       
 /* =========================================================
