@@ -11,12 +11,14 @@ const firebaseConfig = {
   appId: "1:1003583759714:web:1b9b88c96825ec5d56783b"
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const db = firebase.firestore();
 
 /* =========================================
-   GET ID
+   GET PARAM
 ========================================= */
 
 const params =
@@ -31,14 +33,14 @@ const orderId =
 
 async function loadReceipt(){
 
-  const container =
+  const receipt =
     document.getElementById("receiptData");
 
-  if(!container) return;
+  if(!receipt) return;
 
   if(!orderId){
 
-    container.innerHTML =
+    receipt.innerHTML =
       "ID order tidak ditemukan";
 
     return;
@@ -47,74 +49,65 @@ async function loadReceipt(){
   try {
 
     const snapshot =
-      await db.collection("orders").get();
+      await db
+        .collection("orders")
+        .where("id", "==", orderId)
+        .get();
 
-    let found = false;
+    if(snapshot.empty){
+
+      receipt.innerHTML =
+        "Data order tidak ditemukan";
+
+      return;
+    }
 
     snapshot.forEach(doc => {
 
       const d = doc.data();
 
-      if(d.id === orderId){
+      receipt.innerHTML = `
 
-        found = true;
+        <div class="receipt-item">
+          <span>ID</span>
+          <b>${d.id}</b>
+        </div>
 
-        container.innerHTML = `
-        
-          <div class="receipt-item">
-            <span>ID Order</span>
-            <b>${d.id}</b>
-          </div>
+        <div class="receipt-item">
+          <span>Layanan</span>
+          <b>${d.layanan}</b>
+        </div>
 
-          <div class="receipt-item">
-            <span>Layanan</span>
-            <b>${d.layanan}</b>
-          </div>
+        <div class="receipt-item">
+          <span>Tipe</span>
+          <b>${d.tipe}</b>
+        </div>
 
-          <div class="receipt-item">
-            <span>Tipe</span>
-            <b>${d.tipe}</b>
-          </div>
+        <div class="receipt-item">
+          <span>Jumlah</span>
+          <b>${d.jumlah}</b>
+        </div>
 
-          <div class="receipt-item">
-            <span>Jumlah</span>
-            <b>${d.jumlah}</b>
-          </div>
+        <div class="receipt-item">
+          <span>Status</span>
+          <b>${d.status}</b>
+        </div>
 
-          <div class="receipt-item">
-            <span>Status</span>
-            <b>${d.status}</b>
-          </div>
+        <div class="receipt-item">
+          <span>Total</span>
+          <b>Rp ${d.total}</b>
+        </div>
 
-          <div class="receipt-item">
-            <span>Total</span>
-            <b>Rp ${d.total}</b>
-          </div>
-
-          <div class="receipt-item">
-            <span>Link</span>
-            <b>${d.link}</b>
-          </div>
-
-        `;
-
-      }
+      `;
 
     });
-
-    if(!found){
-
-      container.innerHTML =
-        "Data order tidak ditemukan";
-
-    }
 
   } catch(err){
 
     console.error(err);
 
-    container.innerHTML =
-      "Gagal memuat data struk";
+    receipt.innerHTML =
+      "Gagal memuat struk";
 
   }
 
