@@ -1,21 +1,4 @@
 /* =========================================
-   DEBUG
-========================================= */
-
-window.onerror = function(message, source, lineno){
-
-  console.error(
-    "ERROR:",
-    message,
-    "FILE:",
-    source,
-    "LINE:",
-    lineno
-  );
-
-};
-
-/* =========================================
    FIREBASE
 ========================================= */
 
@@ -45,6 +28,29 @@ const orderId =
   params.get("id");
 
 /* =========================================
+   FORMAT TANGGAL
+========================================= */
+
+function formatTanggal(timestamp){
+
+  if(!timestamp) return "-";
+
+  try {
+
+    const date =
+      timestamp.toDate();
+
+    return date.toLocaleString("id-ID");
+
+  } catch {
+
+    return "-";
+
+  }
+
+}
+
+/* =========================================
    LOAD RECEIPT
 ========================================= */
 
@@ -53,100 +59,137 @@ async function loadReceipt(){
   const receipt =
     document.getElementById("receiptData");
 
-  if(!receipt) {
-
-    console.error(
-      "receiptData tidak ditemukan"
-    );
-
-    return;
-  }
+  if(!receipt) return;
 
   if(!orderId){
 
-    receipt.innerHTML =
-      "ID order tidak ditemukan";
-
+    receipt.innerHTML = `
+      <div class="receipt-item">
+        ID order tidak ditemukan
+      </div>
+    `;
     return;
   }
 
   try {
 
-    receipt.innerHTML =
-      "Memuat data struk...";
+    let data = null;
 
-    const snapshot =
+    /* =====================================
+       CEK DOCUMENT ID
+    ===================================== */
+
+    const docSnap =
       await db
         .collection("orders")
-        const doc =
-  await db
-    .collection("orders")
-    .doc(orderId)
-    .get();
+        .doc(orderId)
+        .get();
 
-if(!doc.exists){
+    if(docSnap.exists){
 
-  receipt.innerHTML =
-    "Data order tidak ditemukan";
+      data = docSnap.data();
 
-  return;
-}
+    } else {
 
-const data = doc.data();
-    if(snapshot.empty){
+      /* =====================================
+         CEK FIELD ID
+      ===================================== */
 
-      receipt.innerHTML =
-        "Data order tidak ditemukan";
+      const snapshot =
+        await db
+          .collection("orders")
+          .where("id", "==", orderId)
+          .get();
 
+      if(!snapshot.empty){
+
+        snapshot.forEach(doc => {
+          data = doc.data();
+        });
+
+      }
+
+    }
+
+    /* =====================================
+       DATA TIDAK ADA
+    ===================================== */
+
+    if(!data){
+
+      receipt.innerHTML = `
+        <div class="receipt-item">
+          Data order tidak ditemukan
+        </div>
+      `;
       return;
     }
 
-    snapshot.forEach(doc => {
+    /* =====================================
+       RENDER
+    ===================================== */
 
-      const d = doc.data();
+    receipt.innerHTML = `
 
-      receipt.innerHTML = `
+      <div class="receipt-item">
+        <span>ID Order</span>
+        <b>${data.id || "-"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>ID</span>
-          <b>${d.id || "-"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Layanan</span>
+        <b>${data.layanan || "-"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>Layanan</span>
-          <b>${d.layanan || "-"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Tipe</span>
+        <b>${data.tipe || "-"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>Tipe</span>
-          <b>${d.tipe || "-"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Jumlah</span>
+        <b>${data.jumlah || "-"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>Jumlah</span>
-          <b>${d.jumlah || "-"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Status</span>
+        <b>${data.status || "Pending"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>Status</span>
-          <b>${d.status || "-"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Total</span>
+        <b>Rp ${data.total || "0"}</b>
+      </div>
 
-        <div class="receipt-item">
-          <span>Total</span>
-          <b>Rp ${d.total || "0"}</b>
-        </div>
+      <div class="receipt-item">
+        <span>Tanggal</span>
+        <b>
+          ${formatTanggal(data.createdAt)}
+        </b>
+      </div>
 
-      `;
+      <div class="receipt-item">
+        <span>Link</span>
+        <b style="
+          max-width:180px;
+          word-break:break-word;
+          text-align:right;
+        ">
+          ${data.link || "-"}
+        </b>
+      </div>
 
-    });
+    `;
 
   } catch(err){
 
     console.error(err);
 
-    receipt.innerHTML =
-      "Gagal memuat struk";
+    receipt.innerHTML = `
+      <div class="receipt-item">
+        Gagal memuat struk
+      </div>
+    `;
 
   }
 
