@@ -667,26 +667,39 @@ function renderHistory(){
 
           const d = doc.data();
 
+          const orderId =
+            d.id || doc.id;
+
           tbody.innerHTML += `
+
             <tr>
 
-              <td>${d.id || "-"}</td>
+              <td>${orderId}</td>
 
-              <td>${d.layanan || "-"}</td>
+              <td>
+                ${d.layanan || "-"}
+              </td>
 
-              <td>${d.jumlah || "-"}</td>
+              <td>
+                ${d.jumlah || "-"}
+              </td>
 
-              <td>${d.status || "-"}</td>
+              <td>
+                ${d.status || "Pending"}
+              </td>
 
               <td>
 
                 <button
-                  onclick="window.location.href='receipt.html?id=${d.id}'"
+                  onclick="
+                    window.location.href=
+                    'receipt.html?id=${orderId}'
+                  "
                   style="
                     background:#7c3aed;
                     color:white;
                     border:none;
-                    padding:6px 12px;
+                    padding:6px 10px;
                     border-radius:8px;
                     cursor:pointer;
                   "
@@ -694,9 +707,75 @@ function renderHistory(){
                   Struk
                 </button>
 
+                ${
+                  isAdmin
+                  ? `
+
+                  <select
+                    onchange="
+                      updateStatus(
+                        '${doc.id}',
+                        this.value
+                      )
+                    "
+
+                    style="
+                      margin-top:6px;
+                      padding:5px;
+                      border-radius:6px;
+                    "
+                  >
+
+                    <option>
+                      Status
+                    </option>
+
+                    <option value="Pending">
+                      Pending
+                    </option>
+
+                    <option value="Process">
+                      Process
+                    </option>
+
+                    <option value="Success">
+                      Success
+                    </option>
+
+                    <option value="Cancel">
+                      Cancel
+                    </option>
+
+                  </select>
+
+                  <button
+                    onclick="
+                      deleteOrder(
+                        '${doc.id}'
+                      )
+                    "
+
+                    style="
+                      margin-top:6px;
+                      background:#dc2626;
+                      color:white;
+                      border:none;
+                      padding:6px 10px;
+                      border-radius:8px;
+                      cursor:pointer;
+                    "
+                  >
+                    Delete
+                  </button>
+
+                  `
+                  : ""
+                }
+
               </td>
 
             </tr>
+
           `;
 
         });
@@ -952,9 +1031,9 @@ async function confirmOrder(
   try {
 
     await db
-      .collection("orders")
-      .add(data);
-
+  .collection("orders")
+  .doc(id)
+  .set(data);
   } catch(err){
 
     console.error(err);
