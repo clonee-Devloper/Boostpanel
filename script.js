@@ -721,9 +721,7 @@ function renderHistory(){
 function toggleChatBot(){
 
   const bot =
-    document.getElementById(
-      "chatbot"
-    );
+    document.getElementById("chatbot");
 
   if(!bot) return;
 
@@ -731,6 +729,28 @@ function toggleChatBot(){
     bot.style.display === "flex"
       ? "none"
       : "flex";
+
+  const body =
+    document.getElementById("chatBody");
+
+  if(
+    body &&
+    body.innerHTML.trim() === ""
+  ){
+
+    body.innerHTML = `
+      <div class="bot-message">
+        Halo 👋<br><br>
+
+        Selamat datang di
+        <b>BoostPanel Assistant</b>.<br><br>
+
+        Silakan pilih menu bantuan
+        yang tersedia di bawah.
+      </div>
+    `;
+
+  }
 
 }
 
@@ -784,68 +804,118 @@ function sendKeyword(keyword){
 
   let reply = "";
 
-  switch(keyword){
+  
+   switch(keyword){
 
-    case "harga":
+  /* =========================
+     HARGA
+  ========================= */
 
-      reply = `
-💰 <b>Informasi Harga</b><br><br>
+  case "harga":
+
+    reply = `
+💰 <b>Informasi Harga BoostPanel</b><br><br>
+
+Kami menyediakan layanan social media boosting dengan harga terjangkau dan proses cepat.<br><br>
 
 • Instagram Followers mulai Rp 843 / 10 pcs<br>
 • Instagram Likes mulai Rp 23 / 10 pcs<br>
 • TikTok Views mulai Rp 39 / 10 pcs<br>
 • WhatsApp Channel mulai Rp 987 / 10 pcs<br><br>
 
-📦 Paket Hemat mulai Rp 2.143
-      `;
+📦 Paket hemat tersedia mulai Rp 2.143 / paket.<br><br>
 
-    break;
+Harga dapat berubah sewaktu-waktu mengikuti kualitas server dan kestabilan layanan.
+    `;
 
-    case "order":
+  break;
 
-      reply = `
-🛒 <b>Cara Melakukan Order</b><br><br>
+  /* =========================
+     ORDER
+  ========================= */
 
-1. Pilih layanan yang diinginkan<br>
-2. Masukkan link target dengan benar<br>
-3. Isi jumlah pesanan<br>
-4. Klik tombol order<br>
-5. Hubungi admin untuk pembayaran
-      `;
+  case "order":
 
-    break;
+    reply = `
+🛒 <b>Cara Melakukan Pemesanan</b><br><br>
 
-    case "proses":
+Berikut langkah mudah untuk melakukan order di BoostPanel:<br><br>
 
-      reply = `
-⚡ <b>Estimasi Proses</b><br><br>
+1. Pilih layanan yang ingin digunakan<br>
+2. Masukkan link target secara benar<br>
+3. Tentukan jumlah pesanan<br>
+4. Sistem akan menghitung total otomatis<br>
+5. Klik tombol order untuk melanjutkan pembayaran<br><br>
 
-• Paket Hemat: 1 - 30 menit<br>
-• Layanan normal: 1 menit - 24 jam<br><br>
+✅ Pastikan akun atau target tidak dalam mode private.
+    `;
 
-Estimasi tergantung server dan antrian.
-      `;
+  break;
 
-    break;
+  /* =========================
+     PROSES
+  ========================= */
 
-    case "pembayaran":
+  case "proses":
 
-      reply = `
-💳 <b>Metode Pembayaran</b><br><br>
+    reply = `
+⚡ <b>Estimasi Proses Pengerjaan</b><br><br>
 
-Pembayaran dilakukan langsung melalui admin setelah invoice dibuat.
-      `;
+• Paket Hemat: sekitar 1 - 30 menit<br>
+• Layanan normal: 1 menit hingga 24 jam<br><br>
 
-    break;
+Waktu proses dapat berbeda tergantung antrian server dan jenis layanan yang dipilih.
+    `;
 
-    default:
+  break;
 
-      reply = `
-Silakan pilih menu bantuan yang tersedia.
-      `;
+  /* =========================
+     PEMBAYARAN
+  ========================= */
 
-  }
+  case "pembayaran":
 
+    reply = `
+💳 <b>Informasi Pembayaran</b><br><br>
+
+Pembayaran dilakukan setelah invoice berhasil dibuat.<br><br>
+
+Admin akan memberikan metode pembayaran yang tersedia beserta detail transaksi secara langsung melalui WhatsApp.
+    `;
+
+  break;
+
+  /* =========================
+     REFUND
+  ========================= */
+
+  case "refund":
+
+    reply = `
+📌 <b>Kebijakan Refund</b><br><br>
+
+Refund hanya berlaku apabila pesanan benar-benar gagal diproses oleh server.<br><br>
+
+Pesanan dengan target private, link salah, atau pelanggaran rules tidak dapat dilakukan refund.
+    `;
+
+  break;
+
+  /* =========================
+     DEFAULT
+  ========================= */
+
+  default:
+
+    reply = `
+Halo 👋<br><br>
+
+Selamat datang di <b>BoostPanel Assistant</b>.<br><br>
+
+Silakan pilih menu bantuan yang tersedia di bawah untuk mendapatkan informasi secara otomatis.
+    `;
+
+   }
   /* =========================
      BOT REPLY
   ========================= */
