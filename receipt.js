@@ -1,4 +1,21 @@
 /* =========================================
+   DEBUG
+========================================= */
+
+window.onerror = function(message, source, lineno){
+
+  console.error(
+    "ERROR:",
+    message,
+    "FILE:",
+    source,
+    "LINE:",
+    lineno
+  );
+
+};
+
+/* =========================================
    FIREBASE
 ========================================= */
 
@@ -36,7 +53,14 @@ async function loadReceipt(){
   const receipt =
     document.getElementById("receiptData");
 
-  if(!receipt) return;
+  if(!receipt) {
+
+    console.error(
+      "receiptData tidak ditemukan"
+    );
+
+    return;
+  }
 
   if(!orderId){
 
@@ -47,6 +71,9 @@ async function loadReceipt(){
   }
 
   try {
+
+    receipt.innerHTML =
+      "Memuat data struk...";
 
     const snapshot =
       await db
@@ -70,32 +97,32 @@ async function loadReceipt(){
 
         <div class="receipt-item">
           <span>ID</span>
-          <b>${d.id}</b>
+          <b>${d.id || "-"}</b>
         </div>
 
         <div class="receipt-item">
           <span>Layanan</span>
-          <b>${d.layanan}</b>
+          <b>${d.layanan || "-"}</b>
         </div>
 
         <div class="receipt-item">
           <span>Tipe</span>
-          <b>${d.tipe}</b>
+          <b>${d.tipe || "-"}</b>
         </div>
 
         <div class="receipt-item">
           <span>Jumlah</span>
-          <b>${d.jumlah}</b>
+          <b>${d.jumlah || "-"}</b>
         </div>
 
         <div class="receipt-item">
           <span>Status</span>
-          <b>${d.status}</b>
+          <b>${d.status || "-"}</b>
         </div>
 
         <div class="receipt-item">
           <span>Total</span>
-          <b>Rp ${d.total}</b>
+          <b>Rp ${d.total || "0"}</b>
         </div>
 
       `;
