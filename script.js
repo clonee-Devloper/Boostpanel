@@ -1034,3 +1034,128 @@ function updateJumlahInput(serviceValue) {
 
   hitungTotal();
 }
+
+/* =========================
+CHAT BOT
+========================= */
+
+function toggleChatBot() {
+
+  const bot =
+    document.getElementById("chatbot");
+
+  if (!bot) return;
+
+  bot.style.display =
+    bot.style.display === "flex"
+      ? "none"
+      : "flex";
+
+  bot.style.flexDirection = "column";
+}
+
+function sendKeyword(keyword) {
+
+  const body =
+    document.getElementById("chatBody");
+
+  if (!body) return;
+
+  /* =========================
+     USER MESSAGE
+  ========================= */
+
+  const userMsg =
+    document.createElement("div");
+
+  userMsg.className =
+    "user-message";
+
+  userMsg.innerText =
+    keyword;
+
+  body.appendChild(userMsg);
+
+  body.scrollTop =
+    body.scrollHeight;
+
+  /* =========================
+     TYPING
+  ========================= */
+
+  const typing =
+    document.createElement("div");
+
+  typing.className =
+    "typing";
+
+  typing.innerHTML = `
+    <span></span>
+    <span></span>
+    <span></span>
+  `;
+
+  body.appendChild(typing);
+
+  body.scrollTop =
+    body.scrollHeight;
+
+  /* =========================
+     BOT REPLY
+  ========================= */
+
+  let reply = "";
+
+  switch(keyword){
+
+    case "harga":
+      reply =
+        "💰 Harga layanan dimulai dari Rp 23 / 10 pcs dan paket hemat mulai Rp 1.499";
+      break;
+
+    case "order":
+      reply =
+        "🛒 Cara order:\n1. Pilih layanan\n2. Masukkan link\n3. Isi jumlah\n4. Submit order";
+      break;
+
+    case "proses":
+      reply =
+        "⚡ Estimasi proses 1 menit - 24 jam tergantung server";
+      break;
+
+    case "refund":
+      reply =
+        "🔄 Refund hanya berlaku jika order gagal total";
+      break;
+
+    case "admin":
+      reply =
+        "👨‍💻 Hubungi admin:\nWhatsApp 0831-4280-8857";
+      break;
+
+    default:
+      reply =
+        "Pesan tidak ditemukan";
+  }
+
+  setTimeout(() => {
+
+    typing.remove();
+
+    const botMsg =
+      document.createElement("div");
+
+    botMsg.className =
+      "bot-message";
+
+    botMsg.innerText =
+      reply;
+
+    body.appendChild(botMsg);
+
+    body.scrollTop =
+      body.scrollHeight;
+
+  }, 1200);
+
+}
