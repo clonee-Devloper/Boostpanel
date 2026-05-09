@@ -78,9 +78,21 @@ async function loadReceipt(){
     const snapshot =
       await db
         .collection("orders")
-        .where("id", "==", orderId)
-        .get();
+        const doc =
+  await db
+    .collection("orders")
+    .doc(orderId)
+    .get();
 
+if(!doc.exists){
+
+  receipt.innerHTML =
+    "Data order tidak ditemukan";
+
+  return;
+}
+
+const data = doc.data();
     if(snapshot.empty){
 
       receipt.innerHTML =
