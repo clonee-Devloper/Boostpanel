@@ -369,7 +369,7 @@ function updateJumlahInput(serviceValue){
    TOTAL
 ========================================================= */
 
-function hitungTotal(){
+function hitungTotal() {
 
   const jumlah =
     parseInt(document.getElementById("jumlah").value) || 0;
@@ -380,58 +380,81 @@ function hitungTotal(){
     'input[name="service"]:checked'
   );
 
-  if(!service || !totalEl) return;
+  if (!service || !totalEl) return;
 
   let type = "";
 
-  switch(service.value){
+  /* =========================
+     DETEKSI TYPE SERVICE
+  ========================= */
+
+  switch (service.value) {
 
     case "25144":
       type = selectedType.ig;
-    break;
+      break;
 
     case "3890":
       type = selectedType.tt;
-    break;
+      break;
 
     case "80954":
       type = selectedType.wa;
-    break;
+      break;
 
     case "8848":
       type = selectedType.paket;
-    break;
-
+      break;
   }
 
+  /* =========================
+     AMBIL HARGA
+  ========================= */
+
   const harga =
-    hargaLayanan[service.value]?.[type] || 0;
+    hargaLayanan?.[service.value]?.[type] || 0;
+
+  if (!harga || harga <= 0) {
+    totalEl.innerText = "0";
+    return;
+  }
 
   let total = 0;
 
-  if(service.value === "8848"){
+  /* =========================
+     LOGIC PER SERVICE
+  ========================= */
 
-    if(jumlah < 1){
+  // 🔥 PAKET HEMAT = PER 1 UNIT
+  if (service.value === "8848") {
+
+    if (jumlah < 1) {
       totalEl.innerText = "0";
       return;
     }
 
     total = jumlah * harga;
 
-  } else {
+  }
 
-    if(jumlah < 10){
+  // 🔥 SERVICE LAIN (IG / TT / WA)
+  else {
+
+    if (jumlah < 10) {
       totalEl.innerText = "0";
       return;
     }
 
+    // tetap sistem lama per 10 unit
     total = (jumlah / 10) * harga;
-
   }
+
+  /* =========================
+     OUTPUT FINAL
+  ========================= */
 
   totalEl.innerText =
     Math.ceil(total).toLocaleString("id-ID");
-
 }
 
 /* =========================================================
