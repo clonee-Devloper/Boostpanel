@@ -929,11 +929,31 @@ function renderHistory() {
 
               <td>
 
-                <button
-                  onclick="
-                    window.location.href=
-                    'receipt.html?id=${d.id || doc.id}'
-                  "
+                ${isAdmin ? `
+
+<td>
+
+  <button
+    onclick="
+      window.location.href=
+      'receipt.html?id=${d.id || doc.id}'
+    "
+
+    style="
+      background:#7c3aed;
+      color:white;
+      border:none;
+      padding:7px 12px;
+      border-radius:8px;
+      cursor:pointer;
+    "
+  >
+    Struk
+  </button>
+
+</td>
+
+` : ""}
 
                   style="
                     background:#7c3aed;
