@@ -143,28 +143,46 @@ function showPopup(title, message, callback = null){
    DROPDOWN
 ========================================================= */
 
-function toggleDropdown(id, event){
+function toggleDropdown(id, event) {
 
-  event.stopPropagation();
+  if (event) {
+    event.stopPropagation();
+  }
 
   const menu = document.getElementById(id);
 
-  if(!menu) return;
+  if (!menu) return;
+
+  /* =========================
+     CLOSE ALL DROPDOWN FIRST
+     (biar tidak bentrok / ghost UI)
+  ========================= */
 
   document.querySelectorAll(".dropdown-menu").forEach(el => {
-
-    if(el !== menu){
+    if (el !== menu) {
       el.style.display = "none";
     }
-
   });
 
-  menu.style.display =
-    menu.style.display === "block"
-      ? "none"
-      : "block";
+  /* =========================
+     TOGGLE CURRENT DROPDOWN
+  ========================= */
 
+  const isOpen = menu.style.display === "block";
+
+  menu.style.display = isOpen ? "none" : "block";
 }
+
+/* =========================
+   GLOBAL CLICK CLOSE
+   (biar klik luar auto close)
+========================= */
+
+document.addEventListener("click", function () {
+  document.querySelectorAll(".dropdown-menu").forEach(el => {
+    el.style.display = "none";
+  });
+});
 
 /* =========================================================
    OPTION SELECT
