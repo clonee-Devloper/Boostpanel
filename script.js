@@ -51,38 +51,36 @@ let unsubscribeHistory = null;
 /* =========================================================
    DATA HARGA
 ========================================================= */
-
 const hargaLayanan = {
 
-  "25144": {
-    Followers: 843,
-    Likes: 23,
-    Views: 14,
-    Komentar: 114
+  "25144": { // Instagram
+    followers: 78214,
+    likes: 1413,
+    views: 814
   },
 
-  "3890": {
-    Followers: 214,
-    Likes: 29,
-    Views: 39,
-    Komentar: 214
+  "3890": { // TikTok
+    followers: 58712,
+    views: 2243,
+    likes: 1743
   },
 
-  "80954": {
-    Channel: 987
+  "80954": { // WhatsApp
+    followers: 89143 // belum kamu definisikan
   },
 
-  "8848": {
-    Paket: 2143
+  "8848": { // Paket Hemat
+    paket1: 1496,
+    paket2: 2891
   }
 
 };
 
-const selectedType = {
+let selectedType = {
   ig: "Followers",
-  tt: "Likes",
-  wa: "Channel",
-  paket: "Paket"
+  tt: "Followers",
+  wa: "Followers",
+  paket: "Hemat 250"
 };
 
 /* =========================================================
@@ -385,34 +383,43 @@ function hitungTotal() {
   let type = "";
 
   /* =========================
-     DETEKSI TYPE SERVICE
+     DETEKSI TYPE
   ========================= */
 
   switch (service.value) {
 
-    case "25144":
+    case "25144": // IG
       type = selectedType.ig;
       break;
 
-    case "3890":
+    case "3890": // TT
       type = selectedType.tt;
       break;
 
-    case "80954":
+    case "80954": // WA
       type = selectedType.wa;
       break;
 
-    case "8848":
+    case "8848": // PAKET HEMAT
       type = selectedType.paket;
       break;
   }
 
-  /* =========================
-     AMBIL HARGA
-  ========================= */
-
   const harga =
     hargaLayanan?.[service.value]?.[type] || 0;
+
+   if (service.value === "8848") {
+
+  const price = hargaLayanan["8848"]?.[type] || 0;
+
+  if (!price) {
+    totalEl.innerText = "0";
+    return;
+  }
+
+  totalEl.innerText = price.toLocaleString("id-ID");
+  return;
+   }
 
   if (!harga || harga <= 0) {
     totalEl.innerText = "0";
@@ -420,12 +427,12 @@ function hitungTotal() {
   }
 
   let total = 0;
+   total = (jumlah / 10) * harga;
 
   /* =========================
-     LOGIC PER SERVICE
+     PAKET HEMAT = PER 1 ORDER
   ========================= */
 
-  // 🔥 PAKET HEMAT = PER 1 UNIT
   if (service.value === "8848") {
 
     if (jumlah < 1) {
@@ -434,10 +441,12 @@ function hitungTotal() {
     }
 
     total = jumlah * harga;
-
   }
 
-  // 🔥 SERVICE LAIN (IG / TT / WA)
+  /* =========================
+     IG / TT / WA = PER 10 ORDER
+  ========================= */
+
   else {
 
     if (jumlah < 10) {
@@ -445,12 +454,11 @@ function hitungTotal() {
       return;
     }
 
-    // tetap sistem lama per 10 unit
     total = (jumlah / 10) * harga;
   }
 
   /* =========================
-     OUTPUT FINAL
+     OUTPUT
   ========================= */
 
   totalEl.innerText =
