@@ -367,102 +367,70 @@ function updateJumlahInput(serviceValue){
    TOTAL
 ========================================================= */
 
-function hitungTotal() {
+function hitungTotal(){
 
-  const jumlah =
-    parseInt(document.getElementById("jumlah").value) || 0;
-
+  const jumlah = parseInt(document.getElementById("jumlah").value) || 0;
   const totalEl = document.getElementById("total");
 
-  const service = document.querySelector(
-    'input[name="service"]:checked'
-  );
+  const service = document.querySelector('input[name="service"]:checked');
 
-  if (!service || !totalEl) return;
+  if(!service || !totalEl) return;
 
   let type = "";
 
-  /* =========================
-     DETEKSI TYPE
-  ========================= */
+  switch(service.value){
 
-  switch (service.value) {
-
-    case "25144": // IG
+    case "25144":
       type = selectedType.ig;
       break;
 
-    case "3890": // TT
+    case "3890":
       type = selectedType.tt;
       break;
 
-    case "80954": // WA
+    case "80954":
       type = selectedType.wa;
       break;
 
-    case "8848": // PAKET HEMAT
+    case "8848":
       type = selectedType.paket;
       break;
+
   }
 
-  const harga =
-    hargaLayanan?.[service.value]?.[type] || 0;
+  const harga = hargaLayanan?.[service.value]?.[type];
 
-   if (service.value === "8848") {
+  // 🔥 DEBUG (penting banget)
+  console.log("SERVICE:", service.value);
+  console.log("TYPE:", type);
+  console.log("HARGA:", harga);
 
-  const price = hargaLayanan["8848"]?.[type] || 0;
-
-  if (!price) {
-    totalEl.innerText = "0";
-    return;
-  }
-
-  totalEl.innerText = price.toLocaleString("id-ID");
-  return;
-   }
-
-  if (!harga || harga <= 0) {
+  if(!harga){
     totalEl.innerText = "0";
     return;
   }
 
   let total = 0;
-   total = (jumlah / 10) * harga;
 
-  /* =========================
-     PAKET HEMAT = PER 1 ORDER
-  ========================= */
+  // paket hemat (FIX PRICE)
+  if(service.value === "8848"){
 
-  if (service.value === "8848") {
+    total = harga;
 
-    if (jumlah < 1) {
+  } else {
+
+    if(jumlah < 10){
       totalEl.innerText = "0";
       return;
     }
 
-    total = jumlah * harga;
+    // PER 1000 SYSTEM
+    total = (jumlah / 1000) * harga;
+
   }
 
-  /* =========================
-     IG / TT / WA = PER 10 ORDER
-  ========================= */
+  totalEl.innerText = Math.ceil(total).toLocaleString("id-ID");
 
-  else {
-
-    if (jumlah < 10) {
-      totalEl.innerText = "0";
-      return;
-    }
-
-    total = (jumlah / 10) * harga;
-  }
-
-  /* =========================
-     OUTPUT
-  ========================= */
-
-  totalEl.innerText =
-    Math.ceil(total).toLocaleString("id-ID");
 }
 
 /* =========================================================
