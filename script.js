@@ -892,89 +892,111 @@ function renderHistory() {
           /* =========================
              RENDER ROW
           ========================= */
+        tbody.innerHTML += `
 
-          tbody.innerHTML += `
+<tr>
 
-            <tr>
+  <td>
+    ${d.id || doc.id}
+  </td>
 
-              <td>
-                ${d.id || doc.id}
-              </td>
+  <td>
+    ${d.layanan || "-"}
+  </td>
 
-              <td>
-                ${d.layanan || "-"}
-              </td>
+  <td>
+    ${d.jumlah || "-"}
+  </td>
 
-              <td>
-                ${d.jumlah || "-"}
-              </td>
+  <td>
+    <span style="
+      color:${statusColor};
+      font-weight:bold;
+    ">
+      ${d.status || "Pending"}
+    </span>
+  </td>
 
-              <td>
+  <td>
+    ${tanggal}
+  </td>
 
-                <span style="
-                  color:${statusColor};
-                  font-weight:bold;
-                ">
-                  ${d.status || "Pending"}
-                </span>
+  <td>
 
-              </td>
+    ${isAdmin ? `
 
-              <td style="
-                font-size:11px;
-                color:#94a3b8;
-              ">
-                ${tanggal}
-              </td>
+      <button
+        onclick="
+          window.location.href=
+          'receipt.html?id=${d.id || doc.id}'
+        "
 
-              <td>
+        style="
+          background:#7c3aed;
+          color:white;
+          border:none;
+          padding:6px 10px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Struk
+      </button>
 
-                ${isAdmin ? `
+    ` : "-"}
 
-<td>
+  </td>
 
-  <button
-    onclick="
-      window.location.href=
-      'receipt.html?id=${d.id || doc.id}'
-    "
+  <td>
 
-    style="
-      background:#7c3aed;
-      color:white;
-      border:none;
-      padding:7px 12px;
-      border-radius:8px;
-      cursor:pointer;
-    "
-  >
-    Struk
-  </button>
+    ${isAdmin ? `
 
-</td>
+      <div style="
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+      ">
 
-` : ""}
+        <button
+          onclick="updateStatus('${doc.id}','Pending')"
+        >
+          Pending
+        </button>
 
-                  style="
-                    background:#7c3aed;
-                    color:white;
-                    border:none;
-                    padding:7px 12px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Struk
-                </button>
+        <button
+          onclick="updateStatus('${doc.id}','Process')"
+        >
+          Process
+        </button>
 
-              </td>
+        <button
+          onclick="updateStatus('${doc.id}','Success')"
+        >
+          Success
+        </button>
 
-              ${isAdmin ? adminButtons : ""}
+        <button
+          onclick="updateStatus('${doc.id}','Cancel')"
+        >
+          Cancel
+        </button>
 
-            </tr>
+        <button
+          onclick="deleteOrder('${doc.id}')"
+        >
+          Delete
+        </button>
 
-          `;
+      </div>
 
+    ` : "-"}
+
+  </td>
+
+</tr>
+
+`;
+          
         });
 
       },
