@@ -889,53 +889,59 @@ function renderHistory() {
 
           }
 
-          /* =========================
-             RENDER ROW
-          ========================= */
-        tbody.innerHTML += `
+/* =========================
+   RENDER TABLE
+========================= */
 
-<tr>
+let row = `
+  <tr>
 
-  <td>
-    ${d.id || doc.id}
-  </td>
+    <td>${d.id || "-"}</td>
 
-  <td>
-    ${d.layanan || "-"}
-  </td>
+    <td>${d.layanan || "-"}</td>
 
-  <td>
-    ${d.jumlah || "-"}
-  </td>
+    <td>${d.jumlah || "-"}</td>
 
-  <td>
-    <span style="
-      color:${statusColor};
-      font-weight:bold;
+    <td>
+      <span style="
+        color:${statusColor};
+        font-weight:bold;
+      ">
+        ${d.status || "Pending"}
+      </span>
+    </td>
+
+    <td>${tanggal}</td>
+`;
+
+/* =========================
+   ADMIN ONLY
+========================= */
+
+if(isAdmin){
+
+  row += `
+
+    <td style="
+      max-width:120px;
+      word-break:break-word;
     ">
-      ${d.status || "Pending"}
-    </span>
-  </td>
+      ${d.link || "-"}
+    </td>
 
-  <td>
-    ${tanggal}
-  </td>
-
-  <td>
-
-    ${isAdmin ? `
+    <td style="
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    ">
 
       <button
-        onclick="
-          window.location.href=
-          'receipt.html?id=${d.id || doc.id}'
-        "
-
+        onclick="window.location.href='receipt.html?id=${d.id}'"
         style="
           background:#7c3aed;
           color:white;
           border:none;
-          padding:6px 10px;
+          padding:7px;
           border-radius:8px;
           cursor:pointer;
         "
@@ -943,78 +949,67 @@ function renderHistory() {
         Struk
       </button>
 
-    ` : "-"}
+      <select
+        onchange="updateStatus('${doc.id}', this.value)"
+        style="
+          padding:7px;
+          border:none;
+          border-radius:8px;
+          background:#0f172a;
+          color:white;
+          cursor:pointer;
+        "
+      >
 
-  </td>
+        <option value="">
+          Update
+        </option>
 
-  <td>
-
-    ${isAdmin ? `
-
-      <div style="
-        display:flex;
-        flex-direction:column;
-        gap:6px;
-      ">
-
-        <button
-          onclick="updateStatus('${doc.id}','Pending')"
-        >
+        <option value="Pending">
           Pending
-        </button>
+        </option>
 
-        <button
-          onclick="updateStatus('${doc.id}','Process')"
-        >
+        <option value="Process">
           Process
-        </button>
+        </option>
 
-        <button
-          onclick="updateStatus('${doc.id}','Success')"
-        >
+        <option value="Success">
           Success
-        </button>
+        </option>
 
-        <button
-          onclick="updateStatus('${doc.id}','Cancel')"
-        >
+        <option value="Cancel">
           Cancel
-        </button>
+        </option>
 
-        <button
-          onclick="deleteOrder('${doc.id}')"
-        >
-          Delete
-        </button>
+      </select>
 
-      </div>
+      <button
+        onclick="deleteOrder('${doc.id}')"
+        style="
+          background:#ef4444;
+          color:white;
+          border:none;
+          padding:7px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Delete
+      </button>
 
-    ` : "-"}
-
-  </td>
-
-</tr>
-
-`;
-          
-        });
-
-      },
-
-      err => {
-
-        console.error(
-          "History Error:",
-          err
-        );
-
-      }
-
-    );
-
+    </td>
+  `;
 }
 
-          
+/* =========================
+   CLOSE ROW
+========================= */
+
+row += `
+  </tr>
+`;
+
+tbody.innerHTML += row;
                       
 /* =========================================================
    SHOW INVOICE
