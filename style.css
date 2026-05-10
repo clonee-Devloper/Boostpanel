@@ -750,3 +750,49 @@ TYPING ANIMATION
   font-size:14px;
   text-align:right;
 }
+
+body.chat-active {
+  overflow: hidden;
+}
+
+/* BLUR BACKGROUND */
+body.chat-active .wrap,
+body.chat-active .navbar {
+  filter: blur(6px);
+  transition: 0.25s ease;
+}
+
+/* CHAT ANIMATION */
+.chatbot {
+  display: none;
+  position: fixed;
+  right: 20px;
+  bottom: 80px;
+  width: 320px;
+  height: 420px;
+  background: #0f172a;
+  border: 1px solid #1e293b;
+  border-radius: 16px;
+  flex-direction: column;
+  overflow: hidden;
+
+  transform: scale(0.9);
+  opacity: 0;
+  transition: 0.25s ease;
+  z-index: 9999;
+}
+
+.chatbot.show {
+  display: flex;
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* OVERLAY CLICK OUTSIDE */
+.chat-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(4px);
+  z-index: 9998;
+}
