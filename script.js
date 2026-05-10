@@ -662,9 +662,8 @@ async function loginAdmin(){
 
 }
                     
-
 /* =========================================================
-   HISTORY (FINAL STABLE VERSION)
+   HISTORY (FINAL FIXED VERSION)
 ========================================================= */
 
 function renderHistory() {
@@ -701,7 +700,7 @@ function renderHistory() {
         tbody.innerHTML = "";
 
         /* =========================
-           EMPTY DATA
+           DATA KOSONG
         ========================= */
 
         if (snapshot.empty) {
@@ -759,10 +758,7 @@ function renderHistory() {
 
             } catch (err) {
 
-              console.error(
-                "Tanggal Error:",
-                err
-              );
+              console.error(err);
 
             }
 
@@ -791,14 +787,37 @@ function renderHistory() {
           }
 
           /* =========================
-             ADMIN BUTTONS
+             BASE ROW
           ========================= */
 
-          let adminButtons = "";
+          let row = `
+            <tr>
+
+              <td>${d.id || "-"}</td>
+
+              <td>${d.layanan || "-"}</td>
+
+              <td>${d.jumlah || "-"}</td>
+
+              <td>
+                <span style="
+                  color:${statusColor};
+                  font-weight:bold;
+                ">
+                  ${d.status || "Pending"}
+                </span>
+              </td>
+
+              <td>${tanggal}</td>
+          `;
+
+          /* =========================
+             ADMIN ONLY
+          ========================= */
 
           if (isAdmin) {
 
-            adminButtons = `
+            row += `
 
               <td style="
                 max-width:120px;
@@ -814,67 +833,59 @@ function renderHistory() {
               ">
 
                 <button
-                  onclick="updateStatus('${doc.id}','Pending')"
+                  onclick="window.location.href='receipt.html?id=${d.id}'"
                   style="
-                    background:#f59e0b;
-                    border:none;
+                    background:#7c3aed;
                     color:white;
+                    border:none;
                     padding:7px;
                     border-radius:8px;
                     cursor:pointer;
                   "
                 >
-                  Pending
+                  Struk
                 </button>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Process')"
+                <select
+                  onchange="updateStatus('${doc.id}', this.value)"
                   style="
-                    background:#3b82f6;
-                    border:none;
-                    color:white;
                     padding:7px;
+                    border:none;
                     border-radius:8px;
+                    background:#0f172a;
+                    color:white;
                     cursor:pointer;
                   "
                 >
-                  Process
-                </button>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Success')"
-                  style="
-                    background:#10b981;
-                    border:none;
-                    color:white;
-                    padding:7px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Success
-                </button>
+                  <option value="">
+                    Update
+                  </option>
 
-                <button
-                  onclick="updateStatus('${doc.id}','Cancel')"
-                  style="
-                    background:#ef4444;
-                    border:none;
-                    color:white;
-                    padding:7px;
-                    border-radius:8px;
-                    cursor:pointer;
-                  "
-                >
-                  Cancel
-                </button>
+                  <option value="Pending">
+                    Pending
+                  </option>
+
+                  <option value="Process">
+                    Process
+                  </option>
+
+                  <option value="Success">
+                    Success
+                  </option>
+
+                  <option value="Cancel">
+                    Cancel
+                  </option>
+
+                </select>
 
                 <button
                   onclick="deleteOrder('${doc.id}')"
                   style="
-                    background:#991b1b;
-                    border:none;
+                    background:#ef4444;
                     color:white;
+                    border:none;
                     padding:7px;
                     border-radius:8px;
                     cursor:pointer;
@@ -884,132 +895,36 @@ function renderHistory() {
                 </button>
 
               </td>
-
             `;
 
           }
 
-/* =========================
-   RENDER TABLE
-========================= */
+          /* =========================
+             CLOSE ROW
+          ========================= */
 
-let row = `
-  <tr>
+          row += `
+            </tr>
+          `;
 
-    <td>${d.id || "-"}</td>
+          tbody.innerHTML += row;
 
-    <td>${d.layanan || "-"}</td>
+        });
 
-    <td>${d.jumlah || "-"}</td>
+      },
 
-    <td>
-      <span style="
-        color:${statusColor};
-        font-weight:bold;
-      ">
-        ${d.status || "Pending"}
-      </span>
-    </td>
+      error => {
 
-    <td>${tanggal}</td>
-`;
+        console.error(
+          "History Error:",
+          error
+        );
 
-/* =========================
-   ADMIN ONLY
-========================= */
+      }
 
-if(isAdmin){
+    );
 
-  row += `
-
-    <td style="
-      max-width:120px;
-      word-break:break-word;
-    ">
-      ${d.link || "-"}
-    </td>
-
-    <td style="
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-    ">
-
-      <button
-        onclick="window.location.href='receipt.html?id=${d.id}'"
-        style="
-          background:#7c3aed;
-          color:white;
-          border:none;
-          padding:7px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Struk
-      </button>
-
-      <select
-        onchange="updateStatus('${doc.id}', this.value)"
-        style="
-          padding:7px;
-          border:none;
-          border-radius:8px;
-          background:#0f172a;
-          color:white;
-          cursor:pointer;
-        "
-      >
-
-        <option value="">
-          Update
-        </option>
-
-        <option value="Pending">
-          Pending
-        </option>
-
-        <option value="Process">
-          Process
-        </option>
-
-        <option value="Success">
-          Success
-        </option>
-
-        <option value="Cancel">
-          Cancel
-        </option>
-
-      </select>
-
-      <button
-        onclick="deleteOrder('${doc.id}')"
-        style="
-          background:#ef4444;
-          color:white;
-          border:none;
-          padding:7px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Delete
-      </button>
-
-    </td>
-  `;
-}
-
-/* =========================
-   CLOSE ROW
-========================= */
-
-row += `
-  </tr>
-`;
-
-tbody.innerHTML += row;
+        }
                       
 /* =========================================================
    SHOW INVOICE
