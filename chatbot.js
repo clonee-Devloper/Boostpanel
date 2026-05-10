@@ -1,5 +1,5 @@
 /* =========================================================
-   BOOSTPANEL CHATBOT - PRO VERSION
+   BOOSTPANEL CHATBOT - PRO VERSION (FIXED & STABLE)
 ========================================================= */
 
 /* =========================
@@ -11,7 +11,7 @@ function $(id) {
 }
 
 /* =========================
-   TOGGLE CHATBOT
+   TOGGLE CHATBOT (FIXED)
 ========================= */
 
 function toggleChatBot() {
@@ -20,25 +20,65 @@ function toggleChatBot() {
 
   if (!bot) return;
 
-  const isOpen = bot.style.display === "flex";
+  const isOpen = bot.classList.contains("show");
 
-  bot.style.display = isOpen ? "none" : "flex";
+  if (isOpen) {
+    closeChatBot();
+    return;
+  }
 
-  // init message only once
+  openChatBot();
+
+  // INIT MESSAGE ONLY ONCE
   if (body && body.dataset.init !== "true") {
     body.innerHTML = `
       <div class="bot-message">
         👋 Halo, saya <b>BoostPanel Assistant</b><br><br>
         Saya siap membantu kamu terkait:
         <br><br>
-        • Harga layanan<br>
-        • Cara order<br>
-        • Status proses<br>
-        • Keamanan layanan
+        • 💰 Harga layanan<br>
+        • 🛒 Cara order<br>
+        • ⚡ Status proses<br>
+        • 🔒 Keamanan layanan
       </div>
     `;
     body.dataset.init = "true";
   }
+}
+
+/* =========================
+   OPEN CHATBOT (BLUR SUPPORT)
+========================= */
+
+function openChatBot() {
+  const bot = $("chatbot");
+
+  if (!bot) return;
+
+  bot.classList.add("show");
+  document.body.classList.add("chat-active");
+
+  // overlay blur
+  let overlay = document.createElement("div");
+  overlay.className = "chat-overlay";
+  overlay.onclick = closeChatBot;
+  document.body.appendChild(overlay);
+}
+
+/* =========================
+   CLOSE CHATBOT
+========================= */
+
+function closeChatBot() {
+  const bot = $("chatbot");
+
+  if (!bot) return;
+
+  bot.classList.remove("show");
+  document.body.classList.remove("chat-active");
+
+  const overlay = document.querySelector(".chat-overlay");
+  if (overlay) overlay.remove();
 }
 
 /* =========================
@@ -51,18 +91,16 @@ function sendKeyword(keyword) {
 
   keyword = keyword.toLowerCase();
 
-  /* USER MESSAGE */
+  // USER MESSAGE
   body.appendChild(createMessage("user", keyword));
-
   scrollChat(body);
 
-  /* TYPING EFFECT */
+  // TYPING EFFECT
   const typing = createTyping();
   body.appendChild(typing);
-
   scrollChat(body);
 
-  /* BOT RESPONSE */
+  // BOT RESPONSE
   setTimeout(() => {
     typing.remove();
 
@@ -91,9 +129,7 @@ function createMessage(type, text) {
 function createTyping() {
   const div = document.createElement("div");
   div.className = "typing";
-  div.innerHTML = `
-    <span></span><span></span><span></span>
-  `;
+  div.innerHTML = `<span></span><span></span><span></span>`;
   return div;
 }
 
@@ -108,7 +144,7 @@ function scrollChat(body) {
 }
 
 /* =========================
-   BOT RESPONSE ENGINE (PRO)
+   BOT RESPONSE ENGINE
 ========================= */
 
 function getBotReply(keyword) {
@@ -117,13 +153,13 @@ function getBotReply(keyword) {
 
     harga: `
 💰 <b>Informasi Harga</b><br><br>
-Harga layanan BoostPanel bervariasi tergantung:
+Harga layanan BoostPanel tergantung:
 <br><br>
 • Jenis layanan (IG, TikTok, dll)<br>
 • Jumlah order<br>
 • Paket yang dipilih<br><br>
 
-👉 Silakan pilih layanan di form order untuk melihat harga otomatis.
+👉 Harga akan otomatis muncul saat kamu memilih layanan di form order.
     `,
 
     order: `
@@ -142,37 +178,34 @@ Sistem akan memproses otomatis.
 • 1–10 menit → Fast Order<br>
 • 10 menit – 24 jam → Normal Order<br><br>
 
-⏳ Waktu dapat berubah tergantung antrean server.
+⏳ Waktu tergantung antrean server.
     `,
 
     aman: `
 🔒 <b>Keamanan Layanan</b><br><br>
-BoostPanel menggunakan sistem:
+BoostPanel menggunakan sistem aman:
 <br><br>
-• Non-login target<br>
-• Aman untuk penggunaan normal<br>
-• Tidak menyimpan data pribadi pengguna
-<br><br>
-
-Kami menjaga privasi pengguna.
+• Tidak meminta password<br>
+• Tidak menyimpan data pribadi<br>
+• Aman untuk penggunaan normal
     `,
 
     admin: `
 👨‍💻 <b>Kontak Admin</b><br><br>
-Jika mengalami kendala:
+Jika ada masalah:
 <br><br>
 • Order tidak masuk<br>
 • Status tidak berubah<br>
 • Kendala pembayaran<br><br>
 
-Silakan hubungi admin melalui kontak yang tersedia di halaman utama.
-    `,
+Silakan hubungi admin melalui kontak di website.
+    `
 
   };
 
   return responses[keyword] || `
 🤖 <b>BoostPanel Assistant</b><br><br>
 Saya tidak menemukan perintah tersebut.<br><br>
-Silakan pilih menu bantuan yang tersedia di bawah.
+Silakan pilih menu bantuan yang tersedia.
   `;
 }
