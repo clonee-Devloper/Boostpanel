@@ -1289,7 +1289,35 @@ Mohon info pembayaran 🙏
 
 async function updateStatus(id, status){
 
-  if(!isAdmin) return;
+  /* =========================
+     CEK ADMIN
+  ========================= */
+
+  if(!isAdmin){
+
+    showPopup(
+      "Akses Ditolak",
+      "Hanya admin yang dapat mengubah status pesanan"
+    );
+
+    return;
+
+  }
+
+  /* =========================
+     VALIDASI
+  ========================= */
+
+  if(!id || !status){
+
+    showPopup(
+      "Error",
+      "Data status tidak valid"
+    );
+
+    return;
+
+  }
 
   try {
 
@@ -1307,7 +1335,10 @@ async function updateStatus(id, status){
 
   } catch(err){
 
-    console.error(err);
+    console.error(
+      "UPDATE STATUS ERROR:",
+      err
+    );
 
     showPopup(
       "Error",
@@ -1317,18 +1348,49 @@ async function updateStatus(id, status){
   }
 
 }
-
 /* =========================================================
    DELETE ORDER
 ========================================================= */
 
 async function deleteOrder(id){
 
-  if(!isAdmin) return;
+  /* =========================
+     CEK ADMIN
+  ========================= */
+
+  if(!isAdmin){
+
+    showPopup(
+      "Akses Ditolak",
+      "Hanya admin yang dapat menghapus pesanan"
+    );
+
+    return;
+
+  }
+
+  /* =========================
+     VALIDASI
+  ========================= */
+
+  if(!id){
+
+    showPopup(
+      "Error",
+      "ID order tidak valid"
+    );
+
+    return;
+
+  }
+
+  /* =========================
+     KONFIRMASI DELETE
+  ========================= */
 
   showPopup(
     "Konfirmasi",
-    "Yakin ingin menghapus order?",
+    "Yakin ingin menghapus order ini?",
     async () => {
 
       try {
@@ -1345,7 +1407,10 @@ async function deleteOrder(id){
 
       } catch(err){
 
-        console.error(err);
+        console.error(
+          "DELETE ORDER ERROR:",
+          err
+        );
 
         showPopup(
           "Error",
