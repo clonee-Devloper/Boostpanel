@@ -170,23 +170,41 @@ function toggleDropdown(id, event){
    OPTION SELECT
 ========================================================= */
 
-function setOption(type, value, event){
+function setOption(type, value, event) {
 
-  event.stopPropagation();
+  if (event) event.stopPropagation();
+
+  // safety check
+  if (!selectedType) {
+    window.selectedType = {};
+  }
 
   selectedType[type] = value;
 
+  /* =========================
+     UPDATE TEXT DROPDOWN
+  ========================= */
+
   const textEl = document.getElementById(type + "Text");
 
-  if(textEl){
+  if (textEl) {
     textEl.innerText = value;
   }
 
+  /* =========================
+     CLOSE MENU
+  ========================= */
+
   const menu = document.getElementById(type + "Menu");
 
-  if(menu){
+  if (menu) {
     menu.style.display = "none";
   }
+
+  /* =========================
+     SERVICE MAP (STABLE)
+     - pastikan semua type selalu ada
+  ========================= */
 
   const map = {
     ig: "25144",
@@ -197,30 +215,56 @@ function setOption(type, value, event){
 
   const serviceValue = map[type];
 
+  if (!serviceValue) {
+    console.warn("Service type tidak ditemukan:", type);
+    return;
+  }
+
+  /* =========================
+     RESET ACTIVE STATE
+  ========================= */
+
   document.querySelectorAll(".option").forEach(opt => {
     opt.classList.remove("active");
   });
+
+  /* =========================
+     CHECK RADIO + ACTIVE BORDER
+  ========================= */
 
   const radio = document.querySelector(
     `input[name="service"][value="${serviceValue}"]`
   );
 
-  if(radio){
+  if (radio) {
 
     radio.checked = true;
 
     const parent = radio.closest(".option");
 
-    if(parent){
+    if (parent) {
       parent.classList.add("active");
     }
 
-    updateJumlahInput(serviceValue);
-
+  } else {
+    console.warn("Radio tidak ditemukan:", serviceValue);
   }
 
-  hitungTotal();
+  /* =========================
+     UPDATE INPUT JUMLAH (SAFE CALL)
+  ========================= */
 
+  if (typeof updateJumlahInput === "function") {
+    updateJumlahInput(serviceValue);
+  }
+
+  /* =========================
+     RECALCULATE TOTAL
+  ========================= */
+
+  if (typeof hitungTotal === "function") {
+    hitungTotal();
+  }
 }
 
 /* =========================================================
