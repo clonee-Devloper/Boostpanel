@@ -1099,3 +1099,10 @@ document.addEventListener(
 
   }
 );
+
+// taruh di paling bawah script.js
+document.addEventListener("click", function () {
+  document.querySelectorAll(".dropdown-menu").forEach(el => {
+    el.style.display = "none";
+  });
+});
