@@ -662,66 +662,84 @@ async function loginAdmin(){
 
 }
                     
+
 /* =========================================================
-   HISTORY
+   HISTORY (FINAL STABLE VERSION)
 ========================================================= */
 
-function renderHistory(){
+function renderHistory() {
 
   const tbody =
     document.querySelector(
       "#historyTable tbody"
     );
 
-  if(!tbody) return;
+  if (!tbody) return;
 
-  /* HAPUS LISTENER LAMA */
+  /* =========================
+     HAPUS LISTENER LAMA
+  ========================= */
 
-  if(unsubscribeHistory){
+  if (unsubscribeHistory) {
 
     unsubscribeHistory();
+    unsubscribeHistory = null;
 
   }
 
-  /* REALTIME FIRESTORE */
+  /* =========================
+     REALTIME FIRESTORE
+  ========================= */
 
-  unsubscribeHistory =
-    db.collection("orders")
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
+  unsubscribeHistory = db
+    .collection("orders")
+    .orderBy("createdAt", "desc")
+    .onSnapshot(
+
+      snapshot => {
 
         tbody.innerHTML = "";
 
-        /* JIKA TIDAK ADA DATA */
+        /* =========================
+           EMPTY DATA
+        ========================= */
 
-        if(snapshot.empty){
+        if (snapshot.empty) {
 
           tbody.innerHTML = `
             <tr>
-              <td colspan="6" style="
-                text-align:center;
-                padding:20px;
-                color:#94a3b8;
-              ">
+              <td
+                colspan="${isAdmin ? 7 : 5}"
+                style="
+                  text-align:center;
+                  padding:20px;
+                  color:#94a3b8;
+                "
+              >
                 Belum ada pesanan
               </td>
             </tr>
           `;
 
           return;
+
         }
 
-        /* LOOP DATA */
+        /* =========================
+           LOOP DATA
+        ========================= */
 
         snapshot.forEach(doc => {
 
           const d = doc.data();
 
-          /* FORMAT TANGGAL */
+          /* =========================
+             FORMAT TANGGAL
+          ========================= */
 
           let tanggal = "-";
 
-          if(d.createdAt){
+          if (d.createdAt) {
 
             try {
 
@@ -739,19 +757,24 @@ function renderHistory(){
                     }
                   );
 
-            } catch(err){
+            } catch (err) {
 
-              console.error(err);
+              console.error(
+                "Tanggal Error:",
+                err
+              );
 
             }
 
           }
 
-          /* STATUS COLOR */
+          /* =========================
+             STATUS COLOR
+          ========================= */
 
           let statusColor = "#facc15";
 
-          switch(d.status){
+          switch (d.status) {
 
             case "Success":
               statusColor = "#22c55e";
@@ -767,293 +790,156 @@ function renderHistory(){
 
           }
 
-          /* =========================================
-             ADMIN MODE
-          ========================================= */
-
-          if(isAdmin){
-
-            tbody.innerHTML += `
-
-              <tr>
-
-                <td>
-                  ${d.id || doc.id}
-                </td>
-
-                <td>
-                  ${d.layanan || "-"}
-                </td>
-
-                <td>
-                  ${d.jumlah || "-"}
-                </td>
-
-                <td>
-
-                  <span style="
-                    color:${statusColor};
-                    font-weight:bold;
-                  ">
-                    ${d.status || "Pending"}
-                  </span>
-
-                </td>
-
-                <td style="
-                  max-width:120px;
-                  word-break:break-word;
-                ">
-                  ${d.link || "-"}
-                </td>
-
-                <td style="
-                  font-size:11px;
-                  color:#94a3b8;
-                ">
-                  ${tanggal}
-                </td>
-
-                <td style="
-                  display:flex;
-                  flex-direction:column;
-                  gap:6px;
-                ">
-
-                  <!-- STRUK -->
-
-                  <button
-                    onclick="
-                      window.location.href=
-                      'receipt.html?id=${d.id}'
-                    "
-
-                    style="
-                      background:#7c3aed;
-                      color:white;
-                      border:none;
-                      padding:7px;
-                      border-radius:8px;
-                      cursor:pointer;
-                    "
-                  >
-                    Struk
-                  </button>
-
-                  <!-- STATUS -->
-
-                  <select
-                    onchange="
-                      updateStatus(
-                        '${doc.id}',
-                        this.value
-                      )
-                    "
-
-                    style="
-                      padding:7px;
-                      border:none;
-                      border-radius:8px;
-                      background:#0f172a;
-                      color:white;
-                      cursor:pointer;
-                    "
-                  >
-
-                    <option>
-                      Update
-                    </option>
-
-                    <option value="Pending">
-                      Pending
-                    </option>
-
-                    <option value="Process">
-                      Process
-                    </option>
-
-                    <option value="Success">
-                      Success
-                    </option>
-
-                    <option value="Cancel">
-                      Cancel
-                    </option>
-
-/* =========================================================
-   HISTORY
-========================================================= */
-
-function renderHistory(){
-
-  const tbody =
-    document.querySelector(
-      "#historyTable tbody"
-    );
-
-  if(!tbody) return;
-
-  if(unsubscribeHistory){
-
-    unsubscribeHistory();
-
-  }
-
-  unsubscribeHistory =
-    db.collection("orders")
-      .orderBy("createdAt", "desc")
-      .onSnapshot(snapshot => {
-
-        tbody.innerHTML = "";
-
-        snapshot.forEach(doc => {
-
-          const d = doc.data();
-
           /* =========================
-             FORMAT TANGGAL
+             ADMIN BUTTONS
           ========================= */
 
-          let tanggal = "-";
+          let adminButtons = "";
 
-          if(d.createdAt){
+          if (isAdmin) {
 
-            try {
+            adminButtons = `
 
-              tanggal =
-                d.createdAt
-                  .toDate()
-                  .toLocaleString("id-ID");
+              <td style="
+                max-width:120px;
+                word-break:break-word;
+              ">
+                ${d.link || "-"}
+              </td>
 
-            } catch(err){
+              <td style="
+                display:flex;
+                flex-direction:column;
+                gap:6px;
+              ">
 
-              tanggal = "-";
+                <button
+                  onclick="updateStatus('${doc.id}','Pending')"
+                  style="
+                    background:#f59e0b;
+                    border:none;
+                    color:white;
+                    padding:7px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Pending
+                </button>
 
-            }
+                <button
+                  onclick="updateStatus('${doc.id}','Process')"
+                  style="
+                    background:#3b82f6;
+                    border:none;
+                    color:white;
+                    padding:7px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Process
+                </button>
+
+                <button
+                  onclick="updateStatus('${doc.id}','Success')"
+                  style="
+                    background:#10b981;
+                    border:none;
+                    color:white;
+                    padding:7px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Success
+                </button>
+
+                <button
+                  onclick="updateStatus('${doc.id}','Cancel')"
+                  style="
+                    background:#ef4444;
+                    border:none;
+                    color:white;
+                    padding:7px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onclick="deleteOrder('${doc.id}')"
+                  style="
+                    background:#991b1b;
+                    border:none;
+                    color:white;
+                    padding:7px;
+                    border-radius:8px;
+                    cursor:pointer;
+                  "
+                >
+                  Delete
+                </button>
+
+              </td>
+
+            `;
 
           }
 
           /* =========================
-   BUTTON ADMIN
-========================= */
-
-let adminButtons = "";
-
-if(isAdmin){
-
-  adminButtons = `
-
-    <td>${d.link || "-"}</td>
-
-    <td style="display:flex;gap:6px;flex-wrap:wrap;">
-
-      <button
-        onclick="updateStatus('${doc.id}','Pending')"
-        style="
-          background:#f59e0b;
-          border:none;
-          color:white;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Pending
-      </button>
-
-      <button
-        onclick="updateStatus('${doc.id}','Proses')"
-        style="
-          background:#3b82f6;
-          border:none;
-          color:white;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Proses
-      </button>
-
-      <button
-        onclick="updateStatus('${doc.id}','Success')"
-        style="
-          background:#10b981;
-          border:none;
-          color:white;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Success
-      </button>
-
-      <button
-        onclick="updateStatus('${doc.id}','Cancel')"
-        style="
-          background:#ef4444;
-          border:none;
-          color:white;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Cancel
-      </button>
-
-      <button
-        onclick="deleteOrder('${doc.id}')"
-        style="
-          background:#991b1b;
-          border:none;
-          color:white;
-          padding:6px 10px;
-          border-radius:8px;
-          cursor:pointer;
-        "
-      >
-        Delete
-      </button>
-
-    </td>
-
-  `;
-
-}
-
-          /* =========================
-             RENDER TABLE
+             RENDER ROW
           ========================= */
 
           tbody.innerHTML += `
 
             <tr>
 
-              <td>${d.id || "-"}</td>
+              <td>
+                ${d.id || doc.id}
+              </td>
 
-              <td>${d.layanan || "-"}</td>
+              <td>
+                ${d.layanan || "-"}
+              </td>
 
-              <td>${d.jumlah || "-"}</td>
+              <td>
+                ${d.jumlah || "-"}
+              </td>
 
-              <td>${d.status || "-"}</td>
+              <td>
 
-              <td>${tanggal}</td>
+                <span style="
+                  color:${statusColor};
+                  font-weight:bold;
+                ">
+                  ${d.status || "Pending"}
+                </span>
 
-              ${isAdmin ? `
-                <td>${d.link || "-"}</td>
-              ` : ""}
+              </td>
+
+              <td style="
+                font-size:11px;
+                color:#94a3b8;
+              ">
+                ${tanggal}
+              </td>
 
               <td>
 
                 <button
-                  onclick="window.location.href='receipt.html?id=${d.id}'"
+                  onclick="
+                    window.location.href=
+                    'receipt.html?id=${d.id || doc.id}'
+                  "
+
                   style="
                     background:#7c3aed;
                     color:white;
                     border:none;
-                    padding:6px 12px;
+                    padding:7px 12px;
                     border-radius:8px;
                     cursor:pointer;
                   "
@@ -1071,17 +957,22 @@ if(isAdmin){
 
         });
 
-      }, err => {
+      },
+
+      err => {
 
         console.error(
           "History Error:",
           err
         );
 
-      });
+      }
 
-        }
-        
+    );
+
+}
+
+          
                       
 /* =========================================================
    SHOW INVOICE
