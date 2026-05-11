@@ -152,7 +152,7 @@ WRAP
 
       <!-- INSTAGRAM -->
 
-      <div class="option">
+      <div class="option" onclick="selectOption(this)">
 
         <input
           type="radio"
@@ -216,8 +216,8 @@ WRAP
 
       <!-- TIKTOK -->
 
-      <div class="option">
-
+      <div class="option" onclick="selectOption(this)">
+        
         <input
           type="radio"
           name="service"
@@ -277,7 +277,7 @@ WRAP
 
       </div>
 
-      <div class="option">
+      <div class="option" onclick="selectOption(this)">
 
   <input type="radio" name="service" value="wa">
 
@@ -302,32 +302,6 @@ WRAP
   </div>
       </div>
 
-      <div class="option">
-
-  <input type="radio" name="service" value="hemat">
-
-  <img class="logo" src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png">
-
-  <div class="full">
-
-    <div class="opt-title">Paket Hemat</div>
-    <div class="opt-desc">Bundle murah semua layanan</div>
-
-    <div class="input" onclick="toggleDropdown('hematMenu', event)">
-      <span id="hematText">Pilih Paket</span>
-      <span style="float:right">▼</span>
-    </div>
-
-    <div id="hematMenu" class="dropdown-menu">
-
-      <div onclick="setOption('hemat','Starter',event)">Hemat 250 views + 500 like</div>
-      <div onclick="setOption('hemat','Pro',event)">Hemat 500 views + 1000 likes</div>
-      
-
-    </div>
-
-  </div>
-      </div>
 
       <!-- JUMLAH -->
 
