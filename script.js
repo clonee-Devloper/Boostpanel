@@ -513,28 +513,26 @@ function hitungTotal(){
     );
 
   if(!jumlahInput || !totalEl || !service){
-
-    totalEl.innerText = "Rp 0";
     return;
-
   }
 
-  let jumlah =
+  const jumlah =
     parseInt(jumlahInput.value) || 0;
 
   /* =========================
-     MINIMUM ORDER
+     MINIMAL ORDER
   ========================= */
 
   if(jumlah < 10){
 
-    totalEl.innerText = "Minimal 10";
+    totalEl.innerText = "0";
+
     return;
 
   }
 
   /* =========================
-     AMBIL TYPE
+     GET TYPE
   ========================= */
 
   let type = "";
@@ -542,75 +540,52 @@ function hitungTotal(){
   switch(service.value){
 
     case "25144":
-
-      type =
-        (selectedType?.ig || "followers")
-        .toLowerCase();
-
+      type = selectedType.ig.toLowerCase();
     break;
 
     case "3890":
-
-      type =
-        (selectedType?.tt || "followers")
-        .toLowerCase();
-
+      type = selectedType.tt.toLowerCase();
     break;
 
     case "80954":
-
-      type =
-        (selectedType?.wa || "followers")
-        .toLowerCase();
-
+      type = selectedType.wa.toLowerCase();
     break;
 
   }
 
   /* =========================
-     AMBIL HARGA /1000
+     GET PRICE / 1000
   ========================= */
 
-  const servicePrices =
-    prices[service.value];
+  const hargaData =
+    hargaLayanan[service.value];
 
-  if(!servicePrices){
+  if(!hargaData || !hargaData[type]){
 
-    totalEl.innerText = "Rp 0";
+    totalEl.innerText = "0";
+
     return;
 
   }
 
   const hargaPer1000 =
-    servicePrices[type];
-
-  if(!hargaPer1000){
-
-    totalEl.innerText = "Rp 0";
-    return;
-
-  }
+    hargaData[type];
 
   /* =========================
-     HARGA PER 1
+     HITUNG PER UNIT
   ========================= */
 
-  const hargaPer1 =
+  const hargaPerUnit =
     hargaPer1000 / 1000;
 
-  /* =========================
-     TOTAL
-  ========================= */
-
   const total =
-    Math.ceil(jumlah * hargaPer1);
+    Math.ceil(hargaPerUnit * jumlah);
 
   /* =========================
      FORMAT RUPIAH
   ========================= */
 
   totalEl.innerText =
-    "Rp " +
     total.toLocaleString("id-ID");
 
 }
