@@ -107,21 +107,80 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function showPopup(title, message, callback = null){
 
-  const popup = document.getElementById("globalPopup");
+  const popup =
+    document.getElementById("globalPopup");
 
   if(!popup) return;
 
-  document.getElementById("popupTitle").innerText = title;
-  document.getElementById("popupMessage").innerHTML = message;
+  const titleEl =
+    document.getElementById("popupTitle");
+
+  const messageEl =
+    document.getElementById("popupMessage");
+
+  const confirmBtn =
+    document.getElementById("popupConfirm");
+
+  const cancelBtn =
+    document.getElementById("popupCancel");
+
+  /* =========================
+     SET CONTENT
+  ========================= */
+
+  if(titleEl){
+    titleEl.innerText = title;
+  }
+
+  if(messageEl){
+    messageEl.innerHTML = message;
+  }
+
+  /* =========================
+     SHOW POPUP
+  ========================= */
 
   popup.style.display = "flex";
 
-  const confirmBtn = document.getElementById("popupConfirm");
-  const cancelBtn = document.getElementById("popupCancel");
+  /* 🔥 TAMBAHAN */
+  popup.classList.add("show");
+
+  /* =========================
+     HIDE CHATBOT
+  ========================= */
+
+  const chatToggle =
+    document.querySelector(".chat-toggle");
+
+  const chatbot =
+    document.getElementById("chatbot");
+
+  if(chatToggle){
+    chatToggle.style.display = "none";
+  }
+
+  if(chatbot){
+    chatbot.style.display = "none";
+  }
+
+  /* =========================
+     CONFIRM BUTTON
+  ========================= */
 
   confirmBtn.onclick = () => {
 
     popup.style.display = "none";
+
+    /* 🔥 REMOVE CLASS */
+    popup.classList.remove("show");
+
+    /* =========================
+       SHOW CHAT AGAIN
+    ========================= */
+
+    if(chatToggle){
+      chatToggle.style.display = "flex";
+    }
 
     if(callback){
       callback();
@@ -129,11 +188,32 @@ function showPopup(title, message, callback = null){
 
   };
 
+  /* =========================
+     CANCEL BUTTON
+  ========================= */
+
   cancelBtn.onclick = () => {
+
     popup.style.display = "none";
+
+    popup.classList.remove("show");
+
+    /* =========================
+       SHOW CHAT AGAIN
+    ========================= */
+
+    if(chatToggle){
+      chatToggle.style.display = "flex";
+    }
+
   };
 
-  cancelBtn.style.display = callback ? "block" : "none";
+  /* =========================
+     BUTTON MODE
+  ========================= */
+
+  cancelBtn.style.display =
+    callback ? "block" : "none";
 
 }
 
