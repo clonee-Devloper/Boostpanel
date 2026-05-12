@@ -495,8 +495,9 @@ function updateJumlahInput(serviceValue){
 
 }
 
+
 /* =========================================================
-   TOTAL
+   HITUNG TOTAL REALTIME
 ========================================================= */
 
 function hitungTotal(){
@@ -512,15 +513,23 @@ function hitungTotal(){
       'input[name="service"]:checked'
     );
 
+  /* =========================
+     VALIDASI
+  ========================= */
+
   if(!jumlahInput || !totalEl || !service){
+
+    totalEl.innerText = "0";
+
     return;
+
   }
 
   const jumlah =
     parseInt(jumlahInput.value) || 0;
 
   /* =========================
-     MINIMAL ORDER
+     MINIMUM ORDER
   ========================= */
 
   if(jumlah < 10){
@@ -540,27 +549,42 @@ function hitungTotal(){
   switch(service.value){
 
     case "25144":
-      type = selectedType.ig.toLowerCase();
+
+      type =
+        selectedType.ig.toLowerCase();
+
     break;
 
     case "3890":
-      type = selectedType.tt.toLowerCase();
+
+      type =
+        selectedType.tt.toLowerCase();
+
     break;
 
     case "80954":
-      type = selectedType.wa.toLowerCase();
+
+      type =
+        selectedType.wa.toLowerCase();
+
     break;
+
+    default:
+
+      totalEl.innerText = "0";
+
+    return;
 
   }
 
   /* =========================
-     GET PRICE / 1000
+     GET PRICE DATABASE
   ========================= */
 
-  const hargaData =
+  const servicePrice =
     hargaLayanan[service.value];
 
-  if(!hargaData || !hargaData[type]){
+  if(!servicePrice){
 
     totalEl.innerText = "0";
 
@@ -569,17 +593,27 @@ function hitungTotal(){
   }
 
   const hargaPer1000 =
-    hargaData[type];
+    servicePrice[type];
+
+  if(!hargaPer1000){
+
+    totalEl.innerText = "0";
+
+    return;
+
+  }
 
   /* =========================
-     HITUNG PER UNIT
+     HITUNG HARGA PER UNIT
   ========================= */
 
   const hargaPerUnit =
     hargaPer1000 / 1000;
 
   const total =
-    Math.ceil(hargaPerUnit * jumlah);
+    Math.ceil(
+      hargaPerUnit * jumlah
+    );
 
   /* =========================
      FORMAT RUPIAH
@@ -589,6 +623,14 @@ function hitungTotal(){
     total.toLocaleString("id-ID");
 
 }
+
+/* =========================================================
+   AUTO HITUNG SAAT INPUT
+========================================================= */
+
+document
+  .getElementById("jumlah")
+  .addEventListener("input", hitungTotal);
 
 /* =========================================================
    ADMIN PANEL
