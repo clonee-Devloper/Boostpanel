@@ -776,14 +776,27 @@ if(isAdmin){
 
 function showInvoice(){
 
-  const link = document.getElementById("link").value.trim();
+  const link =
+    document
+      .getElementById("link")
+      .value
+      .trim();
 
   const jumlah =
-    parseInt(document.getElementById("jumlah").value);
+    parseInt(
+      document
+        .getElementById("jumlah")
+        .value
+    );
 
-  const service = document.querySelector(
-    'input[name="service"]:checked'
-  );
+  const service =
+    document.querySelector(
+      'input[name="service"]:checked'
+    );
+
+  /* =========================
+     VALIDASI
+  ========================= */
 
   if(!link || !jumlah || !service){
 
@@ -796,8 +809,9 @@ function showInvoice(){
 
   }
 
-  const total =
-    document.getElementById("total").innerText;
+  /* =========================
+     LAYANAN + TIPE
+  ========================= */
 
   let layanan = "";
   let tipe = "";
@@ -805,44 +819,262 @@ function showInvoice(){
   switch(service.value){
 
     case "25144":
+
       layanan = "Instagram";
-      tipe = selectedType.ig;
+
+      tipe =
+        selectedType.ig ||
+        "Followers";
+
     break;
 
     case "3890":
+
       layanan = "TikTok";
-      tipe = selectedType.tt;
+
+      tipe =
+        selectedType.tt ||
+        "Likes";
+
     break;
 
     case "80954":
+
       layanan = "WhatsApp";
-      tipe = selectedType.wa;
+
+      tipe =
+        selectedType.wa ||
+        "Channel";
+
     break;
 
     case "8848":
+
       layanan = "Paket Hemat";
-      tipe = selectedType.paket;
+
+      tipe =
+        selectedType.paket ||
+        "Paket Instagram";
+
     break;
 
   }
 
+  /* =========================
+     HARGA PER 1000
+  ========================= */
+
+  const hargaMap = {
+
+    "25144": 85630,
+
+    "3890": 15430,
+
+    "80954": 73450,
+
+    "8848": 45000
+
+  };
+
+  const hargaPer1000 =
+    hargaMap[service.value] || 0;
+
+  /* =========================
+     HITUNG TOTAL
+  ========================= */
+
+  const total =
+    Math.ceil(
+      (jumlah / 1000)
+      * hargaPer1000
+    );
+
+  const totalFormat =
+    total.toLocaleString(
+      "id-ID"
+    );
+
+  const hargaFormat =
+    hargaPer1000.toLocaleString(
+      "id-ID"
+    );
+
+  /* =========================
+     HTML INVOICE
+  ========================= */
+
   const html = `
 
-    <div style="display:flex;flex-direction:column;gap:10px;">
+    <div style="
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    ">
 
-      <div><b>Layanan:</b> ${layanan}</div>
-      <div><b>Tipe:</b> ${tipe}</div>
-      <div><b>Jumlah:</b> ${jumlah}</div>
-      <div><b>Total:</b> Rp ${total}</div>
+      <div style="
+        font-size:22px;
+        font-weight:800;
+      ">
+        📄 Invoice Pesanan
+      </div>
+
+      <!-- ROW -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+      ">
+        <span>Layanan</span>
+        <b>${layanan}</b>
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+      ">
+        <span>Tipe</span>
+        <b>${tipe}</b>
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+      ">
+        <span>Jumlah</span>
+        <b>${jumlah}</b>
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+      ">
+        <span>Harga / 1000</span>
+
+        <b>
+          Rp ${hargaFormat}
+        </b>
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        gap:10px;
+      ">
+
+        <span>Link</span>
+
+        <b style="
+          max-width:180px;
+          overflow:hidden;
+          text-overflow:ellipsis;
+          word-break:break-word;
+          text-align:right;
+        ">
+          ${link}
+        </b>
+
+      </div>
+
+      <hr style="
+        border:none;
+        border-top:1px solid #334155;
+      ">
+
+      <!-- TOTAL -->
+      <div style="
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+      ">
+
+        <span style="
+          font-size:24px;
+          font-weight:800;
+        ">
+          Total
+        </span>
+
+        <span style="
+          font-size:34px;
+          font-weight:900;
+          color:#7c3aed;
+        ">
+          Rp ${totalFormat}
+        </span>
+
+      </div>
+
+      <!-- RULES -->
+      <label style="
+        display:flex;
+        align-items:center;
+        gap:10px;
+        cursor:pointer;
+      ">
+
+        <input
+          type="checkbox"
+          id="agreeRules"
+        >
+
+        Saya menyetujui rules
+
+      </label>
+
+      <!-- RULES BOX -->
+      <div style="
+        background:#020617;
+        border:1px solid #334155;
+        padding:18px;
+        border-radius:18px;
+        line-height:1.8;
+        color:#cbd5e1;
+        font-size:14px;
+      ">
+
+        📌 <b>Rules Wajib</b><br><br>
+
+        • Pastikan link target benar dan valid<br>
+
+        • Jangan menggunakan 2 layanan sekaligus pada target yang sama<br>
+
+        • Target private tidak mendapatkan refund<br>
+
+        • Estimasi proses tergantung server dan tidak instan<br>
+
+        • Order dianggap valid setelah pembayaran dilakukan<br>
+
+        • Dengan melakukan order, Anda menyetujui seluruh rules BoostPanel
+
+      </div>
 
     </div>
 
   `;
 
+  /* =========================
+     SHOW POPUP
+  ========================= */
+
   showPopup(
     "Konfirmasi Pesanan",
     html,
     () => {
+
+      const agree =
+        document.getElementById(
+          "agreeRules"
+        );
+
+      if(!agree || !agree.checked){
+
+        showPopup(
+          "Peringatan",
+          "Anda harus menyetujui rules"
+        );
+
+        return;
+
+      }
 
       confirmOrder(
         layanan,
