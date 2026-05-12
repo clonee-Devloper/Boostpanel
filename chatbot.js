@@ -49,20 +49,44 @@ function toggleChatBot() {
 /* =========================
    OPEN CHATBOT (BLUR SUPPORT)
 ========================= */
-
 function openChatBot() {
+
   const bot = $("chatbot");
 
   if (!bot) return;
 
-  bot.classList.add("show");
+  bot.style.display = "flex";
+
+  requestAnimationFrame(() => {
+    bot.classList.add("show");
+  });
+
   document.body.classList.add("chat-active");
 
-  // overlay blur
-  let overlay = document.createElement("div");
+  /* =========================
+     PREVENT DUPLICATE OVERLAY
+  ========================= */
+
+  let oldOverlay =
+    document.querySelector(".chat-overlay");
+
+  if(oldOverlay){
+    oldOverlay.remove();
+  }
+
+  /* =========================
+     CREATE OVERLAY
+  ========================= */
+
+  const overlay =
+    document.createElement("div");
+
   overlay.className = "chat-overlay";
+
   overlay.onclick = closeChatBot;
+
   document.body.appendChild(overlay);
+
 }
 
 /* =========================
@@ -70,15 +94,28 @@ function openChatBot() {
 ========================= */
 
 function closeChatBot() {
+
   const bot = $("chatbot");
 
   if (!bot) return;
 
   bot.classList.remove("show");
+
   document.body.classList.remove("chat-active");
 
-  const overlay = document.querySelector(".chat-overlay");
-  if (overlay) overlay.remove();
+  setTimeout(() => {
+
+    bot.style.display = "none";
+
+  }, 200);
+
+  const overlay =
+    document.querySelector(".chat-overlay");
+
+  if (overlay){
+    overlay.remove();
+  }
+
 }
 
 /* =========================
