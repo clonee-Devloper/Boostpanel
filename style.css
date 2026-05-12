@@ -284,172 +284,6 @@ tr {
   overflow: hidden;
 }
 
-/* POPUP */
-.popup{
-
-  position:fixed;
-  inset:0;
-
-  display:none;
-  justify-content:center;
-  align-items:center;
-
-  padding:20px;
-
-  background:rgba(0,0,0,.72);
-
-  backdrop-filter:blur(5px);
-
-  z-index:9999;
-
-  overflow-y:auto;
-
-}
-
-/* =========================================================
-   POPUP BOX
-========================================================= */
-
-.popup-box{
-
-  width:100%;
-  max-width:400px;
-
-  background:#0f172a;
-
-  border:1px solid #1e293b;
-
-  border-radius:28px;
-
-  padding:22px;
-
-  max-height:88vh;
-
-  overflow-y:auto;
-
-  box-sizing:border-box;
-
-  box-shadow:
-    0 25px 80px rgba(0,0,0,.55);
-
-  position:relative;
-
-  z-index:10000;
-
-  animation:fadeIn .25s ease,
-            scaleUp .22s ease;
-
-}
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-.popup-box::-webkit-scrollbar{
-  width:4px;
-}
-
-.popup-box::-webkit-scrollbar-thumb{
-
-  background:#334155;
-
-  border-radius:999px;
-
-}
-
-/* =========================================================
-   TITLE
-========================================================= */
-
-.popup-title{
-
-  font-size:16px;
-
-  font-weight:900;
-
-  margin-bottom:14px;
-
-  color:white;
-
-  line-height:1.4;
-
-}
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.popup-content{
-
-  font-size:13px;
-
-  line-height:1.7;
-
-  color:#cbd5e1;
-
-  margin-bottom:18px;
-
-  word-break:break-word;
-
-}
-
-/* =========================================================
-   ACTION BUTTONS
-========================================================= */
-
-.popup-actions{
-
-  display:flex;
-
-  gap:12px;
-
-  margin-top:22px;
-
-}
-
-.popup-actions button{
-
-  flex:1;
-
-  height:48px;
-
-  border-radius:16px;
-
-  font-size:15px;
-
-  font-weight:800;
-
-}
-
-/* =========================================================
-   ANIMATION
-========================================================= */
-
-@keyframes fadeIn{
-
-  from{
-    opacity:0;
-  }
-
-  to{
-    opacity:1;
-  }
-
-}
-
-@keyframes scaleUp{
-
-  from{
-    transform:scale(.92);
-    opacity:0;
-  }
-
-  to{
-    transform:scale(1);
-    opacity:1;
-  }
-
-}
 
 /* =========================================================
    MOBILE
@@ -540,92 +374,7 @@ tr {
   z-index: 1000; /* harus LEBIH RENDAH dari popup */
 }
 
-/* =========================
-CHAT BOT
-========================= */
 
-.chat-toggle{
-
-  position:fixed;
-  right:20px;
-  bottom:20px;
-
-  width:60px;
-  height:60px;
-
-  border-radius:50%;
-
-  background:linear-gradient(
-    135deg,
-    #7c3aed,
-    #4f46e5
-  );
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  font-size:28px;
-
-  cursor:pointer;
-
-  z-index:9999;
-
-  box-shadow:
-    0 10px 25px rgba(0,0,0,.4);
-
-  transition:.25s;
-}
-
-.chat-toggle:hover{
-
-  transform:scale(1.05);
-
-}
-
-.chatbot{
-
-  position:fixed;
-
-  right:20px;
-  bottom:90px;
-
-  width:340px;
-  height:520px;
-
-  background:#0f172a;
-
-  border:1px solid #334155;
-
-  border-radius:22px;
-
-  overflow:hidden;
-
-  display:none;
-
-  flex-direction:column;
-
-  z-index:9999;
-
-  box-shadow:
-    0 20px 40px rgba(0,0,0,.5);
-
-  animation:fadeChat .25s ease;
-}
-
-@keyframes fadeChat{
-
-  from{
-    opacity:0;
-    transform:translateY(10px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-
-}
 
 .chat-header{
 
@@ -853,18 +602,251 @@ TYPING ANIMATION
 
 }
 
-/* MOBILE */
+/* =========================================================
+   POPUP
+========================================================= */
+
+.popup{
+  position:fixed;
+  inset:0;
+  display:none;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+  background:rgba(0,0,0,.72);
+  backdrop-filter:blur(5px);
+  z-index:9999;
+  overflow-y:auto;
+}
+
+.popup.show{
+  display:flex;
+}
+
+/* =========================================================
+   POPUP BOX
+========================================================= */
+
+.popup-box{
+  width:100%;
+  max-width:380px;
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:24px;
+  padding:20px;
+  max-height:88vh;
+  overflow-y:auto;
+  box-sizing:border-box;
+  box-shadow:0 25px 80px rgba(0,0,0,.55);
+  position:relative;
+  z-index:10000;
+  animation:scalePopup .2s ease;
+}
+
+.popup-box::-webkit-scrollbar{
+  width:4px;
+}
+
+.popup-box::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:999px;
+}
+
+.popup-title{
+  font-size:18px;
+  font-weight:900;
+  margin-bottom:14px;
+}
+
+.popup-content{
+  font-size:14px;
+  line-height:1.7;
+  color:#cbd5e1;
+}
+
+.popup-actions{
+  display:flex;
+  gap:10px;
+  margin-top:20px;
+}
+
+.popup-actions button{
+  flex:1;
+}
+
+/* =========================================================
+   CHAT TOGGLE
+========================================================= */
+
+.chat-toggle{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:linear-gradient(
+    135deg,
+    #7c3aed,
+    #4f46e5
+  );
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+  cursor:pointer;
+  z-index:9999;
+  box-shadow:0 10px 25px rgba(0,0,0,.4);
+  transition:.25s;
+}
+
+.chat-toggle:hover{
+  transform:scale(1.05);
+}
+
+/* =========================================================
+   CHATBOT
+========================================================= */
+
+.chatbot{
+  display:none;
+  position:fixed;
+  right:20px;
+  bottom:90px;
+  width:320px;
+  height:420px;
+  background:#0f172a;
+  border:1px solid #1e293b;
+  border-radius:18px;
+  flex-direction:column;
+  overflow:hidden;
+  transform:scale(.9);
+  opacity:0;
+  transition:.25s ease;
+  z-index:9999;
+}
+
+.chatbot.show{
+  display:flex;
+  transform:scale(1);
+  opacity:1;
+}
+
+/* =========================================================
+   CHAT OVERLAY
+========================================================= */
+
+.chat-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.2);
+  backdrop-filter:blur(4px);
+  z-index:9998;
+}
+
+/* =========================================================
+   INVOICE
+========================================================= */
+
+.invoice-box{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.invoice-header{
+  font-size:18px;
+  font-weight:900;
+}
+
+.invoice-row{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-size:14px;
+}
+
+.invoice-link{
+  max-width:160px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-align:right;
+  word-break:break-word;
+}
+
+.invoice-line{
+  height:1px;
+  background:#334155;
+}
+
+.invoice-total{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.invoice-price{
+  font-size:28px;
+  font-weight:900;
+  color:#7c3aed;
+}
+
+.invoice-check{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+}
+
+.invoice-rules{
+  background:#020617;
+  border:1px solid #334155;
+  border-radius:16px;
+  padding:14px;
+  font-size:12px;
+  line-height:1.7;
+  color:#cbd5e1;
+}
+
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes scalePopup{
+
+  from{
+    transform:scale(.92);
+    opacity:0;
+  }
+
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
 
 @media(max-width:500px){
 
   .chatbot{
-
     width:92%;
     right:4%;
-    bottom:85px;
+    bottom:82px;
+    height:440px;
+  }
 
-    height:500px;
+  .popup-box{
+    max-width:100%;
+    border-radius:22px;
+    padding:18px;
+  }
 
+  .invoice-price{
+    font-size:24px;
   }
 
 }
@@ -934,131 +916,6 @@ body.chat-active .navbar {
   z-index: 9998;
 }
 
-/* =========================================================
-   INVOICE
-========================================================= */
-
-.invoice-box{
-
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-
-}
-
-.invoice-header{
-
-  font-size:18px;
-  font-weight:900;
-
-  color:white;
-
-}
-
-.invoice-row{
-
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-
-  font-size:14px;
-
-  color:#e2e8f0;
-
-}
-
-.invoice-link{
-
-  max-width:160px;
-
-  overflow:hidden;
-  text-overflow:ellipsis;
-
-  text-align:right;
-
-  word-break:break-word;
-
-}
-
-.invoice-line{
-
-  height:1px;
-
-  background:#334155;
-
-}
-
-.invoice-total{
-
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-
-}
-
-.invoice-total span:first-child{
-
-  font-size:24px;
-  font-weight:900;
-
-}
-
-.invoice-price{
-
-  font-size:28px;
-  font-weight:900;
-
-  color:#7c3aed;
-
-}
-
-.invoice-check{
-
-  display:flex;
-  align-items:center;
-  gap:10px;
-
-  font-size:14px;
-
-  cursor:pointer;
-
-}
-
-.invoice-check input{
-
-  width:18px;
-  height:18px;
-
-}
-
-.invoice-rules{
-
-  background:#020617;
-
-  border:1px solid #334155;
-
-  border-radius:18px;
-
-  padding:16px;
-
-  font-size:13px;
-
-  line-height:1.8;
-
-  color:#cbd5e1;
-
-}
-
-.invoice-rules-title{
-
-  font-size:15px;
-  font-weight:800;
-
-  margin-bottom:10px;
-
-  color:white;
-
-}
 
 /* =========================================================
    MOBILE
@@ -1098,4 +955,5 @@ body.chat-active .navbar {
 
   display:none !important;
 
-}
+  }
+  
