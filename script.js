@@ -49,38 +49,57 @@ let clickCount = 0;
 let unsubscribeHistory = null;
 
 /* =========================================================
-   DATA HARGA
+   PRICE DATABASE
 ========================================================= */
+
 const hargaLayanan = {
 
-  "25144": { // Instagram
+  /* =========================
+     INSTAGRAM
+  ========================= */
+
+  "25144": {
+
     followers: 78214,
     likes: 1413,
     views: 814
+
   },
 
-  "3890": { // TikTok
+  /* =========================
+     TIKTOK
+  ========================= */
+
+  "3890": {
+
     followers: 58712,
     views: 2243,
     likes: 1743
+
   },
 
-  "80954": { // WhatsApp
-    followers: 89143 // belum kamu definisikan
-  },
+  /* =========================
+     WHATSAPP
+  ========================= */
 
-  "8848": { // Paket Hemat
-    paket1: 1496,
-    paket2: 2891
+  "80954": {
+
+    followers: 89143
+
   }
 
 };
 
+/* =========================================================
+   DEFAULT SELECTED TYPE
+========================================================= */
+
 let selectedType = {
+
   ig: "Followers",
   tt: "Followers",
-  wa: "Followers",
-  paket: "Hemat 250"
+  wa: "Followers"
+
 };
 
 /* =========================================================
@@ -482,67 +501,117 @@ function updateJumlahInput(serviceValue){
 
 function hitungTotal(){
 
-  const jumlah = parseInt(document.getElementById("jumlah").value) || 0;
-  const totalEl = document.getElementById("total");
+  const jumlahInput =
+    document.getElementById("jumlah");
 
-  const service = document.querySelector('input[name="service"]:checked');
+  const totalEl =
+    document.getElementById("total");
 
-  if(!service || !totalEl) return;
+  const service =
+    document.querySelector(
+      'input[name="service"]:checked'
+    );
+
+  if(!jumlahInput || !totalEl || !service){
+
+    totalEl.innerText = "Rp 0";
+    return;
+
+  }
+
+  let jumlah =
+    parseInt(jumlahInput.value) || 0;
+
+  /* =========================
+     MINIMUM ORDER
+  ========================= */
+
+  if(jumlah < 10){
+
+    totalEl.innerText = "Minimal 10";
+    return;
+
+  }
+
+  /* =========================
+     AMBIL TYPE
+  ========================= */
 
   let type = "";
 
   switch(service.value){
 
     case "25144":
-      type = selectedType.ig;
-      break;
+
+      type =
+        (selectedType?.ig || "followers")
+        .toLowerCase();
+
+    break;
 
     case "3890":
-      type = selectedType.tt;
-      break;
+
+      type =
+        (selectedType?.tt || "followers")
+        .toLowerCase();
+
+    break;
 
     case "80954":
-      type = selectedType.wa;
-      break;
 
-    case "8848":
-      type = selectedType.paket;
-      break;
+      type =
+        (selectedType?.wa || "followers")
+        .toLowerCase();
+
+    break;
 
   }
 
-  const harga = hargaLayanan?.[service.value]?.[type];
+  /* =========================
+     AMBIL HARGA /1000
+  ========================= */
 
-  // 🔥 DEBUG (penting banget)
-  console.log("SERVICE:", service.value);
-  console.log("TYPE:", type);
-  console.log("HARGA:", harga);
+  const servicePrices =
+    prices[service.value];
 
-  if(!harga){
-    totalEl.innerText = "0";
+  if(!servicePrices){
+
+    totalEl.innerText = "Rp 0";
     return;
-  }
-
-  let total = 0;
-
-  // paket hemat (FIX PRICE)
-  if(service.value === "8848"){
-
-    total = harga;
-
-  } else {
-
-    if(jumlah < 10){
-      totalEl.innerText = "0";
-      return;
-    }
-
-    // PER 1000 SYSTEM
-    total = (jumlah / 1000) * harga;
 
   }
 
-  totalEl.innerText = Math.ceil(total).toLocaleString("id-ID");
+  const hargaPer1000 =
+    servicePrices[type];
+
+  if(!hargaPer1000){
+
+    totalEl.innerText = "Rp 0";
+    return;
+
+  }
+
+  /* =========================
+     HARGA PER 1
+  ========================= */
+
+  const hargaPer1 =
+    hargaPer1000 / 1000;
+
+  /* =========================
+     TOTAL
+  ========================= */
+
+  const total =
+    Math.ceil(jumlah * hargaPer1);
+
+  /* =========================
+     FORMAT RUPIAH
+  ========================= */
+
+  totalEl.innerText =
+    "Rp " +
+    total.toLocaleString("id-ID");
 
 }
 
