@@ -1088,3 +1088,14 @@ body.chat-active .navbar {
   }
 
 }
+
+/* =========================================================
+   HIDE CHAT WHEN POPUP OPEN
+========================================================= */
+
+.popup.show ~ .chat-toggle,
+.popup.show ~ .chatbot{
+
+  display:none !important;
+
+}
