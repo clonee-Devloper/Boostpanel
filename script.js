@@ -249,22 +249,55 @@ function setOption(type, value, event) {
   ========================= */
 
   const radio = document.querySelector(
-    `input[name="service"][value="${serviceValue}"]`
-  );
+  `input[name="service"][value="${serviceValue}"]`
+);
 
-  if (radio) {
+/* =========================
+   FORCE ACTIVE OPTION
+========================= */
 
-    radio.checked = true;
+if(radio){
 
-    const parent = radio.closest(".option");
+  radio.checked = true;
 
-    if (parent) {
-      parent.classList.add("active");
-    }
+  /* HAPUS ACTIVE SEMUA */
+  document
+    .querySelectorAll(".option")
+    .forEach(option => {
+
+      option.classList.remove(
+        "active"
+      );
+
+    });
+
+  /* CARI BOX OPTION */
+  const optionBox =
+    radio.closest(".option");
+
+  /* TAMBAHKAN ACTIVE */
+  if(optionBox){
+
+    optionBox.classList.add(
+      "active"
+    );
 
   } else {
-    console.warn("Radio tidak ditemukan:", serviceValue);
+
+    console.warn(
+      "Option box tidak ditemukan"
+    );
+
   }
+
+} else {
+
+  console.warn(
+    "Radio tidak ditemukan:",
+    serviceValue
+  );
+
+}
 
   /* =========================
      UPDATE INPUT JUMLAH (SAFE CALL)
