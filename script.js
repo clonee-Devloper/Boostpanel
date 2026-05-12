@@ -902,23 +902,29 @@ function showInvoice(){
   /* =========================
      HTML INVOICE
   ========================= */
-const html = `
+
+   const html = `
 
 <div style="
   display:flex;
   flex-direction:column;
-  gap:14px;
+  gap:16px;
 ">
 
   <!-- TITLE -->
-  <div style="
-    font-size:18px;
-    font-weight:800;
-  ">
-    📄 Invoice Pesanan
+  <div>
+
+    <div style="
+      font-size:17px;
+      font-weight:900;
+      margin-bottom:10px;
+    ">
+      📄 Invoice Pesanan
+    </div>
+
   </div>
 
-  <!-- ROW -->
+  <!-- DATA -->
   <div style="
     display:flex;
     justify-content:space-between;
@@ -949,17 +955,6 @@ const html = `
   <div style="
     display:flex;
     justify-content:space-between;
-    font-size:14px;
-  ">
-    <span>Harga / 1000</span>
-    <b>
-      Rp ${hargaFormat}
-    </b>
-  </div>
-
-  <div style="
-    display:flex;
-    justify-content:space-between;
     gap:10px;
     font-size:14px;
   ">
@@ -967,12 +962,10 @@ const html = `
     <span>Link</span>
 
     <b style="
-      max-width:140px;
+      max-width:180px;
       overflow:hidden;
       text-overflow:ellipsis;
-      word-break:break-word;
       text-align:right;
-      font-size:13px;
     ">
       ${link}
     </b>
@@ -993,8 +986,8 @@ const html = `
   ">
 
     <span style="
-      font-size:20px;
-      font-weight:800;
+      font-size:24px;
+      font-weight:900;
     ">
       Total
     </span>
@@ -1009,46 +1002,65 @@ const html = `
 
   </div>
 
-  <!-- CHECK -->
+  <!-- CHECKBOX -->
   <label style="
     display:flex;
     align-items:center;
-    gap:8px;
-    font-size:13px;
+    gap:10px;
+    font-size:14px;
     cursor:pointer;
   ">
 
     <input
       type="checkbox"
       id="agreeRules"
+      style="
+        width:18px;
+        height:18px;
+      "
     >
 
     Saya menyetujui rules
 
   </label>
 
+  <!-- LINE -->
+  <div style="
+    height:1px;
+    background:#334155;
+  "></div>
+
   <!-- RULES -->
   <div style="
     background:#020617;
     border:1px solid #334155;
-    padding:14px;
-    border-radius:14px;
-    line-height:1.7;
+    border-radius:20px;
+    padding:18px;
+    font-size:13px;
+    line-height:1.9;
     color:#cbd5e1;
-    font-size:12px;
   ">
 
-    📌 <b>Rules Wajib</b><br><br>
+    <div style="
+      font-size:15px;
+      font-weight:800;
+      margin-bottom:10px;
+      color:white;
+    ">
+      📌 Rules Wajib
+    </div>
 
-    • Link target wajib valid<br>
+    • Pastikan link target benar dan valid<br>
 
-    • Jangan order layanan bersamaan<br>
+    • Jangan menggunakan 2 layanan sekaligus pada target yang sama<br>
 
-    • Target private tidak refund<br>
+    • Target private tidak mendapatkan refund<br>
 
-    • Estimasi tergantung server<br>
+    • Estimasi proses tergantung server dan tidak instan<br>
 
-    • Order = setuju rules BoostPanel
+    • Order dianggap valid setelah pembayaran dilakukan<br>
+
+    • Dengan melakukan order, Anda menyetujui seluruh rules BoostPanel
 
   </div>
 
