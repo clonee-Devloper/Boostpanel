@@ -298,19 +298,43 @@ tr {
   backdrop-filter: blur(4px);
 }
 
-.popup-box {
-  background: #0f172a;
-  padding: 25px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 380px;
-  max-height: 90vh;
-  overflow-y: auto; /* 🔥 penting biar tidak zoom */
-  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-  animation: fadeIn .3s ease;
-  animation: scaleUp .2s ease;
-  position: relative;
-  z-index: 10000; /*kunci utama*/
+.popup-box{
+
+  background:#0f172a;
+
+  width:92%;
+  max-width:380px;
+
+  max-height:82vh;
+
+  overflow-y:auto;
+
+  padding:18px;
+
+  border-radius:22px;
+
+  border:1px solid #1e293b;
+
+  box-shadow:
+    0 20px 60px rgba(0,0,0,.45);
+
+  position:relative;
+  z-index:10000;
+
+  box-sizing:border-box;
+
+  animation:fadeIn .25s ease;
+  animation:scaleUp .2s ease;
+
+}
+
+.popup-box::-webkit-scrollbar{
+  width:4px;
+}
+
+.popup-box::-webkit-scrollbar-thumb{
+  background:#334155;
+  border-radius:999px;
 }
 
 @keyframes scaleUp {
