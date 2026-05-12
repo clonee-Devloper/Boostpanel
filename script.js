@@ -905,162 +905,82 @@ function showInvoice(){
 
    const html = `
 
-<div style="
-  display:flex;
-  flex-direction:column;
-  gap:16px;
-">
+<div class="invoice-box">
 
-  <!-- TITLE -->
-  <div>
-
-    <div style="
-      font-size:17px;
-      font-weight:900;
-      margin-bottom:10px;
-    ">
-      📄 Invoice Pesanan
-    </div>
-
+  <div class="invoice-header">
+    📄 Invoice Pesanan
   </div>
 
-  <!-- DATA -->
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-  ">
+  <div class="invoice-row">
     <span>Layanan</span>
     <b>${layanan}</b>
   </div>
 
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-  ">
+  <div class="invoice-row">
     <span>Tipe</span>
     <b>${tipe}</b>
   </div>
 
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    font-size:14px;
-  ">
+  <div class="invoice-row">
     <span>Jumlah</span>
     <b>${jumlah}</b>
   </div>
 
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    gap:10px;
-    font-size:14px;
-  ">
-
-    <span>Link</span>
-
-    <b style="
-      max-width:180px;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      text-align:right;
-    ">
-      ${link}
-    </b>
-
+  <div class="invoice-row">
+    <span>Harga / 1000</span>
+    <b>Rp ${hargaFormat}</b>
   </div>
 
-  <!-- LINE -->
-  <div style="
-    height:1px;
-    background:#334155;
-  "></div>
+  <div class="invoice-row">
+    <span>Link</span>
 
-  <!-- TOTAL -->
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  ">
+    <b class="invoice-link">
+      ${link}
+    </b>
+  </div>
 
-    <span style="
-      font-size:24px;
-      font-weight:900;
-    ">
+  <div class="invoice-line"></div>
+
+  <div class="invoice-total">
+
+    <span>
       Total
     </span>
 
-    <span style="
-      font-size:28px;
-      font-weight:900;
-      color:#7c3aed;
-    ">
+    <span class="invoice-price">
       Rp ${totalFormat}
     </span>
 
   </div>
 
-  <!-- CHECKBOX -->
-  <label style="
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:14px;
-    cursor:pointer;
-  ">
+  <label class="invoice-check">
 
     <input
       type="checkbox"
       id="agreeRules"
-      style="
-        width:18px;
-        height:18px;
-      "
     >
 
     Saya menyetujui rules
 
   </label>
 
-  <!-- LINE -->
-  <div style="
-    height:1px;
-    background:#334155;
-  "></div>
+  <div class="invoice-line"></div>
 
-  <!-- RULES -->
-  <div style="
-    background:#020617;
-    border:1px solid #334155;
-    border-radius:20px;
-    padding:18px;
-    font-size:13px;
-    line-height:1.9;
-    color:#cbd5e1;
-  ">
+  <div class="invoice-rules">
 
-    <div style="
-      font-size:15px;
-      font-weight:800;
-      margin-bottom:10px;
-      color:white;
-    ">
+    <div class="invoice-rules-title">
       📌 Rules Wajib
     </div>
 
     • Pastikan link target benar dan valid<br>
 
-    • Jangan menggunakan 2 layanan sekaligus pada target yang sama<br>
+    • Jangan menggunakan 2 layanan sekaligus<br>
 
-    • Target private tidak mendapatkan refund<br>
+    • Target private tidak refund<br>
 
-    • Estimasi proses tergantung server dan tidak instan<br>
+    • Estimasi tergantung server<br>
 
-    • Order dianggap valid setelah pembayaran dilakukan<br>
-
-    • Dengan melakukan order, Anda menyetujui seluruh rules BoostPanel
+    • Order = setuju rules BoostPanel
 
   </div>
 
