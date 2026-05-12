@@ -285,84 +285,197 @@ tr {
 }
 
 /* POPUP */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
+.popup{
 
-  /* 🔥 TAMBAHAN INI */
-  backdrop-filter: blur(4px);
-}
+  position:fixed;
+  inset:0;
 
-.popup-box{
+  display:none;
+  justify-content:center;
+  align-items:center;
 
-  background:#0f172a;
+  padding:20px;
 
-  width:92%;
-  max-width:380px;
+  background:rgba(0,0,0,.72);
 
-  max-height:82vh;
+  backdrop-filter:blur(5px);
+
+  z-index:9999;
 
   overflow-y:auto;
 
-  padding:18px;
+}
 
-  border-radius:22px;
+/* =========================================================
+   POPUP BOX
+========================================================= */
+
+.popup-box{
+
+  width:100%;
+  max-width:400px;
+
+  background:#0f172a;
 
   border:1px solid #1e293b;
 
-  box-shadow:
-    0 20px 60px rgba(0,0,0,.45);
+  border-radius:28px;
 
-  position:relative;
-  z-index:10000;
+  padding:22px;
+
+  max-height:88vh;
+
+  overflow-y:auto;
 
   box-sizing:border-box;
 
-  animation:fadeIn .25s ease;
-  animation:scaleUp .2s ease;
+  box-shadow:
+    0 25px 80px rgba(0,0,0,.55);
+
+  position:relative;
+
+  z-index:10000;
+
+  animation:fadeIn .25s ease,
+            scaleUp .22s ease;
 
 }
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
 
 .popup-box::-webkit-scrollbar{
   width:4px;
 }
 
 .popup-box::-webkit-scrollbar-thumb{
+
   background:#334155;
+
   border-radius:999px;
+
 }
 
-@keyframes scaleUp {
-  from {transform:scale(.9); opacity:0;}
-  to {transform:scale(1); opacity:1;}
+/* =========================================================
+   TITLE
+========================================================= */
+
+.popup-title{
+
+  font-size:16px;
+
+  font-weight:900;
+
+  margin-bottom:14px;
+
+  color:white;
+
+  line-height:1.4;
+
 }
 
-.popup-title {
-  font-size: 20px;
-  margin-bottom: 10px;
+/* =========================================================
+   CONTENT
+========================================================= */
+
+.popup-content{
+
+  font-size:13px;
+
+  line-height:1.7;
+
+  color:#cbd5e1;
+
+  margin-bottom:18px;
+
+  word-break:break-word;
+
 }
 
-.popup-content {
-  font-size: 14px;
-  opacity: 0.85;
-  margin-bottom: 20px;
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.popup-actions{
+
+  display:flex;
+
+  gap:12px;
+
+  margin-top:22px;
+
 }
 
-.popup-actions {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
+.popup-actions button{
+
+  flex:1;
+
+  height:48px;
+
+  border-radius:16px;
+
+  font-size:15px;
+
+  font-weight:800;
+
 }
 
-.popup-actions button {
-  flex: 1;
+/* =========================================================
+   ANIMATION
+========================================================= */
+
+@keyframes fadeIn{
+
+  from{
+    opacity:0;
+  }
+
+  to{
+    opacity:1;
+  }
+
 }
 
+@keyframes scaleUp{
+
+  from{
+    transform:scale(.92);
+    opacity:0;
+  }
+
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:480px){
+
+  .popup-box{
+
+    padding:18px;
+
+    border-radius:24px;
+
+    max-width:100%;
+
+  }
+
+  .popup-actions button{
+
+    height:44px;
+
+    font-size:14px;
+
+  }
+
+}
 
 /* LOADER */
 #loader {
