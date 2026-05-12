@@ -933,3 +933,158 @@ body.chat-active .navbar {
   backdrop-filter: blur(4px);
   z-index: 9998;
 }
+
+/* =========================================================
+   INVOICE
+========================================================= */
+
+.invoice-box{
+
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+
+}
+
+.invoice-header{
+
+  font-size:18px;
+  font-weight:900;
+
+  color:white;
+
+}
+
+.invoice-row{
+
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+
+  font-size:14px;
+
+  color:#e2e8f0;
+
+}
+
+.invoice-link{
+
+  max-width:160px;
+
+  overflow:hidden;
+  text-overflow:ellipsis;
+
+  text-align:right;
+
+  word-break:break-word;
+
+}
+
+.invoice-line{
+
+  height:1px;
+
+  background:#334155;
+
+}
+
+.invoice-total{
+
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+}
+
+.invoice-total span:first-child{
+
+  font-size:24px;
+  font-weight:900;
+
+}
+
+.invoice-price{
+
+  font-size:28px;
+  font-weight:900;
+
+  color:#7c3aed;
+
+}
+
+.invoice-check{
+
+  display:flex;
+  align-items:center;
+  gap:10px;
+
+  font-size:14px;
+
+  cursor:pointer;
+
+}
+
+.invoice-check input{
+
+  width:18px;
+  height:18px;
+
+}
+
+.invoice-rules{
+
+  background:#020617;
+
+  border:1px solid #334155;
+
+  border-radius:18px;
+
+  padding:16px;
+
+  font-size:13px;
+
+  line-height:1.8;
+
+  color:#cbd5e1;
+
+}
+
+.invoice-rules-title{
+
+  font-size:15px;
+  font-weight:800;
+
+  margin-bottom:10px;
+
+  color:white;
+
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:480px){
+
+  .invoice-header{
+    font-size:16px;
+  }
+
+  .invoice-row{
+    font-size:13px;
+  }
+
+  .invoice-total span:first-child{
+    font-size:20px;
+  }
+
+  .invoice-price{
+    font-size:24px;
+  }
+
+  .invoice-rules{
+    font-size:12px;
+    padding:14px;
+  }
+
+}
