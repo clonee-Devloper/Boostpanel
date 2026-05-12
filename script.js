@@ -902,155 +902,160 @@ function showInvoice(){
   /* =========================
      HTML INVOICE
   ========================= */
+const html = `
 
-  const html = `
+<div style="
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+">
 
-    <div style="
-      display:flex;
-      flex-direction:column;
-      gap:18px;
+  <!-- TITLE -->
+  <div style="
+    font-size:18px;
+    font-weight:800;
+  ">
+    📄 Invoice Pesanan
+  </div>
+
+  <!-- ROW -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+  ">
+    <span>Layanan</span>
+    <b>${layanan}</b>
+  </div>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+  ">
+    <span>Tipe</span>
+    <b>${tipe}</b>
+  </div>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+  ">
+    <span>Jumlah</span>
+    <b>${jumlah}</b>
+  </div>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+  ">
+    <span>Harga / 1000</span>
+    <b>
+      Rp ${hargaFormat}
+    </b>
+  </div>
+
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    font-size:14px;
+  ">
+
+    <span>Link</span>
+
+    <b style="
+      max-width:140px;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      word-break:break-word;
+      text-align:right;
+      font-size:13px;
     ">
+      ${link}
+    </b>
 
-      <div style="
-        font-size:22px;
-        font-weight:800;
-      ">
-        📄 Invoice Pesanan
-      </div>
+  </div>
 
-      <!-- ROW -->
-      <div style="
-        display:flex;
-        justify-content:space-between;
-      ">
-        <span>Layanan</span>
-        <b>${layanan}</b>
-      </div>
+  <!-- LINE -->
+  <div style="
+    height:1px;
+    background:#334155;
+  "></div>
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-      ">
-        <span>Tipe</span>
-        <b>${tipe}</b>
-      </div>
+  <!-- TOTAL -->
+  <div style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  ">
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-      ">
-        <span>Jumlah</span>
-        <b>${jumlah}</b>
-      </div>
+    <span style="
+      font-size:20px;
+      font-weight:800;
+    ">
+      Total
+    </span>
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-      ">
-        <span>Harga / 1000</span>
+    <span style="
+      font-size:28px;
+      font-weight:900;
+      color:#7c3aed;
+    ">
+      Rp ${totalFormat}
+    </span>
 
-        <b>
-          Rp ${hargaFormat}
-        </b>
-      </div>
+  </div>
 
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        gap:10px;
-      ">
+  <!-- CHECK -->
+  <label style="
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:13px;
+    cursor:pointer;
+  ">
 
-        <span>Link</span>
+    <input
+      type="checkbox"
+      id="agreeRules"
+    >
 
-        <b style="
-          max-width:180px;
-          overflow:hidden;
-          text-overflow:ellipsis;
-          word-break:break-word;
-          text-align:right;
-        ">
-          ${link}
-        </b>
+    Saya menyetujui rules
 
-      </div>
+  </label>
 
-      <hr style="
-        border:none;
-        border-top:1px solid #334155;
-      ">
+  <!-- RULES -->
+  <div style="
+    background:#020617;
+    border:1px solid #334155;
+    padding:14px;
+    border-radius:14px;
+    line-height:1.7;
+    color:#cbd5e1;
+    font-size:12px;
+  ">
 
-      <!-- TOTAL -->
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-      ">
+    📌 <b>Rules Wajib</b><br><br>
 
-        <span style="
-          font-size:24px;
-          font-weight:800;
-        ">
-          Total
-        </span>
+    • Link target wajib valid<br>
 
-        <span style="
-          font-size:34px;
-          font-weight:900;
-          color:#7c3aed;
-        ">
-          Rp ${totalFormat}
-        </span>
+    • Jangan order layanan bersamaan<br>
 
-      </div>
+    • Target private tidak refund<br>
 
-      <!-- RULES -->
-      <label style="
-        display:flex;
-        align-items:center;
-        gap:10px;
-        cursor:pointer;
-      ">
+    • Estimasi tergantung server<br>
 
-        <input
-          type="checkbox"
-          id="agreeRules"
-        >
+    • Order = setuju rules BoostPanel
 
-        Saya menyetujui rules
+  </div>
 
-      </label>
+</div>
 
-      <!-- RULES BOX -->
-      <div style="
-        background:#020617;
-        border:1px solid #334155;
-        padding:18px;
-        border-radius:18px;
-        line-height:1.8;
-        color:#cbd5e1;
-        font-size:14px;
-      ">
-
-        📌 <b>Rules Wajib</b><br><br>
-
-        • Pastikan link target benar dan valid<br>
-
-        • Jangan menggunakan 2 layanan sekaligus pada target yang sama<br>
-
-        • Target private tidak mendapatkan refund<br>
-
-        • Estimasi proses tergantung server dan tidak instan<br>
-
-        • Order dianggap valid setelah pembayaran dilakukan<br>
-
-        • Dengan melakukan order, Anda menyetujui seluruh rules BoostPanel
-
-      </div>
-
-    </div>
-
-  `;
-
+`;
+  
   /* =========================
      SHOW POPUP
   ========================= */
