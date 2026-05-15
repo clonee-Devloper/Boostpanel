@@ -187,32 +187,40 @@ function confirmPayment(){
 
   const waNumber = "6283142808857";
 
-  const message =
+const message =
 `Halo Admin BoostPanel 👋
 
-Saya ingin melakukan konfirmasi pembayaran.
+Saya baru saja membuat pesanan baru.
 
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━
 📄 DETAIL PESANAN
-━━━━━━━━━━━━━━
+━━━━━━━━━━━━━━━━━━
 
-🆔 ID Order:
-${orderId}
+🆔 ID Order
+${id}
 
-━━━━━━━━━━━━━━
+📱 Layanan
+${layanan}
 
-✅ Pembayaran telah dilakukan.
-Mohon segera diproses.
+📦 Tipe
+${tipe}
 
-Terima kasih 🙏`;
+🔢 Jumlah
+${jumlah}
 
-  const url =
-    `https://wa.me/${waNumber}?text=` +
-    encodeURIComponent(message);
+🔗 Link Target
+${link}
 
-  window.open(url, "_blank");
+💰 Total Pembayaran
+Rp ${total}
 
-}
+🕒 Tanggal
+${new Date().toLocaleString("id-ID")}
 
-/* GLOBAL */
-window.confirmPayment = confirmPayment;
+━━━━━━━━━━━━━━━━━━
+
+✅ Saya akan segera melakukan pembayaran.
+
+Mohon untuk segera diproses 🙏
+
+Terima kasih.`;
