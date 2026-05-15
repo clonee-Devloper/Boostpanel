@@ -1224,25 +1224,55 @@ async function confirmOrder(
 
   try {
 
-    await db.collection("orders").add(data);
+  /* SIMPAN ORDER */
+  await db.collection("orders").add(data);
 
-    showPopup(
-      "Sukses",
-      "Pesanan berhasil dibuat"
-    );
+  /* =========================================================
+     GENERATE RECEIPT URL
+  ========================================================= */
 
-  } catch(err){
+  const receiptUrl =
+    `receipt.html` +
+    `?id=${encodeURIComponent(id)}` +
+    `&layanan=${encodeURIComponent(layanan)}` +
+    `&tipe=${encodeURIComponent(tipe)}` +
+    `&jumlah=${encodeURIComponent(jumlah)}` +
+    `&total=${encodeURIComponent(total)}` +
+    `&status=${encodeURIComponent("Menunggu Konfirmasi Pembayaran")}` +
+    `&link=${encodeURIComponent(link)}` +
+    `&tanggal=${encodeURIComponent(
+      new Date().toLocaleString("id-ID")
+    )}`;
 
-    console.error(err);
+  /* =========================================================
+     CLOSE POPUP
+  ========================================================= */
 
-    showPopup(
-      "Error",
-      "Gagal menyimpan order"
-    );
+  const popup = document.getElementById("globalPopup");
 
+  if (popup) {
+    popup.style.display = "none";
+    popup.classList.remove("show");
   }
 
-}
+  /* =========================================================
+     OPEN RECEIPT
+  ========================================================= */
+
+  setTimeout(() => {
+    window.open(receiptUrl, "_blank");
+  }, 300);
+
+} catch (err) {
+
+  console.error(err);
+
+  showPopup(
+    "Gagal",
+    "Terjadi kesalahan saat membuat pesanan"
+  );
+
+  }
 
 /* =========================================================
    UPDATE STATUS
