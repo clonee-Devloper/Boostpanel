@@ -139,18 +139,36 @@ function printReceipt() {
 ========================= */
 
 function openDownloadModal() {
-  document.getElementById("downloadModal").style.display = "flex";
+
+  const modal =
+    document.getElementById("downloadModal");
+
+  if(modal){
+    modal.style.display = "flex";
+  }
+
 }
 
 function closeDownloadModal() {
-  document.getElementById("downloadModal").style.display = "none";
+
+  const modal =
+    document.getElementById("downloadModal");
+
+  if(modal){
+    modal.style.display = "none";
+  }
+
 }
 
 function confirmDownload() {
-  closeDownloadModal();
-  downloadPDF();
-}
 
+  closeDownloadModal();
+
+  if(typeof downloadPDF === "function"){
+    downloadPDF();
+  }
+
+}
 /* =========================
    GLOBAL ACCESS (IMPORTANT FIX)
 ========================= */
