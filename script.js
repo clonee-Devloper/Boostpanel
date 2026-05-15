@@ -1196,6 +1196,8 @@ function showInvoice(){
    CONFIRM ORDER
 ========================================================= */
 
+let isOrdering = false;
+
 async function confirmOrder(
   layanan,
   tipe,
@@ -1204,21 +1206,61 @@ async function confirmOrder(
   total
 ){
 
+  /* =========================================================
+     ANTI DOUBLE CLICK
+  ========================================================= */
+
+  if(isOrdering) return;
+
+  isOrdering = true;
+
+  /* =========================================================
+     LOADER
+  ========================================================= */
+
+  const loader =
+    document.getElementById("loader");
+
+  if(loader){
+    loader.style.display = "flex";
+  }
+
   try {
 
     /* =========================================================
        VALIDASI FIREBASE
     ========================================================= */
 
-    if(typeof db === "undefined"){
-      throw new Error("Database tidak tersedia");
+    if(
+      typeof firebase === "undefined" ||
+      typeof db === "undefined"
+    ){
+      throw new Error(
+        "Firebase tidak tersedia"
+      );
+    }
+
+    /* =========================================================
+       VALIDASI INPUT
+    ========================================================= */
+
+    if(
+      !layanan ||
+      !tipe ||
+      !jumlah ||
+      !link
+    ){
+      throw new Error(
+        "Data order tidak lengkap"
+      );
     }
 
     /* =========================================================
        GENERATE ORDER ID
     ========================================================= */
 
-    const id = "ORD" + Date.now();
+    const id =
+      "ORD" + Date.now();
 
     /* =========================================================
        DATA ORDER
@@ -1233,7 +1275,8 @@ async function confirmOrder(
       link,
       total,
 
-      status: "Menunggu Konfirmasi Pembayaran",
+      status:
+        "Menunggu Konfirmasi Pembayaran",
 
       createdAt:
         firebase.firestore.FieldValue.serverTimestamp()
@@ -1241,27 +1284,19 @@ async function confirmOrder(
     };
 
     /* =========================================================
-       SIMPAN ORDER
+       SAVE FIREBASE
     ========================================================= */
 
-    await db.collection("orders").add(data);
+    await db
+      .collection("orders")
+      .add(data);
 
     /* =========================================================
-       GENERATE RECEIPT URL
+       RECEIPT URL
     ========================================================= */
 
     const receiptUrl =
-      `receipt.html` +
-      `?id=${encodeURIComponent(id)}` +
-      `&layanan=${encodeURIComponent(layanan)}` +
-      `&tipe=${encodeURIComponent(tipe)}` +
-      `&jumlah=${encodeURIComponent(jumlah)}` +
-      `&total=${encodeURIComponent(total)}` +
-      `&status=${encodeURIComponent("Menunggu Konfirmasi Pembayaran")}` +
-      `&link=${encodeURIComponent(link)}` +
-      `&tanggal=${encodeURIComponent(
-        new Date().toLocaleString("id-ID")
-      )}`;
+      `receipt.html?id=${encodeURIComponent(id)}`;
 
     /* =========================================================
        CLOSE POPUP
@@ -1272,9 +1307,9 @@ async function confirmOrder(
 
     if(popup){
 
-      popup.style.display = "none";
-
       popup.classList.remove("show");
+
+      popup.style.display = "none";
 
     }
 
@@ -1282,7 +1317,76 @@ async function confirmOrder(
        OPEN RECEIPT
     ========================================================= */
 
-    window.location.href = receiptUrl;
+    setTimeout(() => {
+
+      window.open(
+        receiptUrl,
+        "_blank"
+      );
+
+    }, 400);
+
+    /* =========================================================
+       OPEN WHATSAPP
+    ========================================================= */
+
+    setTimeout(() => {
+
+      const waNumber =
+        "6283142808857";
+
+      const message =
+`Halo Admin BoostPanel 👋
+
+Saya baru saja membuat pesanan baru.
+
+━━━━━━━━━━━━━━
+📄 DETAIL PESANAN
+━━━━━━━━━━━━━━
+
+🆔 ID Order:
+${id}
+
+📱 Layanan:
+${layanan}
+
+📦 Tipe:
+${tipe}
+
+🔢 Jumlah:
+${jumlah}
+
+💰 Total:
+Rp ${total}
+
+━━━━━━━━━━━━━━
+
+✅ Saya akan segera melakukan pembayaran.
+
+Mohon untuk diproses 🙏`;
+
+      const waUrl =
+        `https://wa.me/${waNumber}?text=` +
+        encodeURIComponent(message);
+
+      window.open(
+        waUrl,
+        "_blank"
+      );
+
+    }, 900);
+
+    /* =========================================================
+       HIDE LOADER
+    ========================================================= */
+
+    setTimeout(() => {
+
+      if(loader){
+        loader.style.display = "none";
+      }
+
+    }, 1200);
 
   } catch (err) {
 
@@ -1291,13 +1395,25 @@ async function confirmOrder(
       err
     );
 
+    /* HIDE LOADER */
+
+    if(loader){
+      loader.style.display = "none";
+    }
+
+    /* ERROR POPUP */
+
     showPopup(
       "Gagal",
       `
       Pesanan gagal dibuat.<br><br>
-      Silakan coba beberapa saat lagi.
+      ${err.message}
       `
     );
+
+  } finally {
+
+    isOrdering = false;
 
   }
 
