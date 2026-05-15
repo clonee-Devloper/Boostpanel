@@ -1204,75 +1204,104 @@ async function confirmOrder(
   total
 ){
 
-  const id = "ORD" + Date.now();
-
-  const data = {
-
-    id,
-    layanan,
-    tipe,
-    jumlah,
-    link,
-    total,
-
-    status: "Pending",
-
-    createdAt:
-      firebase.firestore.FieldValue.serverTimestamp()
-
-  };
-
   try {
 
-  /* SIMPAN ORDER */
-  await db.collection("orders").add(data);
+    /* =========================================================
+       VALIDASI FIREBASE
+    ========================================================= */
 
-  /* =========================================================
-     GENERATE RECEIPT URL
-  ========================================================= */
+    if(typeof db === "undefined"){
+      throw new Error("Database tidak tersedia");
+    }
 
-  const receiptUrl =
-    `receipt.html` +
-    `?id=${encodeURIComponent(id)}` +
-    `&layanan=${encodeURIComponent(layanan)}` +
-    `&tipe=${encodeURIComponent(tipe)}` +
-    `&jumlah=${encodeURIComponent(jumlah)}` +
-    `&total=${encodeURIComponent(total)}` +
-    `&status=${encodeURIComponent("Menunggu Konfirmasi Pembayaran")}` +
-    `&link=${encodeURIComponent(link)}` +
-    `&tanggal=${encodeURIComponent(
-      new Date().toLocaleString("id-ID")
-    )}`;
+    /* =========================================================
+       GENERATE ORDER ID
+    ========================================================= */
 
-  /* =========================================================
-     CLOSE POPUP
-  ========================================================= */
+    const id = "ORD" + Date.now();
 
-  const popup = document.getElementById("globalPopup");
+    /* =========================================================
+       DATA ORDER
+    ========================================================= */
 
-  if (popup) {
-    popup.style.display = "none";
-    popup.classList.remove("show");
+    const data = {
+
+      id,
+      layanan,
+      tipe,
+      jumlah,
+      link,
+      total,
+
+      status: "Menunggu Konfirmasi Pembayaran",
+
+      createdAt:
+        firebase.firestore.FieldValue.serverTimestamp()
+
+    };
+
+    /* =========================================================
+       SIMPAN ORDER
+    ========================================================= */
+
+    await db.collection("orders").add(data);
+
+    /* =========================================================
+       GENERATE RECEIPT URL
+    ========================================================= */
+
+    const receiptUrl =
+      `receipt.html` +
+      `?id=${encodeURIComponent(id)}` +
+      `&layanan=${encodeURIComponent(layanan)}` +
+      `&tipe=${encodeURIComponent(tipe)}` +
+      `&jumlah=${encodeURIComponent(jumlah)}` +
+      `&total=${encodeURIComponent(total)}` +
+      `&status=${encodeURIComponent("Menunggu Konfirmasi Pembayaran")}` +
+      `&link=${encodeURIComponent(link)}` +
+      `&tanggal=${encodeURIComponent(
+        new Date().toLocaleString("id-ID")
+      )}`;
+
+    /* =========================================================
+       CLOSE POPUP
+    ========================================================= */
+
+    const popup =
+      document.getElementById("globalPopup");
+
+    if(popup){
+
+      popup.style.display = "none";
+
+      popup.classList.remove("show");
+
+    }
+
+    /* =========================================================
+       OPEN RECEIPT
+    ========================================================= */
+
+    window.location.href = receiptUrl;
+
+  } catch (err) {
+
+    console.error(
+      "CONFIRM ORDER ERROR:",
+      err
+    );
+
+    showPopup(
+      "Gagal",
+      `
+      Pesanan gagal dibuat.<br><br>
+      Silakan coba beberapa saat lagi.
+      `
+    );
+
   }
 
-  /* =========================================================
-     OPEN RECEIPT
-  ========================================================= */
-
-  setTimeout(() => {
-    window.open(receiptUrl, "_blank");
-  }, 300);
-
-} catch (err) {
-
-  console.error(err);
-
-  showPopup(
-    "Gagal",
-    "Terjadi kesalahan saat membuat pesanan"
-  );
-
-  }
+}
 
 /* =========================================================
    UPDATE STATUS
