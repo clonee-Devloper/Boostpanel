@@ -165,6 +165,108 @@ body{
   display:none;
 }
 
+/* =========================================================
+   RECEIPT ACTION BUTTONS
+========================================================= */
+
+.receipt-actions{
+
+  display:flex;
+  flex-direction:column;
+
+  gap:12px;
+
+  margin-top:24px;
+
+}
+
+.btn-action{
+
+  width:100%;
+
+  height:54px;
+
+  border:none;
+
+  border-radius:18px;
+
+  font-size:15px;
+  font-weight:800;
+
+  cursor:pointer;
+
+  transition:.25s ease;
+
+  color:white;
+
+  box-shadow:
+    0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.btn-action:hover{
+
+  transform:translateY(-2px);
+
+  opacity:.95;
+
+}
+
+/* PRINT */
+
+.btn-print{
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #4f46e5
+    );
+
+}
+
+/* PDF */
+
+.btn-pdf{
+
+  background:
+    linear-gradient(
+      135deg,
+      #0ea5e9,
+      #2563eb
+    );
+
+}
+
+/* WHATSAPP */
+
+.btn-wa{
+
+  background:
+    linear-gradient(
+      135deg,
+      #22c55e,
+      #16a34a
+    );
+
+}
+
+/* MOBILE */
+
+@media(max-width:480px){
+
+  .btn-action{
+
+    height:50px;
+
+    font-size:14px;
+
+    border-radius:16px;
+
+  }
+
+}
+
 </style>
 
 </head>
@@ -190,14 +292,23 @@ body{
     Kami menghargai kepercayaan Anda.
   </div>
 
-  <!-- BUTTONS (FIXED CONSISTENT UI) -->
-<button onclick="printReceipt()" class="btn btn-print">
-  🖨️ Cetak Struk
-</button>
+<!-- ACTION BUTTONS -->
 
-  <button class="btn btn-pdf" onclick="downloadPDF()">
+<div class="receipt-actions">
+
+  <button onclick="printReceipt()" class="btn-action btn-print">
+    🖨️ Cetak Struk
+  </button>
+
+  <button onclick="downloadPDF()" class="btn-action btn-pdf">
     ⬇️ Download PDF
   </button>
+
+  <button onclick="confirmPayment()" class="btn-action btn-wa">
+    💬 Konfirmasi Pembayaran
+  </button>
+
+</div>
 
 </div>
 
