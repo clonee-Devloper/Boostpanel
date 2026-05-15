@@ -179,102 +179,30 @@ window.confirmDownload = confirmDownload;
 window.openDownloadModal = openDownloadModal;
 window.closeDownloadModal = closeDownloadModal;
 
-/* PARAMETER URL */
-const params = new URLSearchParams(window.location.search);
-
-const id = params.get("id") || "ORD-0000";
-const layanan = params.get("layanan") || "Instagram";
-const tipe = params.get("tipe") || "Followers";
-const jumlah = params.get("jumlah") || "0";
-const total = params.get("total") || "0";
-const status = params.get("status") || "Pending";
-const link = params.get("link") || "-";
-const tanggal = params.get("tanggal") || new Date().toLocaleString("id-ID");
-
-/* SET DATA */
-document.getElementById("id").innerText = id;
-document.getElementById("layanan").innerText = layanan;
-document.getElementById("tipe").innerText = tipe;
-document.getElementById("jumlah").innerText = jumlah;
-document.getElementById("total").innerText = "Rp " + total;
-document.getElementById("status").innerText = status;
-document.getElementById("link").innerText = link;
-document.getElementById("tanggal").innerText = tanggal;
-
-/* =========================================================
-   PRINT RECEIPT
-========================================================= */
-
-function printReceipt(){
-  window.print();
-}
-
-/* =========================================================
-   DOWNLOAD PDF
-========================================================= */
-
-function downloadPDF(){
-  window.print();
-}
-
-/* =========================================================
+/* =========================
    WHATSAPP CONFIRM PAYMENT
-========================================================= */
+========================= */
 
 function confirmPayment(){
 
-  const id =
-    document.getElementById("id").innerText;
-
-  const layanan =
-    document.getElementById("layanan").innerText;
-
-  const tipe =
-    document.getElementById("tipe").innerText;
-
-  const jumlah =
-    document.getElementById("jumlah").innerText;
-
-  const total =
-    document.getElementById("total").innerText;
-
-  const tanggal =
-    document.getElementById("tanggal").innerText;
-
-  /* GANTI NOMOR ADMIN */
   const waNumber = "6283142808857";
 
   const message =
 `Halo Admin BoostPanel 👋
 
-Saya ingin melakukan konfirmasi pembayaran untuk pesanan berikut:
+Saya ingin melakukan konfirmasi pembayaran.
 
 ━━━━━━━━━━━━━━
 📄 DETAIL PESANAN
 ━━━━━━━━━━━━━━
 
-🆔 ID Order :
-${id}
-
-📱 Layanan :
-${layanan}
-
-📦 Tipe :
-${tipe}
-
-🔢 Jumlah :
-${jumlah}
-
-💰 Total Pembayaran :
-${total}
-
-🕒 Tanggal :
-${tanggal}
+🆔 ID Order:
+${orderId}
 
 ━━━━━━━━━━━━━━
 
 ✅ Pembayaran telah dilakukan.
-Mohon untuk segera dilakukan pengecekan dan proses order.
+Mohon segera diproses.
 
 Terima kasih 🙏`;
 
@@ -285,3 +213,6 @@ Terima kasih 🙏`;
   window.open(url, "_blank");
 
 }
+
+/* GLOBAL */
+window.confirmPayment = confirmPayment;
