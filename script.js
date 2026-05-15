@@ -1287,10 +1287,11 @@ async function confirmOrder(
        SAVE FIREBASE
     ========================================================= */
 
-    await db
-      .collection("orders")
-      .add(data);
-
+    /* SAVE ORDER */
+await db
+  .collection("orders")
+  .doc(id)
+  .set(data);
     /* =========================================================
        RECEIPT URL
     ========================================================= */
