@@ -187,7 +187,20 @@ function confirmPayment(){
 
   const waNumber = "6283142808857";
 
-const message =
+  /* AMBIL DATA DARI FIRESTORE */
+  db.collection("orders")
+    .doc(orderId)
+    .get()
+    .then((doc) => {
+
+      if(!doc.exists){
+        alert("Data order tidak ditemukan");
+        return;
+      }
+
+      const d = doc.data();
+
+      const message =
 `Halo Admin BoostPanel 👋
 
 Saya baru saja membuat pesanan baru.
@@ -197,22 +210,22 @@ Saya baru saja membuat pesanan baru.
 ━━━━━━━━━━━━━━━━━━
 
 🆔 ID Order
-${id}
+${orderId}
 
 📱 Layanan
-${layanan}
+${d.layanan || "-"}
 
 📦 Tipe
-${tipe}
+${d.tipe || "-"}
 
 🔢 Jumlah
-${jumlah}
+${d.jumlah || "-"}
 
 🔗 Link Target
-${link}
+${d.link || "-"}
 
 💰 Total Pembayaran
-Rp ${total}
+Rp ${d.total || "0"}
 
 🕒 Tanggal
 ${new Date().toLocaleString("id-ID")}
@@ -224,3 +237,23 @@ ${new Date().toLocaleString("id-ID")}
 Mohon untuk segera diproses 🙏
 
 Terima kasih.`;
+
+      const url =
+        `https://wa.me/${waNumber}?text=` +
+        encodeURIComponent(message);
+
+      window.open(url, "_blank");
+
+    })
+    .catch((err) => {
+
+      console.error(err);
+
+      alert("Gagal membuka WhatsApp");
+
+    });
+
+}
+
+/* GLOBAL */
+window.confirmPayment = confirmPayment;
