@@ -87,9 +87,9 @@ async function loadReceipt() {
   }
 }
 
-/* AUTO RUN */
-window.addEventListener("load", loadReceipt);
-
+setTimeout(() => {
+  loadReceipt();
+}, 500);
 /* =========================
    PDF DOWNLOAD (FIXED GLOBAL)
 ========================= */
