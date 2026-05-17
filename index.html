@@ -106,96 +106,101 @@ WRAP
 
     <!-- RULES -->
 
-    <div class="card">
+<div class="card">
 
-      <div class="section-title">
-        Rules BoostPanel
-      </div>
-
-      <button
-        class="btn-secondary"
-        onclick="toggleRules()"
-      >
-        Lihat Rules
-      </button>
-
-      <div id="rules">
-
-  <div class="rules-title">
-    📌 Ketentuan Layanan BoostPanel
+  <div class="section-title">
+    Rules BoostPanel
   </div>
 
-  <div class="rules-list">
+  <button
+    class="btn-secondary"
+    onclick="toggleRules()"
+  >
+    Lihat Rules
+  </button>
 
-    <div class="rule-item">
-      <span>1.</span>
-      <p>
-        Pastikan Anda menginput link yang benar sesuai format yang ada di keterangan,
-        karena kami tidak bisa membatalkan pesanan.
-      </p>
+  <div id="rules" style="display:none; margin-top:18px;">
+
+    <div class="rules-title">
+      📌 Ketentuan Layanan BoostPanel
     </div>
 
-    <div class="rule-item">
-      <span>2.</span>
-      <p>
-        Jangan menggunakan lebih dari satu layanan sekaligus untuk username/link
-        yang sama. Harap tunggu status <b>Completed</b> pada order sebelumnya
-        sebelum membuat order baru pada target yang sama.
-      </p>
-    </div>
+    <div class="rules-list">
 
-    <div class="rule-item">
-      <span>3.</span>
-      <p>
-        Jika username/link yang diinput tidak ditemukan
-        (diganti / diprivate / dihapus),
-        maka order otomatis dianggap selesai dan tidak ada pengembalian dana.
-      </p>
-    </div>
+      <div class="rule-item">
+        <span>1.</span>
+        <p>
+          Pastikan Anda menginput link yang benar sesuai format yang ada di keterangan,
+          karena kami tidak bisa membatalkan pesanan.
+        </p>
+      </div>
 
-    <div class="rule-item">
-      <span>4.</span>
-      <p>
-        Kesalahan pembeli bukan tanggung jawab admin karena sistem bekerja otomatis.
-        Mohon cek kembali link sebelum order dilakukan.
-      </p>
-    </div>
+      <div class="rule-item">
+        <span>2.</span>
+        <p>
+          Jangan menggunakan lebih dari satu layanan sekaligus untuk username/link
+          yang sama. Harap tunggu status <b>Completed</b> pada order sebelumnya
+          sebelum membuat order baru pada target yang sama.
+          Hal ini tidak mempercepat proses dan tidak ada pengembalian dana apabila target hanya masuk ke salah satu order.
+        </p>
+      </div>
 
-    <div class="rule-item">
-      <span>5.</span>
-      <p>
-        Jika status order <b>Partial</b> atau <b>Canceled</b>,
-        saldo akan otomatis direfund dan dapat digunakan kembali.
-      </p>
-    </div>
+      <div class="rule-item">
+        <span>3.</span>
+        <p>
+          Jika username/link yang diinput tidak ditemukan
+          (diganti, diprivate, atau dihapus),
+          maka order otomatis dianggap selesai dan tidak ada pengembalian dana.
+        </p>
+      </div>
 
-    <div class="rule-item">
-      <span>6.</span>
-      <p>
-        Jumlah maksimum menunjukkan kapasitas layanan untuk satu target,
-        bukan kapasitas maksimal sekali order.
-      </p>
-    </div>
+      <div class="rule-item">
+        <span>4.</span>
+        <p>
+          Kesalahan pembeli bukan tanggung jawab admin karena sistem bekerja otomatis.
+          Mohon cek kembali link sebelum order dilakukan.
+        </p>
+      </div>
 
-    <div class="rule-item">
-      <span>7.</span>
-      <p>
-        Informasi pada kolom keterangan seperti speed dan drop rate
-        bersifat estimasi dan dapat berubah tergantung performa server.
-      </p>
-    </div>
+      <div class="rule-item">
+        <span>5.</span>
+        <p>
+          Jika status order <b>Partial</b> atau <b>Canceled</b>,
+          saldo akan otomatis direfund dan dapat digunakan kembali untuk order ulang.
+        </p>
+      </div>
 
-    <div class="rule-item">
-      <span>8.</span>
-      <p>
-        Dengan melakukan order, Anda dianggap telah memahami
-        dan menyetujui seluruh ketentuan layanan BoostPanel.
-      </p>
+      <div class="rule-item">
+        <span>6.</span>
+        <p>
+          Jumlah maksimum menunjukkan kapasitas layanan untuk satu target,
+          bukan kapasitas maksimal sekali order.
+          Jika kapasitas target telah penuh maka gunakan layanan lain yang tersedia.
+        </p>
+      </div>
+
+      <div class="rule-item">
+        <span>7.</span>
+        <p>
+          Informasi pada kolom keterangan seperti speed dan drop rate
+          bersifat estimasi dan dapat berubah tergantung performa server
+          serta jumlah order yang masuk.
+        </p>
+      </div>
+
+      <div class="rule-item">
+        <span>8.</span>
+        <p>
+          Dengan melakukan order,
+          Anda dianggap telah memahami dan menyetujui seluruh ketentuan layanan BoostPanel.
+        </p>
+      </div>
+
     </div>
 
   </div>
 
-      </div>
+</div>
       
     <!-- ORDER -->
 
