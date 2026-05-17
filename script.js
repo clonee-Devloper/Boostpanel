@@ -1179,13 +1179,13 @@ function showInvoice(){
 
       }
 
-      confirmOrder(
-        layanan,
-        tipe,
-        jumlah,
-        link,
-        total
-      );
+      
+       confirmOrder(
+  layanan,
+  tipe,
+  jumlah,
+  link
+);
 
     }
   );
@@ -1202,9 +1202,8 @@ async function confirmOrder(
   layanan,
   tipe,
   jumlah,
-  link,
-  total
-){
+  link
+);
 
   /* =========================================================
      ANTI DOUBLE CLICK
@@ -1261,6 +1260,23 @@ async function confirmOrder(
 
     const id =
       "ORD" + Date.now();
+
+     /* =========================================================
+   AMBIL TOTAL REALTIME
+========================================================= */
+
+const total =
+  document.getElementById("total")
+  .innerText
+  .replace(/\./g,'');
+
+if(!total || Number(total) <= 0){
+
+  throw new Error(
+    "Total pembayaran tidak valid"
+  );
+
+}
 
     /* =========================================================
        DATA ORDER
@@ -1395,6 +1411,12 @@ Mohon untuk diproses 🙏`;
       "CONFIRM ORDER ERROR:",
       err
     );
+
+     if(loader){
+  loader.style.display = "none";
+}
+
+isOrdering = false;
 
     /* HIDE LOADER */
 
