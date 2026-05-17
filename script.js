@@ -1203,7 +1203,7 @@ async function confirmOrder(
   tipe,
   jumlah,
   link
-);
+){
 
   /* =========================================================
      ANTI DOUBLE CLICK
@@ -1261,22 +1261,22 @@ async function confirmOrder(
     const id =
       "ORD" + Date.now();
 
-     /* =========================================================
-   AMBIL TOTAL REALTIME
-========================================================= */
+    /* =========================================================
+       AMBIL TOTAL REALTIME
+    ========================================================= */
 
-const total =
-  document.getElementById("total")
-  .innerText
-  .replace(/\./g,'');
+    const total =
+      document.getElementById("total")
+      .innerText
+      .replace(/\./g,'');
 
-if(!total || Number(total) <= 0){
+    if(!total || Number(total) <= 0){
 
-  throw new Error(
-    "Total pembayaran tidak valid"
-  );
+      throw new Error(
+        "Total pembayaran tidak valid"
+      );
 
-}
+    }
 
     /* =========================================================
        DATA ORDER
@@ -1298,6 +1298,7 @@ if(!total || Number(total) <= 0){
         firebase.firestore.FieldValue.serverTimestamp()
 
     };
+
 
     /* =========================================================
        SAVE FIREBASE
